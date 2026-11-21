@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>Ficha de Producto - Tyrolit Secur Extra | StockAR Minimal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #cbd5e1;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-feature-settings: "tnum" 1;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex">
+<!-- Minimal Sidebar Navigation (StockAR Minimal Unified) -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-white z-50 flex flex-col justify-between border-r border-slate-200">
+<div class="flex flex-col">
+<!-- Logo & Branch Header -->
+<div class="p-5 border-b border-slate-100">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-sm tracking-tight shadow-sm">
+            ST
+          </div>
+<div class="flex flex-col">
+<span class="font-bold text-slate-900 tracking-tight text-base leading-none">StockAR</span>
+<span class="text-[11px] text-slate-400 font-medium tracking-wide uppercase mt-1">ERP Industrial</span>
+</div>
+</div>
+<div class="mt-4 bg-slate-50 hover:bg-slate-100/70 transition-colors px-2.5 py-1.5 rounded-md border border-slate-200/80 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[16px] text-slate-500">storefront</span>
+<span class="text-xs font-medium text-slate-700 truncate">Sucursal Munro</span>
+</div>
+<span class="material-symbols-outlined text-[14px] text-slate-400">unfold_more</span>
+</div>
+</div>
+<!-- Navigation links -->
+<nav class="flex flex-col gap-1 p-3">
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="dashboard" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[19px] text-slate-400">dashboard</span>
+<span>Dashboard</span>
+</div>
+</a>
+<a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-md bg-slate-900 text-white text-sm font-medium shadow-sm transition-all" data-path="inventario" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[19px] text-white">inventory_2</span>
+<span>Inventario</span>
+</div>
+<span class="font-mono-num text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-medium">SKU</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="proveedores" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[19px] text-slate-400">request_quote</span>
+<span>Proveedores</span>
+</div>
+<span class="text-[10px] bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.5 rounded">Listas</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="movimientos" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[19px] text-slate-400">swap_horiz</span>
+<span>Movimientos</span>
+</div>
+<span class="text-[10px] bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.5 rounded">Kárdex</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium" data-path="configuracion" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[19px] text-slate-400">settings</span>
+<span>Configuración</span>
+</div>
+</a>
+</nav>
+</div>
+<!-- System Status & API Bottom panel -->
+<div class="p-3 border-t border-slate-100 bg-slate-50/50">
+<div class="bg-white border border-slate-200 rounded-lg p-3 flex flex-col gap-2 shadow-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100"></span>
+<span class="text-xs font-medium text-slate-700">AFIP / Listas API</span>
+</div>
+<span class="font-mono-num text-[11px] text-emerald-600 font-medium">Online</span>
+</div>
+<div class="flex items-center justify-between text-slate-500 text-xs">
+<span>Latencia</span>
+<span class="font-mono-num text-slate-700">42 ms</span>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-slate-800 h-full rounded-full" style="width: 68%"></div>
+</div>
+<div class="flex items-center justify-between text-slate-500 text-xs pt-0.5">
+<span>Catálogo</span>
+<span class="font-mono-num font-medium text-slate-700">4.280 u.</span>
+</div>
+</div>
+<div class="mt-2.5 flex items-center justify-between px-1 text-[11px] text-slate-400 font-mono-num">
+<span>v2.4.1 Ferretería AR</span>
+<span class="material-symbols-outlined text-[14px]">cloud_done</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="pl-64 flex-1 flex flex-col min-w-0">
+<!-- Top Navigation Header -->
+<header class="sticky top-0 h-14 bg-white/90 backdrop-blur-md border-b border-slate-200 z-40 px-6 flex items-center justify-between">
+<div class="flex items-center gap-3 flex-1 max-w-lg">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+<input class="w-full h-8 pl-9 pr-14 bg-slate-50 border border-slate-200 rounded-md text-slate-800 placeholder-slate-400 text-xs focus:outline-none focus:border-slate-400 focus:bg-white transition-all" placeholder="Buscar por SKU, código de barra o descripción..." type="text"/>
+<kbd class="absolute right-2 top-1/2 -translate-y-1/2 font-mono-num text-[10px] text-slate-400 border border-slate-200 bg-white px-1.5 py-0.5 rounded shadow-2xs">Alt+K</kbd>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<!-- Depot indicator -->
+<div class="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-md px-2.5 py-1 text-xs cursor-pointer hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-slate-600">warehouse</span>
+<span class="font-medium text-slate-700">Depósito Central Munro</span>
+<span class="text-[10px] text-slate-400 border-l border-slate-200 pl-1.5">ARS</span>
+</div>
+<div class="h-4 w-px bg-slate-200 mx-0.5"></div>
+<button aria-label="Notificaciones" class="relative p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 flex h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+</button>
+<button aria-label="Ayuda" class="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</button>
+<!-- User profile -->
+<div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+<img alt="Alejandro Valenzuela" class="w-7 h-7 rounded-full object-cover ring-1 ring-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPv4BGk56iRrFFtm3MOQst2xPL3GDY62nTsJ8gfh5JGZV2HsyI5lSszuo-WDxA8K_tdO08Mrm98-qJqTzKYVjnmwpJIkWBWmIb14tDk4HN--6Wxhs6ziFGdUdxkKOaK-C2AFl6Vo5LsAYM0-YrrOhKZcZXE093GaZJ966o7fcnHnWniy_h7dJ5Z8TFuwi6ggtXXB-k4M4evwwlpcfr_HGxjIFFnB14OlYfY5WMPv8"/>
+<div class="hidden lg:flex flex-col text-left leading-none">
+<span class="text-xs font-semibold text-slate-800">Alejandro Valenzuela</span>
+<span class="text-[11px] text-slate-400 mt-0.5">Jefe de Depósito</span>
+</div>
+<button class="text-slate-400 hover:text-rose-600 transition-colors p-1 rounded ml-1" title="Cerrar Sesión" type="button">
+<span class="material-symbols-outlined text-[17px]">logout</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Subheader: Breadcrumb & Macro Indicator -->
+<div class="w-full px-6 py-2.5 bg-white border-b border-slate-200 flex items-center justify-between">
+<nav class="flex items-center gap-1.5 text-xs text-slate-500">
+<a class="hover:text-slate-900 transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[15px]">home</span>
+<span>Inicio</span>
+</a>
+<span class="text-slate-300">/</span>
+<a class="hover:text-slate-900 transition-colors" href="#">Inventario</a>
+<span class="text-slate-300">/</span>
+<a class="hover:text-slate-900 transition-colors" href="#">Abrasivos</a>
+<span class="text-slate-300">/</span>
+<span class="font-medium text-slate-800">Tyrolit Secur 115x1.6mm</span>
+</nav>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-slate-200 bg-slate-50 font-mono-num text-xs text-slate-600">
+<span class="text-slate-900 font-semibold">IVA 21%</span>
+<span class="text-slate-300">|</span>
+<span>BNA Dólar Mayorista</span>
+</span>
+<span class="font-mono-num text-[11px] text-slate-500 border border-slate-200 bg-white px-2 py-0.5 rounded">
+          EAN-13: 7791234567890
+        </span>
+</div>
+</div>
+<!-- Main View Content Area -->
+<main class="p-6 space-y-6">
+<!-- Product Identity Header Card (Clean Minimalist StockAR style) -->
+<section class="bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+<!-- Image and Identity details -->
+<div class="flex items-start gap-4">
+<div class="relative w-20 h-20 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200/80">
+<img class="w-full h-full object-cover" data-alt="Industrial angle grinder thin cutting disc Tyrolit Secur Extra, steel cutting wheel, high quality macro product photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5lGmbnhtZa7iffJ_u7kQUVYMWXXlTXh-LrG9ytlU4hYs8eE4Cy6pZBQ_IGSsK76F8z_q8J_HUZxwF4fR-B2NP6KOLlatZJsU_Nb1d9gluf10JdW613EHwua4CDbzg9hEMvoh7jsW1sKQ-hUPXDWcPLPa2isnLLalcEpOS6w_ksNmuH7ZkiEj1hc0eArXXTLOflWsncJ1Ru2MTG7gGP-5Geh7shgPT7SbYSvhEJJI"/>
+<span class="absolute bottom-1 right-1 bg-slate-900/80 backdrop-blur-xs text-white px-1 py-0.2 font-mono-num text-[9px] rounded">
+                115x1.6
+              </span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-mono-num text-[11px] font-semibold bg-slate-900 text-white px-2 py-0.5 rounded">
+                  SKU-ABR-1150
+                </span>
+<span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-medium">
+                  Abrasivos Industriales
+                </span>
+<span class="text-xs bg-amber-50 text-amber-800 border border-amber-200/70 px-2 py-0.5 rounded-full inline-flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                  Stock Bajo (Requiere Reposición)
+                </span>
+<span class="text-[11px] text-slate-500 font-mono-num">
+                  AFIP Cat: 6804.22
+                </span>
+</div>
+<h1 class="text-xl lg:text-2xl font-bold text-slate-900 tracking-tight">
+                Disco de corte 115 x 1.6 mm Tyrolit Secur Extra
+              </h1>
+<div class="flex items-center gap-3 text-xs text-slate-500 flex-wrap pt-0.5">
+<span class="inline-flex items-center gap-1 text-slate-700">
+<span class="material-symbols-outlined text-[15px] text-slate-400">location_on</span>
+                  Pasillo B · Est. 04 · Gaveta 12
+                </span>
+<span class="text-slate-300">•</span>
+<span>Unidad: <strong class="font-medium text-slate-700">Paquete x 25 u. / Individual</strong></span>
+<span class="text-slate-300">•</span>
+<span class="font-mono-num text-slate-600">Rotación: Clase A+</span>
+</div>
+</div>
+</div>
+<!-- Refined Action Buttons -->
+<div class="flex items-center flex-wrap gap-2 lg:justify-end self-start lg:self-center">
+<button class="h-8.5 px-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors rounded-md text-xs font-medium inline-flex items-center gap-1.5 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-500">edit</span>
+              Editar
+            </button>
+<button class="h-8.5 px-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors rounded-md text-xs font-medium inline-flex items-center gap-1.5 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-500">tune</span>
+              Ajuste de Stock
+            </button>
+<button class="h-8.5 px-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors rounded-md text-xs font-medium inline-flex items-center gap-1.5 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-500">print</span>
+              Etiqueta
+            </button>
+<button class="h-8.5 px-3.5 bg-slate-900 hover:bg-slate-800 text-white transition-colors rounded-md text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs" type="button">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+              Crear Pedido de Compra
+            </button>
+</div>
+</div>
+</section>
+<!-- Key Metrics Row (4 Minimal Highlight Cards) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Metric 1: Stock Actual -->
+<div class="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500">Stock Actual en Depósito</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">inventory_2</span>
+</div>
+<div class="flex items-baseline gap-2 my-1">
+<span class="font-mono-num text-3xl font-bold text-amber-700 tracking-tight">14</span>
+<span class="text-xs text-slate-500">unidades físicas</span>
+</div>
+<div class="mt-2 pt-2 border-t border-slate-100">
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-1.5">
+<div class="bg-amber-500 h-full rounded-full" style="width: 28%"></div>
+</div>
+<div class="flex items-center justify-between text-xs text-slate-500 font-mono-num">
+<span>28% del óptimo</span>
+<span class="text-amber-700 font-medium">Nivel Crítico</span>
+</div>
+</div>
+</div>
+<!-- Metric 2: Stock Mínimo -->
+<div class="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500">Stock Mínimo (Umbral)</span>
+<span class="material-symbols-outlined text-[18px] text-rose-500">warning</span>
+</div>
+<div class="flex items-baseline gap-2 my-1">
+<span class="font-mono-num text-3xl font-bold text-slate-900 tracking-tight">50</span>
+<span class="text-xs text-slate-500">unidades base</span>
+</div>
+<div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
+<span class="text-xs text-rose-600 font-medium">Déficit calculado:</span>
+<span class="font-mono-num text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">
+              -36 unidades
+            </span>
+</div>
+</div>
+<!-- Metric 3: Mejor Precio de Compra -->
+<div class="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500">Mejor Precio de Compra</span>
+<span class="material-symbols-outlined text-[18px] text-emerald-600">verified</span>
+</div>
+<div class="flex items-baseline gap-2 my-1">
+<span class="font-mono-num text-2xl font-bold text-slate-900 tracking-tight">ARS $ 2.350</span>
+<span class="text-[11px] font-mono-num font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
+              -13%
+            </span>
+</div>
+<div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="text-slate-700 font-medium truncate">Distr. San Martín</span>
+<span class="text-slate-400 font-mono-num text-[11px]">24 hs entrega</span>
+</div>
+</div>
+<!-- Metric 4: Último Movimiento -->
+<div class="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-medium text-slate-500">Último Movimiento</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">schedule</span>
+</div>
+<div class="flex items-baseline gap-2 my-1">
+<span class="font-mono-num text-2xl font-bold text-slate-900 tracking-tight">Hoy 11:42</span>
+<span class="font-mono-num text-xs text-slate-400">hs</span>
+</div>
+<div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="text-rose-600 font-medium inline-flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+              Salida: 6 u.
+            </span>
+<span class="font-mono-num text-slate-400 text-[11px]">Remito #004-9812</span>
+</div>
+</div>
+</section>
+<!-- Section: B2B Price Benchmark Matrix -->
+<section class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+<!-- Tab Navigation Bar -->
+<div class="px-5 pt-3 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between flex-wrap gap-3">
+<div class="flex items-center gap-1">
+<button class="px-3.5 py-2.5 bg-white text-slate-900 text-xs font-semibold rounded-t-lg border-t border-x border-slate-200 shadow-2xs -mb-px flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-600">price_change</span>
+<span>Comparativa B2B &amp; Matriz de Precios</span>
+<span class="bg-slate-100 text-slate-700 font-mono-num text-[10px] px-1.5 py-0.5 rounded-full">4</span>
+</button>
+<button class="px-3.5 py-2.5 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">tune</span>
+<span>Especificaciones Técnicas</span>
+</button>
+<button class="px-3.5 py-2.5 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">insights</span>
+<span>Previsión de Demanda</span>
+</button>
+</div>
+<div class="pb-2">
+<button class="h-8 px-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-800 transition-colors rounded-md text-xs font-medium inline-flex items-center gap-1.5 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-500">add</span>
+              Vincular Nuevo Proveedor / Actualizar Precios
+            </button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="p-5">
+<div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+<div>
+<h2 class="text-sm font-semibold text-slate-900">Proveedores con Catálogo Homologado</h2>
+<p class="text-xs text-slate-500">Cotejado con listas mayoristas oficiales y tipo de cambio BNA</p>
+</div>
+<div class="text-xs text-slate-400 font-mono-num">
+              Último relevamiento: Hoy 08:30 hs
+            </div>
+</div>
+<div class="overflow-x-auto rounded-lg border border-slate-200">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="bg-slate-50/80 text-slate-500 font-medium uppercase tracking-wider border-b border-slate-200 text-[11px]">
+<th class="py-2.5 px-3.5">Proveedor</th>
+<th class="py-2.5 px-3 text-right">Precio Neto</th>
+<th class="py-2.5 px-3 text-right">Precio + IVA (21%)</th>
+<th class="py-2.5 px-3 text-center">Entrega</th>
+<th class="py-2.5 px-3 text-right">Stock Prov.</th>
+<th class="py-2.5 px-3">Actualización</th>
+<th class="py-2.5 px-3 text-center">Score</th>
+<th class="py-2.5 px-3.5 text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Supplier 1: DSM (Best Price) -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-[11px]">
+                        DSM
+                      </div>
+<div>
+<div class="font-semibold text-slate-900 flex items-center gap-1.5">
+                          Distribuidora San Martín
+                          <!-- Elegant sober pill for best price -->
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60 font-mono-num">
+<span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                            Mejor Precio
+                          </span>
+</div>
+<div class="text-[11px] text-slate-400 font-mono-num">CUIT: 30-71092834-4 · Suc. Caseros</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono-num font-bold text-slate-900 text-sm">ARS $ 2.350,00</div>
+<span class="text-[10px] text-slate-400 font-mono-num">USD 2,35 BNA</span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num text-slate-700 font-medium">
+                    ARS $ 2.843,50
+                  </td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium font-mono-num">
+<span class="material-symbols-outlined text-[13px] text-emerald-600">bolt</span> 24 hs
+                    </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="font-mono-num font-semibold text-slate-900">2.500 u.</span>
+<div class="text-[10px] text-emerald-600 font-medium">Inmediato</div>
+</td>
+<td class="py-3 px-3 text-slate-500">
+<span class="inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      Hace 2 días
+                    </span>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono-num font-semibold text-slate-800">4.8</span>
+<span class="text-amber-500 text-[11px]">★</span>
+</td>
+<td class="py-3 px-3.5 text-right">
+<button class="h-7 px-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[14px]">shopping_cart</span>
+                      Pedir
+                    </button>
+</td>
+</tr>
+<!-- Supplier 2: FMS -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[11px] border border-slate-200">
+                        FMS
+                      </div>
+<div>
+<div class="font-semibold text-slate-800">Ferretería Mayorista del Sur</div>
+<div class="text-[11px] text-slate-400 font-mono-num">CUIT: 30-68934521-9 · Lanús Oeste</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono-num font-medium text-slate-800">ARS $ 2.500,00</div>
+<span class="text-[10px] text-slate-400 font-mono-num">+6,4% vs mín.</span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num text-slate-600">
+                    ARS $ 3.025,00
+                  </td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px] font-mono-num">
+                      48 hs
+                    </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="font-mono-num font-medium text-slate-700">800 u.</span>
+<div class="text-[10px] text-slate-400">Disponible</div>
+</td>
+<td class="py-3 px-3 text-slate-500">
+                    Hace 5 días
+                  </td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono-num font-semibold text-slate-700">4.1</span>
+<span class="text-amber-500 text-[11px]">★</span>
+</td>
+<td class="py-3 px-3.5 text-right">
+<button class="h-7 px-2.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 rounded text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" type="button">
+                      Cotizar
+                    </button>
+</td>
+</tr>
+<!-- Supplier 3: HBA -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[11px] border border-slate-200">
+                        HBA
+                      </div>
+<div>
+<div class="font-semibold text-slate-800">Herramientas &amp; Insumos B.A.</div>
+<div class="text-[11px] text-slate-400 font-mono-num">CUIT: 33-54901287-9 · Tortuguitas</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono-num font-medium text-slate-800">ARS $ 2.700,00</div>
+<span class="text-[10px] text-slate-400 font-mono-num">+14,8% vs mín.</span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num text-slate-600">
+                    ARS $ 3.267,00
+                  </td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium font-mono-num">
+<span class="material-symbols-outlined text-[13px] text-emerald-600">bolt</span> 24 hs
+                    </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="font-mono-num font-medium text-slate-700">1.200 u.</span>
+<div class="text-[10px] text-slate-400">Disponible</div>
+</td>
+<td class="py-3 px-3 text-slate-700 font-medium">
+<span class="inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      Ayer
+                    </span>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono-num font-semibold text-slate-800">4.9</span>
+<span class="text-amber-500 text-[11px]">★</span>
+</td>
+<td class="py-3 px-3.5 text-right">
+<button class="h-7 px-2.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 rounded text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" type="button">
+                      Cotizar
+                    </button>
+</td>
+</tr>
+<!-- Supplier 4: INS -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[11px] border border-slate-200">
+                        INS
+                      </div>
+<div>
+<div class="font-semibold text-slate-800">Industrial Norte S.A.</div>
+<div class="text-[11px] text-slate-400 font-mono-num">CUIT: 30-70192844-3 · Pilar Parque Ind.</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono-num font-medium text-slate-800">ARS $ 2.620,00</div>
+<span class="text-[10px] text-slate-400 font-mono-num">+11,4% vs mín.</span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num text-slate-600">
+                    ARS $ 3.170,20
+                  </td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px] font-mono-num">
+                      72 hs
+                    </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="font-mono-num font-medium text-amber-700">450 u.</span>
+<div class="text-[10px] text-amber-600">Limitado</div>
+</td>
+<td class="py-3 px-3 text-slate-500">
+                    Hace 1 semana
+                  </td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono-num font-semibold text-slate-700">3.8</span>
+<span class="text-amber-500 text-[11px]">★</span>
+</td>
+<td class="py-3 px-3.5 text-right">
+<button class="h-7 px-2.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 rounded text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" type="button">
+                      Cotizar
+                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Commercial Margin Analysis Bar -->
+<div class="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-200/80 flex items-center justify-between flex-wrap gap-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-slate-500">calculate</span>
+<div>
+<span class="text-xs font-semibold text-slate-900">PVP Sugerido en Mostrador: <strong class="font-mono-num text-slate-900">ARS $ 4.250,00</strong></span>
+<p class="text-[11px] text-slate-500">Margen proyectado con DSM: <span class="font-medium text-slate-700">44,7% Bruto</span> (Rentabilidad objetivo para Abrasivos)</p>
+</div>
+</div>
+<div class="font-mono-num text-xs font-medium bg-white px-3 py-1 rounded border border-slate-200 text-slate-700 shadow-2xs">
+              Ganancia unitaria est.: <strong class="text-slate-900">ARS $ 1.406,50</strong>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Kárdex Item History -->
+<section class="bg-white border border-slate-200 rounded-xl shadow-xs p-5">
+<div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px] text-slate-600">swap_horiz</span>
+<div>
+<h2 class="text-sm font-semibold text-slate-900">Historial de Movimientos de este Producto (Kárdex)</h2>
+<p class="text-xs text-slate-500">Trazabilidad física de entradas, salidas y mermas registradas por lote</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-8 px-2.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 rounded-md text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[15px] text-slate-400">filter_list</span>
+              Filtrar
+            </button>
+<button class="h-8 px-2.5 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 rounded-md text-xs font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[15px] text-slate-400">file_download</span>
+              Exportar (.xlsx)
+            </button>
+</div>
+</div>
+<div class="overflow-x-auto rounded-lg border border-slate-200">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="bg-slate-50/80 text-slate-500 font-medium uppercase tracking-wider border-b border-slate-200 text-[11px]">
+<th class="py-2.5 px-3.5">Fecha &amp; Hora</th>
+<th class="py-2.5 px-3">Tipo de Operación</th>
+<th class="py-2.5 px-3 text-right">Variación</th>
+<th class="py-2.5 px-3 text-right">Saldo</th>
+<th class="py-2.5 px-3">Responsable</th>
+<th class="py-2.5 px-3">Comprobante / Remito</th>
+<th class="py-2.5 px-3.5 text-center">Auditoría</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Movement 1 -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5 font-mono-num text-slate-600">
+                  Hoy · 11:42 hs
+                </td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-100">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+                    Salida (Venta Mostrador)
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num font-semibold text-rose-600">
+                  -6 u.
+                </td>
+<td class="py-3 px-3 text-right font-mono-num font-bold text-slate-900">
+                  14 u.
+                </td>
+<td class="py-3 px-3 text-slate-700">
+<div class="flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-[15px] text-slate-400">person</span>
+                    Alejandro V.
+                  </div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono-num text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">
+                    FC-B-0004-00019812
+                  </span>
+</td>
+<td class="py-3 px-3.5 text-center">
+<span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Validado
+                  </span>
+</td>
+</tr>
+<!-- Movement 2 -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5 font-mono-num text-slate-600">
+                  Ayer · 16:15 hs
+                </td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-100">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+                    Salida (Pedido Taller Ind.)
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num font-semibold text-rose-600">
+                  -25 u.
+                </td>
+<td class="py-3 px-3 text-right font-mono-num font-bold text-slate-900">
+                  20 u.
+                </td>
+<td class="py-3 px-3 text-slate-700">
+<div class="flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-[15px] text-slate-400">person</span>
+                    Carlos Gómez
+                  </div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono-num text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">
+                    REM-R-0001-00045231
+                  </span>
+</td>
+<td class="py-3 px-3.5 text-center">
+<span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Validado
+                  </span>
+</td>
+</tr>
+<!-- Movement 3 -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5 font-mono-num text-slate-600">
+                  12/10/2023 · 09:30 hs
+                </td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span>
+                    Entrada (Recepción Compra)
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num font-semibold text-emerald-600">
+                  +100 u.
+                </td>
+<td class="py-3 px-3 text-right font-mono-num font-bold text-slate-900">
+                  45 u.
+                </td>
+<td class="py-3 px-3 text-slate-700">
+<div class="flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-[15px] text-slate-400">person</span>
+                    Alejandro V.
+                  </div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono-num text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">
+                    FAC-A-SanMartin-8912
+                  </span>
+</td>
+<td class="py-3 px-3.5 text-center">
+<span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+<span class="material-symbols-outlined text-[14px]">verified</span> AFIP Validado
+                  </span>
+</td>
+</tr>
+<!-- Movement 4 -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5 font-mono-num text-slate-600">
+                  08/10/2023 · 17:50 hs
+                </td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200">
+<span class="material-symbols-outlined text-[13px]">tune</span>
+                    Ajuste (Merma/Rotura)
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num font-semibold text-rose-600">
+                  -2 u.
+                </td>
+<td class="py-3 px-3 text-right font-mono-num font-bold text-slate-900">
+                  -55 u.
+                </td>
+<td class="py-3 px-3 text-slate-700">
+<div class="flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-[15px] text-slate-400">person</span>
+                    Carlos Gómez
+                  </div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono-num text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">
+                    AJU-INT-2023-089
+                  </span>
+</td>
+<td class="py-3 px-3.5 text-center">
+<span class="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                    Inspeccionado
+                  </span>
+</td>
+</tr>
+<!-- Movement 5 -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-white">
+<td class="py-3 px-3.5 font-mono-num text-slate-600">
+                  04/10/2023 · 10:20 hs
+                </td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-100">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+                    Salida (Venta Mayorista)
+                  </span>
+</td>
+<td class="py-3 px-3 text-right font-mono-num font-semibold text-rose-600">
+                  -50 u.
+                </td>
+<td class="py-3 px-3 text-right font-mono-num font-bold text-slate-900">
+                  -53 u.
+                </td>
+<td class="py-3 px-3 text-slate-700">
+<div class="flex items-center gap-1.5 font-medium">
+<span class="material-symbols-outlined text-[15px] text-slate-400">person</span>
+                    Alejandro V.
+                  </div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono-num text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">
+                    FC-A-0004-00019702
+                  </span>
+</td>
+<td class="py-3 px-3.5 text-center">
+<span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+<span class="material-symbols-outlined text-[14px]">verified</span> AFIP Validado
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer pagination note -->
+<div class="mt-3 pt-3 flex items-center justify-between text-xs text-slate-500 flex-wrap gap-2">
+<span>Mostrando los <strong class="text-slate-700 font-medium">últimos 5 movimientos</strong> de 184 registros históricos de este SKU.</span>
+<button class="px-2.5 py-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors font-medium text-xs shadow-2xs" type="button">
+            Ver Kárdex Completo (Año 2023)
+          </button>
+</div>
+</section>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<title>StockAR - Alta y Edición de Producto</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#fafafa] text-slate-800 antialiased min-h-screen flex selection:bg-slate-900 selection:text-white">
+<!-- Sidebar Linear / Stripe Style -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-white z-50 flex flex-col justify-between border-r border-slate-200">
+<div class="flex flex-col">
+<!-- Workspace Brand -->
+<div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-sm tracking-tight">
+            AR
+          </div>
+<div class="flex flex-col">
+<span class="text-[14px] font-semibold text-slate-900 leading-tight tracking-tight">StockAR</span>
+<span class="text-[11px] text-slate-400 font-medium">ERP Industrial</span>
+</div>
+</div>
+<span class="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded border border-slate-200 text-slate-500 bg-slate-50">v2.4</span>
+</div>
+<!-- Sucursal Selector -->
+<div class="px-4 py-3 border-b border-slate-100">
+<button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left bg-slate-50 hover:bg-slate-100 border border-slate-200/60 transition-colors group">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[16px] text-slate-500 group-hover:text-slate-800">storefront</span>
+<div class="flex flex-col min-w-0">
+<span class="text-[12px] font-medium text-slate-700 truncate">Sucursal Munro</span>
+<span class="text-[10px] text-slate-400">Depósito Central A-1</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[15px] text-slate-400">unfold_more</span>
+</button>
+</div>
+<!-- Navigation Links -->
+<nav class="p-3 space-y-0.5 text-[13px]">
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 transition-colors font-medium" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-slate-400">grid_view</span>
+<span>Dashboard</span>
+</div>
+</a>
+<a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-md bg-slate-900 text-white font-medium shadow-sm" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-white">inventory_2</span>
+<span>Inventario</span>
+</div>
+<span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-300">4.2k</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 transition-colors font-medium" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-slate-400">contacts</span>
+<span>Proveedores</span>
+</div>
+<span class="text-[10px] font-medium text-slate-400 px-1 rounded">Listas</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 transition-colors font-medium" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-slate-400">swap_horiz</span>
+<span>Movimientos</span>
+</div>
+<span class="text-[10px] font-medium text-slate-400 px-1 rounded">Kárdex</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 transition-colors font-medium" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-slate-400">tune</span>
+<span>Configuración</span>
+</div>
+</a>
+</nav>
+</div>
+<!-- Bottom Sidebar Status & AFIP Link -->
+<div class="p-3.5 border-t border-slate-100 space-y-2.5">
+<div class="p-2.5 rounded-lg border border-slate-200/80 bg-slate-50/60">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-[11px] font-medium text-slate-700">AFIP / Facturación</span>
+</div>
+<span class="text-[10px] font-mono text-emerald-600 font-medium">Sync OK</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-slate-500">
+<span>Latencia de red</span>
+<span class="font-mono text-slate-700">38 ms</span>
+</div>
+</div>
+<div class="flex items-center justify-between px-1">
+<span class="text-[11px] text-slate-400 font-mono">StockAR • Prod v2.4</span>
+<span class="material-symbols-outlined text-slate-400 text-[15px]">check_circle</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Container with Fixed Offset -->
+<div class="pl-64 flex-1 flex flex-col min-w-0">
+<!-- Top Minimal Header -->
+<header class="sticky top-0 h-14 bg-white/90 backdrop-blur-md border-b border-slate-200/80 z-30 px-8 flex items-center justify-between">
+<!-- Search Input -->
+<div class="flex items-center gap-3 w-96">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">search</span>
+<input class="w-full h-8 pl-8 pr-12 text-[12px] bg-slate-50 border border-slate-200 rounded-md placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white focus:border-slate-900 transition-all" placeholder="Buscar por SKU, código de barras o descripción..." type="text"/>
+<kbd class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 border border-slate-200 bg-white px-1.5 py-0.5 rounded shadow-2xs">⌘K</kbd>
+</div>
+</div>
+<!-- Actions & Profile -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 border-r border-slate-200 pr-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-mono bg-slate-50 border border-slate-200 text-slate-600">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            IVA 21% | BNA B2B
+          </span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors relative" title="Notificaciones">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Ayuda y documentación">
+<span class="material-symbols-outlined text-[18px]">help</span>
+</button>
+</div>
+<div class="flex items-center gap-2.5 pl-2 border-l border-slate-200">
+<div class="w-7 h-7 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-700 font-medium text-xs">
+            AV
+          </div>
+<div class="hidden sm:flex flex-col text-left leading-none">
+<span class="text-[12px] font-medium text-slate-800">Alejandro V.</span>
+<span class="text-[10px] text-slate-400">Jefe Depósito</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Workspace Main Body -->
+<main class="flex-1 px-8 py-6 max-w-6xl w-full mx-auto pb-32">
+<!-- Breadcrumb & Auto-save Status -->
+<div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+<nav class="flex items-center gap-1.5 text-[12px] text-slate-500">
+<a class="hover:text-slate-900 transition-colors" href="#">Inventario</a>
+<span class="text-slate-300">/</span>
+<a class="hover:text-slate-900 transition-colors" href="#">Catálogo de Productos</a>
+<span class="text-slate-300">/</span>
+<span class="text-slate-900 font-medium">Alta de Producto</span>
+</nav>
+<div class="flex items-center gap-2 text-[11px] font-mono text-slate-500">
+<span class="material-symbols-outlined text-[14px] text-emerald-600">cloud_done</span>
+<span>Autoguardado local activo: <strong class="text-slate-700 font-normal">hace 18s</strong></span>
+</div>
+</div>
+<!-- Page Header Banner Minimal -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-200">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h1 class="text-[22px] font-semibold text-slate-900 tracking-tight">Registrar Nuevo Producto</h1>
+<span class="px-2 py-0.5 text-[11px] font-mono font-medium rounded border border-slate-200 bg-white text-slate-600">SKU v2</span>
+</div>
+<p class="text-[13px] text-slate-500 leading-normal">
+            Complete las especificaciones técnicas, umbrales de stock en depósito y régimen impositivo para el alta en el catálogo.
+          </p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-1.5 text-[12px] font-medium text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-md transition-colors shadow-2xs" type="button">
+            Descartar
+          </button>
+<button class="px-3.5 py-1.5 text-[12px] font-medium text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-md transition-colors shadow-2xs" type="button">
+            Guardar Borrador
+          </button>
+<button class="px-3.5 py-1.5 text-[12px] font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-md transition-colors shadow-2xs flex items-center gap-1.5" id="btn-top-save" type="button">
+<span class="material-symbols-outlined text-[15px]">check</span>
+<span>Activar Producto</span>
+</button>
+</div>
+</div>
+<!-- Form Matrix with Minimal Clean Step Cards -->
+<form class="space-y-6" id="product-registration-form" onsubmit="event.preventDefault();">
+<!-- STEP 01: Información General del Artículo -->
+<section class="bg-white rounded-lg border border-slate-200 shadow-2xs p-6">
+<div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-slate-100 text-slate-700 text-[11px] font-mono font-semibold flex items-center justify-center">01</span>
+<div>
+<h2 class="text-[14px] font-semibold text-slate-900">Información General del Artículo</h2>
+<p class="text-[12px] text-slate-500">Parámetros de catalogación, codificación EAN y ficha técnica industrial</p>
+</div>
+</div>
+<span class="text-[11px] font-mono text-slate-500 border border-slate-200 bg-slate-50 px-2 py-0.5 rounded">Módulo B2B</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+<!-- Commercial Name -->
+<div class="md:col-span-8 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700" for="product-name">Nombre comercial del producto <span class="text-rose-500">*</span></label>
+<span class="text-[11px] text-slate-400">Máx 120 caracteres</span>
+</div>
+<div class="relative">
+<input class="w-full h-9 px-3 text-[13px] bg-white border border-slate-200 rounded-md text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="product-name" required="" type="text" value="Disco de corte diamantado continuo 115mm x 1.2mm Industrial"/>
+</div>
+</div>
+<!-- SKU Generator -->
+<div class="md:col-span-4 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700" for="product-sku">Código interno / SKU <span class="text-rose-500">*</span></label>
+<span class="text-[11px] font-mono text-slate-400">Identificador Único</span>
+</div>
+<div class="flex items-center gap-1.5">
+<input class="w-full h-9 px-3 text-[12px] font-mono uppercase bg-slate-50 border border-slate-200 rounded-md text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="product-sku" required="" type="text" value="SKU-DIA-1150"/>
+<button class="h-9 px-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-md text-[11px] font-medium flex items-center gap-1 shrink-0 transition-colors shadow-2xs" id="btn-generate-sku" title="Generar automáticamente" type="button">
+<span class="material-symbols-outlined text-[15px]">autorenew</span>
+<span>Generar</span>
+</button>
+</div>
+</div>
+<!-- EAN-13 Barcode -->
+<div class="md:col-span-4 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700" for="product-barcode">Código de barras (EAN-13 / GTIN)</label>
+<span class="text-[11px] text-slate-400">Opcional</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="relative flex-1">
+<input class="w-full h-9 pl-3 pr-2 text-[12px] font-mono bg-white border border-slate-200 rounded-md text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="product-barcode" placeholder="7791234567890" type="text" value="7798341904128"/>
+</div>
+<button class="h-9 px-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-md text-[11px] font-medium flex items-center gap-1 shrink-0 transition-colors shadow-2xs" title="Escanear con cámara o lector USB" type="button">
+<span class="material-symbols-outlined text-[15px] text-slate-500">qr_code_scanner</span>
+<span>Escanear</span>
+</button>
+</div>
+</div>
+<!-- Category -->
+<div class="md:col-span-4 flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="product-category">Categoría principal <span class="text-rose-500">*</span></label>
+<div class="relative">
+<select class="w-full h-9 px-3 pr-8 text-[13px] bg-white border border-slate-200 rounded-md text-slate-900 appearance-none focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="product-category">
+<option selected="" value="abrasivos">Abrasivos y Herramientas de Corte</option>
+<option value="buloneria">Bulonería y Fijaciones Métricas</option>
+<option value="maquinaria">Herramientas Eléctricas &amp; Neumáticas</option>
+<option value="seguridad">Protección Personal y Seguridad Industrial</option>
+<option value="plomeria">Conducción de Fluidos y Válvulas</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[16px]">expand_more</span>
+</div>
+</div>
+<!-- Subcategory -->
+<div class="md:col-span-4 flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="product-subcategory">Subcategoría o Familia</label>
+<div class="relative">
+<select class="w-full h-9 px-3 pr-8 text-[13px] bg-white border border-slate-200 rounded-md text-slate-900 appearance-none focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="product-subcategory">
+<option selected="" value="discos-diamantados">Discos Diamantados de Alto Rendimiento</option>
+<option value="discos-desbaste">Discos de Desbaste y Amolado</option>
+<option value="hojas-sierra">Hojas de Sierra Cinta Bimetálicas</option>
+<option value="fresas-carburo">Fresas de Metal Duro Rotativas</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[16px]">expand_more</span>
+</div>
+</div>
+<!-- Rich Description -->
+<div class="md:col-span-12 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700" for="product-description">Descripción técnica y especificaciones de taller</label>
+<div class="flex items-center gap-2">
+<span class="text-[11px] text-slate-400">Texto enriquecido</span>
+<button class="text-slate-600 hover:text-slate-900 text-[11px] font-medium flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[13px]">auto_awesome</span> Plantilla estándar
+                  </button>
+</div>
+</div>
+<div class="border border-slate-200 rounded-md overflow-hidden bg-white focus-within:ring-1 focus-within:ring-slate-900 focus-within:border-slate-900 transition-all">
+<div class="flex items-center gap-1 p-1.5 border-b border-slate-100 bg-slate-50/70 text-slate-600">
+<button class="p-1 hover:bg-slate-200/60 rounded text-slate-600" title="Negrita" type="button"><span class="material-symbols-outlined text-[15px]">format_bold</span></button>
+<button class="p-1 hover:bg-slate-200/60 rounded text-slate-600" title="Cursiva" type="button"><span class="material-symbols-outlined text-[15px]">format_italic</span></button>
+<button class="p-1 hover:bg-slate-200/60 rounded text-slate-600" title="Lista" type="button"><span class="material-symbols-outlined text-[15px]">format_list_bulleted</span></button>
+<span class="h-3 w-px bg-slate-200 mx-1"></span>
+<span class="text-[11px] font-mono text-slate-400">Diámetro / Eje 22.23mm / Max RPM 13.300</span>
+</div>
+<textarea class="w-full p-3 text-[13px] leading-relaxed text-slate-800 bg-transparent border-none focus:ring-0 focus:outline-none resize-y" id="product-description" placeholder="Detalle especificaciones técnicas: grano abrasivo, velocidad perimétrica máxima, compatibilidad de eje, tolerancias..." rows="3">Diseñado específicamente para cortes rápidos y precisos en porcelanato de alta dureza, cerámicas esmaltadas y mármol sintético.
+Banda continua diamantada sinterizada con alma de acero aleado que reduce vibraciones armónicas. Apto corte en seco o con refrigeración por agua continua.
+Certificación bajo normativa europea EN 13236.</textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- STEP 02: Parámetros de Stock y Almacenamiento -->
+<section class="bg-white rounded-lg border border-slate-200 shadow-2xs p-6">
+<div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-slate-100 text-slate-700 text-[11px] font-mono font-semibold flex items-center justify-center">02</span>
+<div>
+<h2 class="text-[14px] font-semibold text-slate-900">Parámetros de Stock y Almacenamiento</h2>
+<p class="text-[12px] text-slate-500">Límites operativos de reposición, trazabilidad física y control de estados</p>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600">
+<span class="material-symbols-outlined text-[14px] text-slate-400">warehouse</span>
+<span>Depósito Munro A-1</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+<!-- Unit of Measure -->
+<div class="md:col-span-3 flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="product-unit">Unidad de Medida <span class="text-rose-500">*</span></label>
+<div class="relative">
+<select class="w-full h-9 px-3 pr-8 text-[13px] bg-white border border-slate-200 rounded-md text-slate-900 appearance-none focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="product-unit">
+<option selected="" value="unidades">Unidades (u.)</option>
+<option value="metros">Metros Lineales (m.)</option>
+<option value="kilos">Kilogramos (kg.)</option>
+<option value="cajas100">Cajas x 100 u.</option>
+<option value="pares">Pares (par)</option>
+<option value="bobinas">Bobinas / Rollos</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[16px]">straighten</span>
+</div>
+</div>
+<!-- Initial Stock Stepper -->
+<div class="md:col-span-3 flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="initial-stock">Cantidad Inicial</label>
+<div class="flex items-center border border-slate-200 rounded-md bg-white overflow-hidden focus-within:ring-1 focus-within:ring-slate-900 focus-within:border-slate-900">
+<button class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors border-r border-slate-100" onclick="adjustValue('initial-stock', -5)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<input class="w-full h-9 border-none bg-transparent text-center font-mono text-[13px] font-medium text-slate-900 focus:outline-none focus:ring-0" id="initial-stock" min="0" step="1" type="number" value="120"/>
+<button class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors border-l border-slate-100" onclick="adjustValue('initial-stock', 5)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+<!-- Min Stock / Reorder Point -->
+<div class="md:col-span-3 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700" for="min-stock">Punto de Pedido</label>
+<span class="text-[10px] font-mono text-slate-500 bg-slate-100 px-1 rounded">Alerta Auto</span>
+</div>
+<div class="flex items-center border border-slate-200 rounded-md bg-white overflow-hidden focus-within:ring-1 focus-within:ring-slate-900 focus-within:border-slate-900">
+<button class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors border-r border-slate-100" onclick="adjustValue('min-stock', -5)" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<input class="w-full h-9 border-none bg-transparent text-center font-mono text-[13px] font-medium text-slate-900 focus:outline-none focus:ring-0" id="min-stock" min="1" step="1" type="number" value="25"/>
+<button class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors border-l border-slate-100" onclick="adjustValue('min-stock', 5)" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+<!-- Warehouse Location -->
+<div class="md:col-span-3 flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="physical-location">Ubicación en Depósito</label>
+<div class="relative">
+<input class="w-full h-9 pl-3 pr-2 text-[12px] font-mono bg-white border border-slate-200 rounded-md text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="physical-location" placeholder="ej. Pasillo 3, Rango B" type="text" value="Estantería E-04, Nivel 2, Gaveta 12"/>
+</div>
+</div>
+<!-- Product Status Radio Cards Minimal -->
+<div class="md:col-span-12 pt-2">
+<label class="text-[12px] font-medium text-slate-700 block mb-2">Estado Operativo en Catálogo</label>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<label class="flex items-start gap-3 p-3 rounded-md border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50/50">
+<input checked="" class="mt-0.5 text-slate-900 focus:ring-slate-900" name="product-status" type="radio" value="active"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-[12px] font-medium text-slate-900">Activo para la venta</span>
+</div>
+<span class="text-[11px] text-slate-500 mt-0.5">Habilitado en mostrador B2B y despacho</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-3 rounded-md border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50/50">
+<input class="mt-0.5 text-slate-900 focus:ring-slate-900" name="product-status" type="radio" value="review"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+<span class="text-[12px] font-medium text-slate-900">En revisión técnica</span>
+</div>
+<span class="text-[11px] text-slate-500 mt-0.5">Bloqueado para facturación provisoria</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-3 rounded-md border border-slate-200 bg-white hover:border-slate-300 cursor-pointer transition-all has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50/50">
+<input class="mt-0.5 text-slate-900 focus:ring-slate-900" name="product-status" type="radio" value="discontinued"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+<span class="text-[12px] font-medium text-slate-900">Descontinuado</span>
+</div>
+<span class="text-[11px] text-slate-500 mt-0.5">Sin reingreso por parte del proveedor</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- STEP 03: Proveedor Predeterminado y Costos Base -->
+<section class="bg-white rounded-lg border border-slate-200 shadow-2xs p-6">
+<div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded bg-slate-100 text-slate-700 text-[11px] font-mono font-semibold flex items-center justify-center">03</span>
+<div>
+<h2 class="text-[14px] font-semibold text-slate-900">Proveedor Asignado y Costos Base</h2>
+<p class="text-[12px] text-slate-500">Cálculo dinámico con IVA Argentina (21%) y fijación de margen neto comercial</p>
+</div>
+</div>
+<span class="text-[11px] font-mono text-slate-600 bg-slate-100 px-2 py-0.5 rounded">Régimen IVA 21%</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Supplier info column -->
+<div class="lg:col-span-5 flex flex-col gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="default-supplier">Proveedor Asignado Inicialmente <span class="text-rose-500">*</span></label>
+<div class="relative">
+<select class="w-full h-9 px-3 pr-8 text-[12px] bg-white border border-slate-200 rounded-md text-slate-900 appearance-none focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="default-supplier">
+<option selected="" value="101">Distribuidora San Martín S.R.L. (CUIT: 30-71124589-3)</option>
+<option value="102">Bulonera Quilmes S.A. (CUIT: 33-68954201-9)</option>
+<option value="103">Abrasivos Argentinos C.I.F. (CUIT: 30-54219874-2)</option>
+<option value="104">Ferretería Mayorista El Yunque (CUIT: 30-88129034-7)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[16px]">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="supplier-product-code">Código de Artículo según Proveedor</label>
+<div class="relative">
+<input class="w-full h-9 px-3 text-[12px] font-mono bg-white border border-slate-200 rounded-md text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors" id="supplier-product-code" placeholder="ej. ART-8849-B" type="text" value="DSM-CORTE-115-PLUS"/>
+</div>
+<span class="text-[11px] text-slate-400">Facilita el cruce automatizado al procesar remitos y listas Excel.</span>
+</div>
+<!-- Supplier Specs Badge Card -->
+<div class="p-3 rounded-md bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">local_shipping</span>
+<div class="flex flex-col">
+<span class="text-[12px] font-medium text-slate-700">Plazo de entrega promedio</span>
+<span class="text-[11px] text-slate-500">48 a 72 hs hábiles (Munro / GBA Norte)</span>
+</div>
+</div>
+<span class="text-[11px] font-mono font-medium text-slate-700">Términos: 30d</span>
+</div>
+</div>
+<!-- Financial Calculation Column (Clean Stripe / Linear Card) -->
+<div class="lg:col-span-7 bg-slate-50/70 p-5 rounded-lg border border-slate-200 flex flex-col justify-between gap-5">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Base Cost -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[12px] font-medium text-slate-700" for="base-cost">Costo Unitario Neto (Sin IVA) <span class="text-rose-500">*</span></label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-mono text-slate-400">ARS $</span>
+<input class="w-full h-9 pl-14 pr-3 text-[13px] font-mono text-right bg-white border border-slate-200 rounded-md text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900" id="base-cost" min="0" oninput="calculatePricing()" step="50" type="number" value="12450.00"/>
+</div>
+<span class="text-[11px] text-slate-400 text-right">Lista vigente al 18/10</span>
+</div>
+<!-- Cost with IVA -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700">Costo Total + IVA (21%)</label>
+<span class="text-[10px] font-mono text-slate-500">AFIP Débito</span>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-mono text-slate-400">ARS $</span>
+<input class="w-full h-9 pl-14 pr-3 text-[13px] font-mono text-right bg-slate-100/70 border border-slate-200 rounded-md text-slate-700 cursor-not-allowed" id="cost-with-iva" readonly="" type="text" value="15.064,50"/>
+</div>
+<span class="text-[11px] text-slate-500 text-right">IVA: <strong class="font-mono font-medium text-slate-700" id="iva-amount">ARS $ 2.614,50</strong></span>
+</div>
+<!-- Margin Rate -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-700" for="margin-rate">Margen Comercial Bruto</label>
+<span class="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-1 rounded">Rentabilidad</span>
+</div>
+<div class="relative">
+<input class="w-full h-9 pl-3 pr-7 text-[13px] font-mono text-right bg-white border border-slate-200 rounded-md text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900" id="margin-rate" max="500" min="1" oninput="calculatePricing()" step="0.5" type="number" value="45.0"/>
+<span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[12px] font-mono text-slate-400">%</span>
+</div>
+<span class="text-[11px] text-slate-400">Calculado sobre costo neto</span>
+</div>
+<!-- Suggested Retail Price (PVP) -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[12px] font-medium text-slate-900">Precio Sugerido (PVP Final)</label>
+<span class="text-[10px] font-mono font-medium bg-slate-900 text-white px-1.5 py-0.2 rounded">Público</span>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-mono text-slate-400">ARS $</span>
+<input class="w-full h-9 pl-14 pr-3 text-[13px] font-mono font-semibold text-right bg-white border border-slate-300 rounded-md text-slate-900" id="selling-price" readonly="" type="text" value="20.667,00"/>
+</div>
+<span class="text-[11px] text-slate-500 text-right">Ganancia neta: <strong class="font-mono font-medium text-emerald-600" id="net-profit">ARS $ 5.602,50 / u.</strong></span>
+</div>
+</div>
+<!-- Minimal Cost Composition Breakdown Bar -->
+<div class="p-3 bg-white rounded-md border border-slate-200/80 flex flex-col gap-2">
+<div class="flex items-center justify-between text-[11px] font-mono text-slate-500">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-slate-400"></span> Costo Base: 57%
+                  </span>
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-slate-600"></span> IVA (21%): 12%
+                  </span>
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Utilidad: 31%
+                  </span>
+</div>
+<div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden flex">
+<div class="bg-slate-400 h-full" style="width: 57%"></div>
+<div class="bg-slate-600 h-full" style="width: 12%"></div>
+<div class="bg-emerald-500 h-full" style="width: 31%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</form>
+</main>
+<!-- Sticky Bottom Bar Clean & Minimal (Linear style) -->
+<div class="fixed bottom-0 left-64 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 px-8 py-3">
+<div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+<!-- Live Status Info -->
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700">
+<span class="material-symbols-outlined text-[16px]">inventory_2</span>
+</div>
+<div class="flex items-center gap-2 text-[13px]">
+<span class="font-medium text-slate-900 truncate max-w-md" id="bar-product-name">Disco de corte diamantado continuo 115mm</span>
+<span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200" id="bar-sku">SKU-DIA-1150</span>
+<span class="hidden md:inline-flex text-[12px] text-slate-400">• Listo para impactar en catálogo</span>
+</div>
+</div>
+<!-- Action Cluster -->
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-1.5 text-[12px] font-medium text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-md transition-colors shadow-2xs" type="button">
+            Cancelar
+          </button>
+<button class="px-4 py-1.5 text-[12px] font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-md transition-colors shadow-2xs flex items-center gap-1.5" id="btn-sticky-save" type="button">
+<span class="material-symbols-outlined text-[15px]">save</span>
+<span>Guardar Producto</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Notification Toast Minimal -->
+<div class="fixed bottom-16 right-8 bg-slate-900 text-white px-4 py-3 rounded-lg shadow-lg z-50 flex items-center gap-3 transition-all duration-200 opacity-0 pointer-events-none translate-y-2" id="save-toast">
+<span class="material-symbols-outlined text-emerald-400 text-[20px]">check_circle</span>
+<div class="flex flex-col">
+<span class="text-[12px] font-medium text-white">Producto Registrado con Éxito</span>
+<span class="text-[11px] text-slate-300">SKU-DIA-1150 impactado en el catálogo de Munro.</span>
+</div>
+</div>
+</div>
+<script>
+    // Numeric Adjustments for Steppers
+    function adjustValue(inputId, delta) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const current = parseFloat(input.value) || 0;
+      const min = parseFloat(input.min) || 0;
+      const nextVal = Math.max(min, current + delta);
+      input.value = nextVal;
+    }
+
+    // Currency & Margins Calculation Logic
+    function calculatePricing() {
+      const baseCostInput = document.getElementById('base-cost');
+      const marginInput = document.getElementById('margin-rate');
+      const costWithIvaInput = document.getElementById('cost-with-iva');
+      const ivaAmountEl = document.getElementById('iva-amount');
+      const sellingPriceInput = document.getElementById('selling-price');
+      const netProfitEl = document.getElementById('net-profit');
+
+      const baseCost = parseFloat(baseCostInput.value) || 0;
+      const marginRate = parseFloat(marginInput.value) || 0;
+
+      const iva = baseCost * 0.21;
+      const costWithIva = baseCost + iva;
+      const profit = baseCost * (marginRate / 100);
+      const sellingPrice = costWithIva + profit;
+
+      const formatCurrency = (val) => {
+        return val.toLocaleString('es-AR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      };
+
+      costWithIvaInput.value = formatCurrency(costWithIva);
+      ivaAmountEl.innerText = 'ARS $ ' + formatCurrency(iva);
+      sellingPriceInput.value = formatCurrency(sellingPrice);
+      netProfitEl.innerText = 'ARS $ ' + formatCurrency(profit) + ' / u.';
+    }
+
+    // SKU Autogeneration based on category
+    document.getElementById('btn-generate-sku').addEventListener('click', function() {
+      const categories = {
+        'abrasivos': 'DIA',
+        'buloneria': 'BUL',
+        'maquinaria': 'MAQ',
+        'seguridad': 'SEG',
+        'plomeria': 'PLO'
+      };
+      const selCat = document.getElementById('product-category').value;
+      const prefix = categories[selCat] || 'SKU';
+      const randCode = Math.floor(1000 + Math.random() * 9000);
+      const newSku = 'SKU-' + prefix + '-' + randCode;
+      
+      document.getElementById('product-sku').value = newSku;
+      document.getElementById('bar-sku').innerText = newSku;
+    });
+
+    // Real-time Sync to Sticky Bar
+    document.getElementById('product-name').addEventListener('input', function(e) {
+      const target = document.getElementById('bar-product-name');
+      if (e.target.value.trim().length > 0) {
+        target.innerText = e.target.value;
+      } else {
+        target.innerText = 'Nuevo Producto Sin Título';
+      }
+    });
+
+    document.getElementById('product-sku').addEventListener('input', function(e) {
+      document.getElementById('bar-sku').innerText = e.target.value.toUpperCase();
+    });
+
+    // Save Feedback Toast
+    function triggerSaveFeedback() {
+      const toast = document.getElementById('save-toast');
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+      }, 3200);
+    }
+
+    document.getElementById('btn-sticky-save').addEventListener('click', triggerSaveFeedback);
+    document.getElementById('btn-top-save').addEventListener('click', triggerSaveFeedback);
+
+    // Initial pricing on page load
+    calculatePricing();
+  </script>
+</body></html>

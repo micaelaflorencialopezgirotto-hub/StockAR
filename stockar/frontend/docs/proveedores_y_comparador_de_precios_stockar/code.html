@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;font-family:'Geist',sans-serif;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20;display:inline-block;vertical-align:middle;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-surface": "#1a1b22",
+          "secondary-fixed": "#dbe1ff",
+          "surface-container-lowest": "#ffffff",
+          "on-secondary": "#ffffff",
+          "surface-container-high": "#e8e7f1",
+          "tertiary-fixed": "#fcdeb5",
+          outline: "#76777d",
+          "tertiary-container": "#271901",
+          "inverse-primary": "#bec6e0",
+          error: "#ba1a1a",
+          "surface-tint": "#565e74",
+          primary: "#18181b",
+          "surface-variant": "#e3e1ec",
+          "on-tertiary-fixed": "#271901",
+          "on-primary-fixed": "#131b2e",
+          "secondary-fixed-dim": "#b4c5ff",
+          "on-primary-fixed-variant": "#3f465c",
+          "on-secondary-container": "#fefcff",
+          surface: "#f8f9fa",
+          "on-error": "#ffffff",
+          "tertiary-fixed-dim": "#dec29a",
+          "surface-container-highest": "#e3e1ec",
+          "on-secondary-fixed": "#00174b",
+          "on-secondary-fixed-variant": "#003ea8",
+          "on-surface-variant": "#52525b",
+          secondary: "#2563eb",
+          "on-tertiary-fixed-variant": "#574425",
+          "on-tertiary-container": "#98805d",
+          "on-tertiary": "#ffffff",
+          "primary-container": "#131b2e",
+          "surface-container-low": "#f4f4f5",
+          "on-background": "#18181b",
+          "inverse-surface": "#27272a",
+          background: "#fafafa",
+          "outline-variant": "#e4e4e7",
+          "surface-dim": "#dad9e3",
+          "surface-bright": "#fbf8ff",
+          "surface-container": "#f4f4f6",
+          tertiary: "#000000",
+          "primary-fixed": "#dae2fd",
+          "on-primary-container": "#7c839b",
+          "inverse-on-surface": "#f1effa",
+          "secondary-container": "#eff6ff",
+          "on-primary": "#ffffff",
+          "primary-fixed-dim": "#bec6e0",
+          "error-container": "#fef2f2",
+          "on-error-container": "#991b1b"
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "0.375rem",
+          xl: "0.5rem",
+          full: "0.75rem"
+        },
+        fontFamily: {
+          sans: ["Geist", "sans-serif"],
+          mono: ["JetBrains Mono", "monospace"],
+          "body-lg": ["Geist"],
+          "label-caps": ["Geist"],
+          "label-tabular": ["JetBrains Mono"],
+          "headline-xl": ["Geist"],
+          "headline-md": ["Geist"],
+          "body-sm": ["Geist"],
+          "body-md": ["Geist"]
+        }
+      }
+    }
+  }</script></head><body class="bg-[#fafafa] font-sans text-on-surface antialiased min-h-screen text-[13px]"><aside class="fixed left-0 top-0 h-screen w-64 bg-white z-50 flex flex-col justify-between border-r border-zinc-200/80"><div class="flex flex-col"><div class="p-5 border-b border-zinc-100"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white"><span class="font-semibold text-sm tracking-tighter">SK</span></div><div class="flex flex-col"><span class="text-sm font-semibold text-zinc-900 tracking-tight leading-tight">StockAR</span><span class="text-[11px] text-zinc-400 font-medium">ERP Industrial</span></div></div><div class="mt-4 bg-zinc-50 px-2.5 py-1.5 rounded-md border border-zinc-150 flex items-center gap-2"><span class="material-symbols-outlined text-[15px] text-zinc-500">storefront</span><span class="text-[11px] font-medium text-zinc-700 truncate">Ferretería Central • Munro</span></div></div><nav class="flex flex-col gap-0.5 p-3"><a class="flex items-center justify-between px-3 py-2 rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-normal text-[13px]">Dashboard</span></div></a><a class="flex items-center justify-between px-3 py-2 rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors" data-path="inventario" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span class="font-normal text-[13px]">Inventario</span></div><span class="font-mono text-[10px] text-zinc-400 px-1.5 py-0.5 rounded bg-zinc-100">SKU</span></a><a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-md transition-colors bg-zinc-900 text-white font-medium shadow-xs" data-path="proveedores" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">request_quote</span><span class="text-[13px]">Proveedores</span></div><span class="text-[10px] font-medium bg-zinc-800 text-zinc-300 px-1.5 py-0.5 rounded">Listas</span></a><a class="flex items-center justify-between px-3 py-2 rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors" data-path="movimientos" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">swap_horiz</span><span class="font-normal text-[13px]">Movimientos</span></div><span class="text-[10px] font-medium bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded">Kárdex</span></a><a class="flex items-center justify-between px-3 py-2 rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors" data-path="configuracion" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-normal text-[13px]">Configuración</span></div></a></nav></div><div class="p-3 border-t border-zinc-100 bg-zinc-50/50"><div class="bg-white border border-zinc-200/80 rounded-lg p-3 flex flex-col gap-2 shadow-2xs"><div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-[11px] font-medium text-zinc-700">AFIP / Listas API</span></div><span class="font-mono text-[10px] text-emerald-600 font-medium">Online</span></div><div class="flex items-center justify-between text-zinc-500 text-[11px]"><span>Latencia</span><span class="font-mono text-zinc-700">42 ms</span></div><div class="w-full bg-zinc-100 h-1 rounded-full overflow-hidden"><div class="bg-zinc-800 h-full rounded-full" style="width: 68%"></div></div><div class="flex items-center justify-between text-zinc-500 text-[11px]"><span>Ítems Catálogo</span><span class="font-mono font-medium text-zinc-800">4.280 u.</span></div></div><div class="mt-2.5 flex items-center justify-between px-1 text-[11px] text-zinc-400"><span>v2.4.1 Ferretería AR</span><span class="material-symbols-outlined text-zinc-400 text-[15px]">cloud_done</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-white/95 backdrop-blur-xs border-b border-zinc-200/70 z-40 px-6 flex items-center justify-between"><div class="flex items-center gap-4 flex-1 max-w-lg"><div class="relative w-full"><span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[17px]">search</span><input class="w-full h-8 pl-8 pr-12 bg-zinc-50 border border-zinc-200/80 rounded-md text-zinc-800 text-[12px] placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 focus:bg-white transition-colors" placeholder="Buscar por SKU, código o descripción..." type="text"/><kbd class="absolute right-2 top-1/2 -translate-y-1/2 font-mono text-[10px] text-zinc-400 border border-zinc-200 bg-white px-1 py-0.5 rounded">Alt+K</kbd></div></div><div class="flex items-center gap-3"><div class="hidden md:flex items-center gap-2 bg-zinc-50 border border-zinc-200/70 rounded-md px-2.5 py-1 cursor-pointer hover:bg-zinc-100/70 transition-colors"><span class="material-symbols-outlined text-[16px] text-zinc-600">warehouse</span><div class="flex flex-col text-left leading-none"><span class="text-[11px] font-semibold text-zinc-800">Depósito Central Munro</span><span class="text-[10px] text-zinc-400">Predeterminado ARS</span></div><span class="material-symbols-outlined text-[14px] text-zinc-400 ml-0.5">unfold_more</span></div><div class="h-4 w-px bg-zinc-200"></div><button class="relative p-1.5 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 flex h-1.5 w-1.5 rounded-full bg-zinc-900"></span></button><div class="flex items-center gap-2.5 pl-1"><img alt="Profile" class="w-7 h-7 rounded-full object-cover ring-1 ring-zinc-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPv4BGk56iRrFFtm3MOQst2xPL3GDY62nTsJ8gfh5JGZV2HsyI5lSszuo-WDxA8K_tdO08Mrm98-qJqTzKYVjnmwpJIkWBWmIb14tDk4HN--6Wxhs6ziFGdUdxkKOaK-C2AFl6Vo5LsAYM0-YrrOhKZcZXE093GaZJ966o7fcnHnWniy_h7dJ5Z8TFuwi6ggtXXB-k4M4evwwlpcfr_HGxjIFFnB14OlYfY5WMPv8"/><div class="hidden lg:flex flex-col text-left leading-none"><span class="text-[12px] font-medium text-zinc-800">Alejandro Valenzuela</span><span class="text-[10px] text-zinc-400 mt-0.5">Jefe de Depósito &amp; Compras</span></div></div></div></header><main class="relative pt-14 bg-[#fafafa] min-h-[calc(100vh-3.5rem)]"><div class="w-full px-6 py-2.5 border-b border-zinc-200/60 bg-white flex items-center justify-between"><div class="flex items-center gap-1.5 text-[12px] text-zinc-500"><a class="hover:text-zinc-900 transition-colors flex items-center gap-1" href="#"><span class="material-symbols-outlined text-[14px]">home</span><span>Inicio</span></a><span class="text-zinc-300">/</span><span class="font-medium text-zinc-800">Ferretería Industrial</span></div><div class="flex items-center gap-2"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-zinc-200 bg-zinc-50 font-mono text-[11px] text-zinc-600"><span class="font-medium text-zinc-800">IVA 21%</span><span class="text-zinc-300">|</span><span>Dólar BNA B2B</span></span></div></div><div class="w-full p-6"><div class="flex flex-col w-full">
+<!-- Top Section / Hero Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
+<div class="flex flex-col gap-1 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 font-medium border border-zinc-200/70">Módulo B2B • Cotizaciones</span>
+<span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-[11px] text-zinc-500 font-normal">48 Proveedores Homologados</span>
+</div>
+<h1 class="text-xl font-semibold text-zinc-900 tracking-tight">Gestión de Proveedores y Listas de Precios</h1>
+<p class="text-[13px] text-zinc-500 leading-normal">Centralice listas de precios en ARS, compare costos entre distribuidores y detecte la opción más conveniente para reposición.</p>
+</div>
+<!-- Action Toolbar -->
+<div class="flex items-center gap-2 shrink-0">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 text-[12px] font-medium transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px] text-zinc-500">upload_file</span>
+<span>Importar Lista Excel/PDF</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-white text-[12px] font-medium transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span>Nuevo Proveedor</span>
+</button>
+</div>
+</div>
+<!-- Minimal Tab Bar Navigation -->
+<div class="flex items-center gap-1 mb-5 border-b border-zinc-200/80 pb-px">
+<button class="px-3.5 py-2 text-zinc-500 hover:text-zinc-800 text-[13px] font-medium transition-colors flex items-center gap-2 border-b-2 border-transparent" type="button">
+<span class="material-symbols-outlined text-[17px]">badge</span>
+<span>Directorio de Proveedores</span>
+<span class="font-mono text-[11px] px-1.5 py-0.5 bg-zinc-100 rounded text-zinc-600">48</span>
+</button>
+<button class="px-3.5 py-2 text-zinc-900 border-b-2 border-zinc-900 text-[13px] font-semibold flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[17px]">balance</span>
+<span>Comparador Multi-Proveedor de Precios</span>
+<span class="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">Activo</span>
+</button>
+<button class="px-3.5 py-2 text-zinc-500 hover:text-zinc-800 text-[13px] font-medium transition-colors flex items-center gap-2 border-b-2 border-transparent" type="button">
+<span class="material-symbols-outlined text-[17px]">history</span>
+<span>Historial de Listas Recibidas</span>
+<span class="font-mono text-[11px] text-zinc-400">12</span>
+</button>
+</div>
+<!-- COMPARISON MATRIX SECTION -->
+<div class="bg-white rounded-lg border border-zinc-200/80 p-5 shadow-2xs mb-6">
+<!-- SKU Selector & Filter Header -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-5 border-b border-zinc-100">
+<div class="flex items-center gap-3.5">
+<div class="relative w-12 h-12 rounded-md overflow-hidden bg-zinc-100 shrink-0 border border-zinc-200/60">
+<img class="w-full h-full object-cover" data-alt="A professional ultra-sharp macro photograph of an industrial reinforced thin cutting disc, 115mm x 1.0mm, with stainless steel center ring and technical printing, on an industrial textured work surface, lit with precision cold studio light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw3LA4FxS56NDkHTS8Hy17slXutBXgZjq0YXFHGlZ9nkEbomghBsGE8zDaOt5CcypXNSHpnph1q1suvGNS2039QZhmyw4JfFD5eCpS1KWYkWXwOa8A_113HFRbRGuJ0foGmzjOlix9SUU2ii0rFBz-G3MpwLtHSPRSZdOxaWFzGcz5nDUchTECIgapDlK9BalSm5C7yOlqAjw746rkyMUhEXYuGgEvCdU4ZTs4c7o"/>
+<span class="absolute bottom-0 right-0 bg-zinc-900/80 text-white font-mono text-[8px] px-1 rounded-tl">115mm</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[11px] bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded font-medium border border-zinc-200/60">SKU-ABR-1150</span>
+<span class="text-[11px] text-amber-700 font-medium flex items-center gap-0.5 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/50">
+<span class="material-symbols-outlined text-[13px]">bolt</span> Alta Rotación
+            </span>
+</div>
+<span class="text-sm font-semibold text-zinc-900 mt-1">Disco de corte 115 x 1.0 mm para Inox/Metal</span>
+<span class="text-[11px] text-zinc-400 mt-0.5">Stock Munro: <strong class="font-mono text-zinc-700 font-medium">320 u.</strong> • Reposición sugerida: <span class="font-mono text-zinc-900 font-medium">800 u.</span></span>
+</div>
+</div>
+<!-- Live Search / Switch Item Tool -->
+<div class="flex items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[16px]">search</span>
+<input class="h-8 pl-8 pr-7 bg-zinc-50 border border-zinc-200 text-zinc-800 rounded-md text-[12px] w-60 focus:outline-none focus:border-zinc-400 focus:bg-white transition-all" type="text" value="Disco de corte 115 mm"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600" type="button">
+<span class="material-symbols-outlined text-[14px]">cancel</span>
+</button>
+</div>
+<button class="h-8 px-2.5 rounded-md border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-600 text-[12px] flex items-center gap-1.5 transition-colors font-medium shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span>Filtros IVA/Flete</span>
+</button>
+</div>
+</div>
+<!-- Comparative Grid Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+<!-- CARD 1: BEST CHOICE (Distribuidora San Martín S.R.L.) -->
+<div class="relative flex flex-col justify-between p-4 rounded-lg bg-white border-2 border-emerald-600/70 shadow-xs hover:border-emerald-600 transition-all">
+<div>
+<!-- Refined badge for best option -->
+<div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/70">
+<span class="material-symbols-outlined text-[13px] text-emerald-700">verified</span> Opción más conveniente
+          </span>
+<span class="font-mono text-[10px] text-emerald-700 font-medium bg-emerald-50/60 px-1.5 py-0.5 rounded border border-emerald-100">-12% vs prom.</span>
+</div>
+<div class="pt-3 flex flex-col">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Proveedor B</span>
+<h3 class="text-[13px] font-semibold text-zinc-900 leading-snug">Distribuidora San Martín S.R.L.</h3>
+</div>
+<div class="flex items-center gap-0.5 bg-zinc-50 px-1.5 py-0.5 rounded border border-zinc-200/60">
+<span class="material-symbols-outlined text-amber-500 text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-mono text-[11px] font-semibold text-zinc-700">4.9</span>
+</div>
+</div>
+<div class="my-3 p-3 bg-zinc-50/70 rounded-md border border-zinc-100">
+<div class="flex items-baseline gap-1">
+<span class="font-mono text-[11px] text-zinc-400">ARS $</span>
+<span class="font-mono text-2xl font-bold text-zinc-900 tracking-tight">2.350<span class="text-sm font-semibold text-zinc-500">,00</span></span>
+</div>
+<div class="flex items-center justify-between mt-1 text-zinc-500 text-[11px]">
+<span>c/IVA 21%:</span>
+<span class="font-mono text-zinc-700 font-medium">$ 2.843,50</span>
+</div>
+</div>
+<!-- Key Metrics List -->
+<div class="flex flex-col gap-1.5 text-[11px] text-zinc-500">
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">local_shipping</span> Entrega:</span>
+<span class="font-medium text-emerald-700 font-mono">24 hs hábiles</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">shopping_bag</span> Pedido Mínimo:</span>
+<span class="font-mono text-zinc-700">$ 50.000</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">credit_card</span> Pago:</span>
+<span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 text-[10px] font-medium border border-zinc-200/60">eCheq 30d</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-zinc-100 text-[10px]">
+<span class="text-zinc-400">Lista actualizada:</span>
+<span class="font-mono text-zinc-500">Hoy, 09:14 hs</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2">
+<button class="w-full py-2 px-3 rounded-md bg-zinc-900 text-white hover:bg-zinc-800 transition-colors flex items-center justify-center gap-1.5 text-[12px] font-medium shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+<span>Crear Pedido de Reposición</span>
+</button>
+</div>
+</div>
+<!-- CARD 2: Ferretería Mayorista del Sur -->
+<div class="flex flex-col justify-between p-4 rounded-lg bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-2xs">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+<span class="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Proveedor A</span>
+<div class="flex items-center gap-0.5 bg-zinc-50 px-1.5 py-0.5 rounded border border-zinc-200/60">
+<span class="material-symbols-outlined text-zinc-400 text-[13px]">star</span>
+<span class="font-mono text-[11px] text-zinc-700">4.5</span>
+</div>
+</div>
+<div class="pt-3 flex flex-col">
+<h3 class="text-[13px] font-semibold text-zinc-900 leading-snug">Ferretería Mayorista del Sur</h3>
+<div class="my-3 p-3 bg-zinc-50/70 rounded-md border border-zinc-100">
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-mono text-[11px] text-zinc-400">ARS $</span>
+<span class="font-mono text-2xl font-semibold text-zinc-900 tracking-tight">2.500<span class="text-sm text-zinc-500">,00</span></span>
+</div>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 font-medium">+6.3%</span>
+</div>
+<div class="flex items-center justify-between mt-1 text-zinc-500 text-[11px]">
+<span>c/IVA 21%:</span>
+<span class="font-mono text-zinc-700 font-medium">$ 3.025,00</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 text-[11px] text-zinc-500">
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">schedule</span> Entrega:</span>
+<span class="font-mono text-zinc-700">48 hs</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">shopping_bag</span> Pedido Mínimo:</span>
+<span class="font-mono text-zinc-700">$ 75.000</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">credit_card</span> Pago:</span>
+<span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 text-[10px] font-medium border border-zinc-200/60">CC 30d</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-zinc-100 text-[10px]">
+<span class="text-zinc-400">Lista actualizada:</span>
+<span class="font-mono text-zinc-500">Ayer, 16:30 hs</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2">
+<button class="w-full py-1.5 px-3 rounded-md bg-white border border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 text-zinc-700 font-medium text-[12px] transition-all shadow-2xs" type="button">
+            Ver Ficha / Cotizar
+          </button>
+</div>
+</div>
+<!-- CARD 3: Herramientas & Insumos B.A. -->
+<div class="flex flex-col justify-between p-4 rounded-lg bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-2xs">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+<span class="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Proveedor C</span>
+<div class="flex items-center gap-0.5 bg-zinc-50 px-1.5 py-0.5 rounded border border-zinc-200/60">
+<span class="material-symbols-outlined text-zinc-400 text-[13px]">star</span>
+<span class="font-mono text-[11px] text-zinc-700">4.7</span>
+</div>
+</div>
+<div class="pt-3 flex flex-col">
+<h3 class="text-[13px] font-semibold text-zinc-900 leading-snug">Herramientas &amp; Insumos B.A.</h3>
+<div class="my-3 p-3 bg-zinc-50/70 rounded-md border border-zinc-100">
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-mono text-[11px] text-zinc-400">ARS $</span>
+<span class="font-mono text-2xl font-semibold text-zinc-900 tracking-tight">2.700<span class="text-sm text-zinc-500">,00</span></span>
+</div>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 font-medium">+14.8%</span>
+</div>
+<div class="flex items-center justify-between mt-1 text-zinc-500 text-[11px]">
+<span>c/IVA 21%:</span>
+<span class="font-mono text-zinc-700 font-medium">$ 3.267,00</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 text-[11px] text-zinc-500">
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">local_shipping</span> Entrega:</span>
+<span class="font-mono text-zinc-700">24 hs</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">shopping_bag</span> Pedido Mínimo:</span>
+<span class="font-mono text-zinc-500">Sin mínimo</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">credit_card</span> Pago:</span>
+<span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 text-[10px] font-medium border border-zinc-200/60">Contado -5%</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-zinc-100 text-[10px]">
+<span class="text-zinc-400">Lista actualizada:</span>
+<span class="font-mono text-zinc-500">Hace 3 días</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2">
+<button class="w-full py-1.5 px-3 rounded-md bg-white border border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 text-zinc-700 font-medium text-[12px] transition-all shadow-2xs" type="button">
+            Ver Ficha / Cotizar
+          </button>
+</div>
+</div>
+<!-- CARD 4: Industrial Norte S.A. -->
+<div class="flex flex-col justify-between p-4 rounded-lg bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-2xs">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+<span class="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Proveedor D</span>
+<div class="flex items-center gap-0.5 bg-zinc-50 px-1.5 py-0.5 rounded border border-zinc-200/60">
+<span class="material-symbols-outlined text-zinc-400 text-[13px]">star</span>
+<span class="font-mono text-[11px] text-zinc-700">4.1</span>
+</div>
+</div>
+<div class="pt-3 flex flex-col">
+<h3 class="text-[13px] font-semibold text-zinc-900 leading-snug">Industrial Norte S.A.</h3>
+<div class="my-3 p-3 bg-zinc-50/70 rounded-md border border-zinc-100">
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-1">
+<span class="font-mono text-[11px] text-zinc-400">ARS $</span>
+<span class="font-mono text-2xl font-semibold text-zinc-900 tracking-tight">2.620<span class="text-sm text-zinc-500">,00</span></span>
+</div>
+<span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 font-medium">+11.4%</span>
+</div>
+<div class="flex items-center justify-between mt-1 text-zinc-500 text-[11px]">
+<span>c/IVA 21%:</span>
+<span class="font-mono text-zinc-700 font-medium">$ 3.170,20</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 text-[11px] text-zinc-500">
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">schedule</span> Entrega:</span>
+<span class="font-mono text-zinc-700">72 hs</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">shopping_bag</span> Pedido Mínimo:</span>
+<span class="font-mono text-zinc-700">$ 120.000</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-zinc-400">credit_card</span> Pago:</span>
+<span class="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 text-[10px] font-medium border border-zinc-200/60">eCheq 60d</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-zinc-100 text-[10px]">
+<span class="text-zinc-400">Lista actualizada:</span>
+<span class="font-mono text-zinc-500">04 Nov 2024</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2">
+<button class="w-full py-1.5 px-3 rounded-md bg-white border border-zinc-200 hover:bg-zinc-50 hover:border-zinc-300 text-zinc-700 font-medium text-[12px] transition-all shadow-2xs" type="button">
+            Ver Ficha / Cotizar
+          </button>
+</div>
+</div>
+</div>
+<!-- Clean Purchase Volume Calculator Banner -->
+<div class="mt-4 p-3.5 rounded-lg bg-zinc-50 border border-zinc-200/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-md bg-white border border-zinc-200 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-zinc-700 text-[18px]">calculate</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[12px] font-medium text-zinc-900">Simulador de compra para reabastecimiento recomendado (800 unidades):</span>
+<span class="text-[11px] text-zinc-500">Con Distribuidora San Martín S.R.L. ahorra un neto de <strong class="font-mono text-emerald-700 font-semibold">ARS $ 280.000,00</strong> frente al promedio.</span>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-1.5 rounded-md bg-zinc-900 text-white text-[12px] font-medium hover:bg-zinc-800 transition-colors shadow-2xs" type="button">
+          Generar Orden de Compra #OC-8492
+        </button>
+</div>
+</div>
+</div>
+<!-- SUPPLIERS DIRECTORY / LIST DATA TABLE -->
+<div class="flex flex-col bg-white rounded-lg border border-zinc-200/80 shadow-2xs overflow-hidden">
+<!-- Header of the Table Container -->
+<div class="p-4 border-b border-zinc-150 flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div>
+<h2 class="text-sm font-semibold text-zinc-900">Directorio de Proveedores y Estado de Listas</h2>
+<p class="text-[11px] text-zinc-500">Seguimiento de vigencia de costos, condiciones comerciales de CABA/GBA y canales directos.</p>
+</div>
+<div class="flex items-center gap-2 flex-wrap">
+<!-- Search within table -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[15px]">filter_list</span>
+<input class="h-8 pl-8 pr-3 bg-zinc-50 border border-zinc-200 rounded-md text-[12px] text-zinc-800 w-52 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 focus:bg-white transition-colors" placeholder="Buscar por CUIT o Razón..." type="text"/>
+</div>
+<select class="h-8 px-2.5 bg-zinc-50 border border-zinc-200 text-zinc-700 rounded-md text-[12px] focus:outline-none focus:border-zinc-400">
+<option>Todos los estados</option>
+<option>Solo Vigentes</option>
+<option>Listas Vencidas (&gt;15 días)</option>
+</select>
+<button class="h-8 px-2.5 rounded-md border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 flex items-center gap-1.5 text-[12px] font-medium transition-colors shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[15px] text-zinc-500">download</span>
+<span>Exportar</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse text-[12px]">
+<thead>
+<tr class="bg-zinc-50/70 border-b border-zinc-200/70 text-zinc-500 font-mono text-[10px] uppercase tracking-wider">
+<th class="py-2.5 px-4 font-medium">Razón Social / Proveedor</th>
+<th class="py-2.5 px-3 font-medium">CUIT</th>
+<th class="py-2.5 px-3 font-medium">Contacto Comercial</th>
+<th class="py-2.5 px-3 text-center font-medium">Ítems</th>
+<th class="py-2.5 px-3 font-medium">Última Lista</th>
+<th class="py-2.5 px-3 font-medium">Estado</th>
+<th class="py-2.5 px-3 font-medium">Condición de Pago</th>
+<th class="py-2.5 px-4 text-right font-medium">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-100">
+<!-- ROW 1: Bulonera Quilmes S.A. -->
+<tr class="hover:bg-zinc-50/80 transition-colors group">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-zinc-100 border border-zinc-200/60 flex items-center justify-center font-mono font-medium text-zinc-700 text-[11px] shrink-0">
+                  BQ
+                </div>
+<div class="flex flex-col">
+<span class="font-medium text-zinc-900 group-hover:text-zinc-950">Bulonera Quilmes S.A.</span>
+<span class="text-[11px] text-zinc-400">Tornillería &amp; Fijaciones Pesadas</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 font-mono text-zinc-600 text-[11px]">30-68492019-4</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-0.5 text-[11px]">
+<a class="text-zinc-700 hover:text-zinc-950 truncate max-w-[170px]" href="#">ventas@buloneraquilmes.com.ar</a>
+<span class="font-mono text-[10px] text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">chat</span> +54 9 11 4982-1100
+                </span>
+</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono text-zinc-700 px-1.5 py-0.5 bg-zinc-100 rounded text-[11px]">1.420</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col text-[11px]">
+<span class="font-mono text-zinc-800">06/11/2024</span>
+<span class="text-[10px] text-zinc-400 font-mono">10:45 hs</span>
+</div>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium text-[11px] border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vigente
+              </span>
+</td>
+<td class="py-3 px-3">
+<span class="text-[11px] px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded border border-zinc-200/50">eCheq 30/60 días</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Actualizar Lista" type="button">
+<span class="material-symbols-outlined text-[17px]">cloud_upload</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Ver Catálogo" type="button">
+<span class="material-symbols-outlined text-[17px]">inventory</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Más opciones" type="button">
+<span class="material-symbols-outlined text-[17px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2: Distribuidora San Martín S.R.L. -->
+<tr class="hover:bg-zinc-50/80 transition-colors group bg-zinc-50/30">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-zinc-900 text-white flex items-center justify-center font-mono font-medium text-[11px] shrink-0">
+                  SM
+                </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="font-medium text-zinc-900 group-hover:text-zinc-950">Distribuidora San Martín S.R.L.</span>
+<span class="material-symbols-outlined text-[13px] text-emerald-600" style="font-variation-settings: 'FILL' 1;" title="Proveedor Preferencial">verified</span>
+</div>
+<span class="text-[11px] text-zinc-400">Abrasivos, Discos y Protección</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 font-mono text-zinc-600 text-[11px]">30-71192834-8</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-0.5 text-[11px]">
+<a class="text-zinc-700 hover:text-zinc-950 truncate max-w-[170px]" href="#">pedidos@sanmartinsrl.com</a>
+<span class="font-mono text-[10px] text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">chat</span> +54 9 11 5821-9940
+                </span>
+</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono text-zinc-700 px-1.5 py-0.5 bg-zinc-100 rounded text-[11px]">854</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col text-[11px]">
+<span class="font-mono text-zinc-900 font-semibold">Hoy</span>
+<span class="text-[10px] text-zinc-400 font-mono">09:14 hs</span>
+</div>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium text-[11px] border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vigente (#44)
+              </span>
+</td>
+<td class="py-3 px-3">
+<span class="text-[11px] px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded border border-zinc-200/50">eCheq 30d</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Actualizar Lista" type="button">
+<span class="material-symbols-outlined text-[17px]">cloud_upload</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Ver Catálogo" type="button">
+<span class="material-symbols-outlined text-[17px]">inventory</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Más opciones" type="button">
+<span class="material-symbols-outlined text-[17px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3: Tyrolit Argentina / Abrasivos Pampeanos -->
+<tr class="hover:bg-zinc-50/80 transition-colors group">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-zinc-100 border border-zinc-200/60 flex items-center justify-center font-mono font-medium text-zinc-700 text-[11px] shrink-0">
+                  TY
+                </div>
+<div class="flex flex-col">
+<span class="font-medium text-zinc-900 group-hover:text-zinc-950">Tyrolit Argentina / Pampeanos</span>
+<span class="text-[11px] text-zinc-400">Fabricante Directo / Piedras y Discos</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 font-mono text-zinc-600 text-[11px]">30-50123849-1</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-0.5 text-[11px]">
+<a class="text-zinc-700 hover:text-zinc-950 truncate max-w-[170px]" href="#">distribuidores@tyrolit.com.ar</a>
+<span class="font-mono text-[10px] text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">call</span> 0810-333-8976
+                </span>
+</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono text-zinc-700 px-1.5 py-0.5 bg-zinc-100 rounded text-[11px]">340</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col text-[11px]">
+<span class="font-mono text-zinc-800">28/10/2024</span>
+<span class="text-[10px] text-zinc-400 font-mono">15:00 hs</span>
+</div>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium text-[11px] border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vigente
+              </span>
+</td>
+<td class="py-3 px-3">
+<span class="text-[11px] px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded border border-zinc-200/50">45d f/factura</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Actualizar Lista" type="button">
+<span class="material-symbols-outlined text-[17px]">cloud_upload</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Ver Catálogo" type="button">
+<span class="material-symbols-outlined text-[17px]">inventory</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Más opciones" type="button">
+<span class="material-symbols-outlined text-[17px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4: Bosch Industrial B.A. -->
+<tr class="hover:bg-zinc-50/80 transition-colors group">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-zinc-100 border border-zinc-200/60 flex items-center justify-center font-mono font-medium text-zinc-700 text-[11px] shrink-0">
+                  BO
+                </div>
+<div class="flex flex-col">
+<span class="font-medium text-zinc-900 group-hover:text-zinc-950">Bosch Industrial B.A.</span>
+<span class="text-[11px] text-zinc-400">Herramientas Eléctricas y Repuestos</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 font-mono text-zinc-600 text-[11px]">30-54910283-7</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-0.5 text-[11px]">
+<a class="text-zinc-700 hover:text-zinc-950 truncate max-w-[170px]" href="#">pedidos.ar@bosch-pt.com</a>
+<span class="font-mono text-[10px] text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">chat</span> +54 9 11 6022-8310
+                </span>
+</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono text-zinc-700 px-1.5 py-0.5 bg-zinc-100 rounded text-[11px]">512</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col text-[11px]">
+<span class="font-mono text-zinc-800">01/11/2024</span>
+<span class="text-[10px] text-zinc-400 font-mono">18:20 hs</span>
+</div>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium text-[11px] border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vigente (USD)
+              </span>
+</td>
+<td class="py-3 px-3">
+<span class="text-[11px] px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded border border-zinc-200/50">Transf. 15d</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Actualizar Lista" type="button">
+<span class="material-symbols-outlined text-[17px]">cloud_upload</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Ver Catálogo" type="button">
+<span class="material-symbols-outlined text-[17px]">inventory</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Más opciones" type="button">
+<span class="material-symbols-outlined text-[17px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 5: Sinteplast Ferreterías -->
+<tr class="hover:bg-zinc-50/80 transition-colors group">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-zinc-100 border border-zinc-200/60 flex items-center justify-center font-mono font-medium text-zinc-700 text-[11px] shrink-0">
+                  SI
+                </div>
+<div class="flex flex-col">
+<span class="font-medium text-zinc-900 group-hover:text-zinc-950">Sinteplast Ferreterías</span>
+<span class="text-[11px] text-zinc-400">Pinturas, Diluyentes e Impermeables</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 font-mono text-zinc-600 text-[11px]">30-58901234-9</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-0.5 text-[11px]">
+<a class="text-zinc-700 hover:text-zinc-950 truncate max-w-[170px]" href="#">distribucion@sinteplast.com</a>
+<span class="font-mono text-[10px] text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">chat</span> +54 9 11 3190-4822
+                </span>
+</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono text-zinc-700 px-1.5 py-0.5 bg-zinc-100 rounded text-[11px]">618</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col text-[11px]">
+<span class="font-mono text-amber-700 font-medium">14/10/2024</span>
+<span class="text-[10px] text-zinc-400 font-mono">11:00 hs</span>
+</div>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 font-medium text-[11px] border border-amber-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Desactualizada (+20d)
+              </span>
+</td>
+<td class="py-3 px-3">
+<span class="text-[11px] px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded border border-zinc-200/50">Contado c/entrega</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-amber-700 hover:text-amber-900 hover:bg-amber-50 transition-colors" title="Pedir Actualización" type="button">
+<span class="material-symbols-outlined text-[17px]">sync_problem</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Ver Catálogo" type="button">
+<span class="material-symbols-outlined text-[17px]">inventory</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Más opciones" type="button">
+<span class="material-symbols-outlined text-[17px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 6: Bulonería & Fijaciones del Plata -->
+<tr class="hover:bg-zinc-50/80 transition-colors group">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-zinc-100 border border-zinc-200/60 flex items-center justify-center font-mono font-medium text-zinc-700 text-[11px] shrink-0">
+                  FP
+                </div>
+<div class="flex flex-col">
+<span class="font-medium text-zinc-900 group-hover:text-zinc-950">Bulonería &amp; Fijaciones del Plata</span>
+<span class="text-[11px] text-zinc-400">Anclajes Químicos y Varillas</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 font-mono text-zinc-600 text-[11px]">30-70984511-3</td>
+<td class="py-3 px-3">
+<div class="flex flex-col gap-0.5 text-[11px]">
+<a class="text-zinc-700 hover:text-zinc-950 truncate max-w-[170px]" href="#">comercial@fijacionesdelplata.com</a>
+<span class="font-mono text-[10px] text-zinc-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">chat</span> +54 9 11 4710-3320
+                </span>
+</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="font-mono text-zinc-700 px-1.5 py-0.5 bg-zinc-100 rounded text-[11px]">920</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col text-[11px]">
+<span class="font-mono text-zinc-800">04/11/2024</span>
+<span class="text-[10px] text-zinc-400 font-mono">14:10 hs</span>
+</div>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium text-[11px] border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Vigente
+              </span>
+</td>
+<td class="py-3 px-3">
+<span class="text-[11px] px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded border border-zinc-200/50">30 días f/factura</span>
+</td>
+<td class="py-3 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Actualizar Lista" type="button">
+<span class="material-symbols-outlined text-[17px]">cloud_upload</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Ver Catálogo" type="button">
+<span class="material-symbols-outlined text-[17px]">inventory</span>
+</button>
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 transition-colors" title="Más opciones" type="button">
+<span class="material-symbols-outlined text-[17px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination & Status Footer -->
+<div class="px-4 py-3 border-t border-zinc-150 bg-zinc-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
+<div class="flex items-center gap-2 text-zinc-500">
+<span>Mostrando <strong class="text-zinc-800 font-mono font-medium">1 - 6</strong> de <strong class="text-zinc-800 font-mono font-medium">48</strong> distribuidores</span>
+<span class="text-zinc-300">•</span>
+<span class="flex items-center gap-1 text-zinc-600"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 42 con listas al día</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors disabled:opacity-30" disabled="" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="px-2 py-0.5 rounded bg-zinc-900 text-white font-mono text-[11px] font-medium" type="button">1</button>
+<button class="px-2 py-0.5 rounded text-zinc-600 hover:bg-zinc-100 font-mono text-[11px]" type="button">2</button>
+<button class="px-2 py-0.5 rounded text-zinc-600 hover:bg-zinc-100 font-mono text-[11px]" type="button">3</button>
+<span class="px-1 text-zinc-400 font-mono text-[11px]">...</span>
+<button class="px-2 py-0.5 rounded text-zinc-600 hover:bg-zinc-100 font-mono text-[11px]" type="button">8</button>
+<button class="p-1 rounded text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div></div></main></div></body></html>

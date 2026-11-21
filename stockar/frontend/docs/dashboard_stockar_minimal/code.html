@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617',
+            },
+            accent: {
+              DEFAULT: '#0f172a',
+              blue: '#2563eb',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #f8fafc;
+        color: #0f172a;
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+<!-- Left Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-white z-50 flex flex-col justify-between border-r border-slate-200/80">
+<div class="flex flex-col">
+<!-- App Brand Header -->
+<div class="p-5 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white font-bold text-sm tracking-tight shadow-sm">
+            AR
+          </div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold tracking-tight text-slate-900 leading-none">StockAR</span>
+<span class="text-[11px] text-slate-400 font-medium tracking-wide mt-1">ERP Industrial</span>
+</div>
+</div>
+<div class="mt-4 bg-slate-50 px-2.5 py-1.5 rounded-md border border-slate-200/60 flex items-center gap-2">
+<span class="material-symbols-outlined text-[15px] text-slate-500">storefront</span>
+<span class="text-[11px] font-medium text-slate-700 truncate">Central Munro</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-0.5 p-3" data-active-classes="bg-slate-900 text-white font-medium">
+<a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-md bg-slate-900 text-white font-medium text-xs tracking-normal transition-colors" data-path="dashboard" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Dashboard</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-colors text-xs font-normal" data-path="inventario" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+<span>Inventario</span>
+</div>
+<span class="font-mono text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/50">SKU</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-colors text-xs font-normal" data-path="proveedores" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px]">request_quote</span>
+<span>Proveedores</span>
+</div>
+<span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/50">Listas</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-colors text-xs font-normal" data-path="movimientos" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+<span>Movimientos</span>
+</div>
+<span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/50">Kárdex</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-colors text-xs font-normal" data-path="configuracion" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span>Configuración</span>
+</div>
+</a>
+</nav>
+</div>
+<!-- Bottom Status Panel -->
+<div class="p-3 border-t border-slate-100 bg-white">
+<div class="bg-slate-50/80 border border-slate-200/70 rounded-lg p-3 flex flex-col gap-2">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100"></span>
+<span class="text-[11px] font-medium text-slate-700">AFIP / Listas API</span>
+</div>
+<span class="font-mono text-[10px] text-emerald-600 font-medium">Online</span>
+</div>
+<div class="flex items-center justify-between text-slate-500 text-[11px]">
+<span>Latencia</span>
+<span class="font-mono text-slate-700">42 ms</span>
+</div>
+<div class="w-full bg-slate-200/80 h-1 rounded-full overflow-hidden">
+<div class="bg-slate-800 h-full rounded-full" style="width: 68%"></div>
+</div>
+<div class="flex items-center justify-between text-slate-500 text-[11px]">
+<span>Ítems catálogo</span>
+<span class="font-mono text-slate-800 font-medium">4.280 u.</span>
+</div>
+</div>
+<div class="mt-2.5 flex items-center justify-between px-1 text-[11px] text-slate-400">
+<span>v2.4.1 Ferretería AR</span>
+<span class="material-symbols-outlined text-[14px]">cloud_done</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="pl-64">
+<!-- Top Navbar -->
+<header class="fixed top-0 left-64 right-0 h-14 bg-white/80 backdrop-blur-md border-b border-slate-200/80 z-40 px-6 flex items-center justify-between">
+<div class="flex items-center gap-4 flex-1 max-w-lg">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[17px]">search</span>
+<input class="w-full h-8 pl-8 pr-12 bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-md text-slate-800 text-xs placeholder:text-slate-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-all" placeholder="Buscar por SKU, código de barra o descripción..." type="text"/>
+<kbd class="absolute right-2 top-1/2 -translate-y-1/2 font-mono text-[10px] text-slate-400 border border-slate-200 bg-white px-1 py-0.5 rounded">Alt+K</kbd>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200/70 rounded-md px-2.5 py-1 text-slate-700 hover:bg-slate-100/70 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[16px] text-slate-500">warehouse</span>
+<span class="text-xs font-medium">Munro</span>
+<span class="text-[10px] text-slate-400 border-l border-slate-200 pl-2">ARS</span>
+</div>
+<div class="h-4 w-px bg-slate-200 mx-0.5"></div>
+<button class="relative p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 flex h-2 w-2 rounded-full bg-rose-500"></span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</button>
+<div class="flex items-center gap-2.5 pl-2 border-l border-slate-200">
+<img alt="Alejandro Valenzuela" class="w-7 h-7 rounded-full object-cover ring-1 ring-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPv4BGk56iRrFFtm3MOQst2xPL3GDY62nTsJ8gfh5JGZV2HsyI5lSszuo-WDxA8K_tdO08Mrm98-qJqTzKYVjnmwpJIkWBWmIb14tDk4HN--6Wxhs6ziFGdUdxkKOaK-C2AFl6Vo5LsAYM0-YrrOhKZcZXE093GaZJ966o7fcnHnWniy_h7dJ5Z8TFuwi6ggtXXB-k4M4evwwlpcfr_HGxjIFFnB14OlYfY5WMPv8"/>
+<div class="hidden lg:flex flex-col text-left leading-tight">
+<span class="text-xs font-medium text-slate-800">Alejandro V.</span>
+<span class="text-[10px] text-slate-400">Jefe de Depósito</span>
+</div>
+<button class="text-slate-400 hover:text-rose-600 transition-colors p-1" title="Cerrar sesión" type="button">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Subheader Breadcrumb & Fiscal Indicator -->
+<main class="relative pt-14 bg-slate-50/60 min-h-[calc(100vh-3.5rem)]">
+<div class="w-full px-8 py-2.5 bg-white border-b border-slate-200/70 flex items-center justify-between">
+<div class="flex items-center gap-2 text-xs text-slate-500">
+<a class="hover:text-slate-900 transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">home</span>
+<span>Inicio</span>
+</a>
+<span class="text-slate-300">/</span>
+<span class="font-medium text-slate-800">Ferretería Industrial</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-slate-200 bg-slate-50 font-mono text-[11px] text-slate-600">
+<span class="text-slate-900 font-semibold">IVA 21%</span>
+<span class="text-slate-300">|</span>
+<span>Dólar BNA B2B</span>
+</span>
+</div>
+</div>
+<div class="w-full max-w-[1440px] mx-auto p-8">
+<div class="flex flex-col w-full">
+<!-- Operational Subheader Banner (Minimal Clean Header) -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-7">
+<div>
+<div class="flex items-center gap-2.5">
+<h1 class="text-xl font-semibold tracking-tight text-slate-900">Hola Alejandro, resumen operativo de Munro</h1>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  Planta Activa
+                </span>
+</div>
+<div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
+<span class="material-symbols-outlined text-[15px] text-slate-400">calendar_today</span>
+<span class="font-medium text-slate-700">Martes 14 de Mayo, 2024</span>
+<span class="text-slate-300">•</span>
+<span>Cierre de compras programado: 17:30 hs (Zona Norte)</span>
+</div>
+</div>
+<!-- Clean Minimal Actions -->
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors text-xs font-medium shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">description</span>
+<span>Descargar Informe Diario</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors text-xs font-medium shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">swap_horiz</span>
+<span>+ Registrar Movimiento</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-slate-900 text-white hover:bg-slate-800 transition-colors text-xs font-medium shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Nuevo Producto</span>
+</button>
+</div>
+</div>
+<!-- Minimal Warehouse Context Strip -->
+<div class="w-full rounded-xl bg-white border border-slate-200/80 mb-6 p-5 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/50">Centro Logístico B2B</span>
+<span class="text-xs text-slate-400">Turno Matutino • Despacho Inmediato</span>
+</div>
+<h2 class="text-base font-semibold text-slate-900 mt-1.5">Control de Stock Crítico y Sincronización Mayorista</h2>
+<p class="text-xs text-slate-500 max-w-3xl mt-1 leading-relaxed">
+                Se detectaron 445 variaciones de listas de precios oficiales en el corredor ferretero. Los márgenes brutos se mantienen equilibrados al 32.4% con cotización oficial aplicada para importados de fijaciones y corte.
+              </p>
+<div class="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-slate-100 text-xs text-slate-600">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-slate-400">local_shipping</span>
+<span>3 entregas programadas hoy</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-slate-400">pending_actions</span>
+<span>2 órdenes pendientes de cotización</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-56 h-28 rounded-lg overflow-hidden shrink-0 border border-slate-200/60 relative">
+<img class="w-full h-full object-cover filter grayscale contrast-125 opacity-90" data-alt="Modern industrial hardware distribution warehouse in Munro Buenos Aires Argentina" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXpOKaHtIflzI8TlpQUog9RW9WrQQ7yfO6W3w3W5bAmfDhGhAwP32uq2zw1lcn1EntkxkZ1lv0mDBOVUbv12NbhcMFsmZeFqZVbqb7UL56q5MxLWo9wyuucMj-a6IwZhdPQdNjkdZk8xgaCf0iE2KOfwFjog65UXSgTyrdpZvtt6lE4MYO9aqpPYWqBZaRAqHZWslMjPiqiBDhEwzGs0mmgTdRNmL_7mBZExn74D0"/>
+</div>
+</div>
+<!-- KPI Metric Matrix (6 Cards, Refined Minimal White Surface) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
+<!-- Card 1 -->
+<div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Total Productos</span>
+<span class="material-symbols-outlined text-slate-400 text-[18px]">inventory</span>
+</div>
+<div class="my-2.5">
+<span class="font-mono text-2xl font-bold text-slate-900 tracking-tight">4.285</span>
+<span class="text-[11px] text-slate-400 ml-1">ítems</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span>
+<span>+18 esta semana</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Stock Normal</span>
+<span class="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
+</div>
+<div class="my-2.5">
+<span class="font-mono text-2xl font-bold text-slate-900 tracking-tight">3.840</span>
+<span class="text-[11px] text-slate-400 ml-1">ítems</span>
+</div>
+<div class="flex items-center justify-between text-[11px]">
+<span class="inline-flex items-center gap-1 text-slate-600">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  89.6% Cobertura
+                </span>
+<span class="text-slate-400">Estable</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Stock Bajo</span>
+<span class="material-symbols-outlined text-amber-500 text-[18px]">warning</span>
+</div>
+<div class="my-2.5">
+<span class="font-mono text-2xl font-bold text-slate-900 tracking-tight">312</span>
+<span class="text-[11px] text-slate-400 ml-1">ítems</span>
+</div>
+<div class="flex items-center justify-between text-[11px]">
+<span class="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60 font-medium">
+                  Alerta Activa
+                </span>
+<span class="text-slate-400">Sugerir OC</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Sin Stock</span>
+<span class="material-symbols-outlined text-rose-500 text-[18px]">error_outline</span>
+</div>
+<div class="my-2.5">
+<span class="font-mono text-2xl font-bold text-rose-600 tracking-tight">133</span>
+<span class="text-[11px] text-slate-400 ml-1">quiebres</span>
+</div>
+<div class="flex items-center justify-between text-[11px]">
+<span class="inline-flex items-center gap-1 text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200/60 font-medium">
+                  Urgencia
+                </span>
+<span class="font-mono text-slate-500">3.1%</span>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Proveedores</span>
+<span class="material-symbols-outlined text-slate-400 text-[18px]">badge</span>
+</div>
+<div class="my-2.5">
+<span class="font-mono text-2xl font-bold text-slate-900 tracking-tight">48</span>
+<span class="text-[11px] text-slate-400 ml-1">cuentas</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-[13px] text-slate-400">sync</span>
+<span>12 listas en &lt;48h</span>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Valuación Total</span>
+<span class="material-symbols-outlined text-slate-400 text-[18px]">account_balance_wallet</span>
+</div>
+<div class="my-2">
+<span class="font-mono text-[10px] text-slate-400 uppercase">ARS $</span>
+<div class="font-mono text-base font-bold text-slate-900 tracking-tight leading-none mt-1">148.420.500</div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-slate-500">
+<span>Costo prom.</span>
+<span class="font-mono text-[10px] text-slate-700 bg-slate-100 px-1 py-0.5 rounded">PPP Activo</span>
+</div>
+</div>
+</div>
+<!-- Main Split Layout (60% / 40%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- LEFT COLUMN (7/12) -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Clean Table: Critical Stock Alerts -->
+<div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">crisis_alert</span>
+<div>
+<h3 class="text-sm font-semibold text-slate-900">Alertas Urgentes de Reposición</h3>
+<p class="text-[11px] text-slate-400">Lotes por debajo del punto de pedido calculado según rotación semanal</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 font-mono text-[11px] text-rose-700 bg-rose-50 border border-rose-200/60 px-2 py-0.5 rounded font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                    4 Críticos
+                  </span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50/75 border-b border-slate-100 text-[11px] font-medium text-slate-500 uppercase tracking-wider">
+<tr>
+<th class="py-2.5 px-4">Producto</th>
+<th class="py-2.5 px-3">SKU</th>
+<th class="py-2.5 px-3 text-right">Stock / Mín</th>
+<th class="py-2.5 px-3">Proveedor</th>
+<th class="py-2.5 px-3 text-right">Precio ARS</th>
+<th class="py-2.5 px-4 text-center">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-xs">
+<!-- Item 1 Tyrolit -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px] text-slate-500">disc_full</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-medium text-slate-800 truncate">Disco corte 115 mm Tyrolit</span>
+<span class="text-[11px] text-slate-400">Corte fino inox 1.0mm - Caja x25</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="font-mono text-[11px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">TYR-115-01</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono text-xs font-semibold text-rose-600">15 u.</div>
+<div class="font-mono text-[10px] text-slate-400">mín: 80 u.</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="text-slate-700 font-medium">Distribuidora San Martín</div>
+<div class="text-[10px] text-slate-400">Entrega 24 hs</div>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono font-medium text-slate-900">$ 1.280,50</div>
+<div class="font-mono text-[10px] text-emerald-600">-8% vol.</div>
+</td>
+<td class="py-3 px-4 text-center whitespace-nowrap">
+<button class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-medium transition-colors shadow-sm" type="button">
+                            Generar OC
+                          </button>
+</td>
+</tr>
+<!-- Item 2 Dormer -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px] text-slate-500">build</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-medium text-slate-800 truncate">Mecha acero rápido 8 mm Dormer</span>
+<span class="text-[11px] text-slate-400">DIN 338 HSS cobalto rectificada</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="font-mono text-[11px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">DOR-HSS-08</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono text-xs font-semibold text-rose-600">4 u.</div>
+<div class="font-mono text-[10px] text-slate-400">mín: 25 u.</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="text-slate-700 font-medium">Herramientas Industriales BA</div>
+<div class="text-[10px] text-slate-400">Importación directa</div>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono font-medium text-slate-900">$ 4.920,00</div>
+<div class="font-mono text-[10px] text-slate-400">Fijo</div>
+</td>
+<td class="py-3 px-4 text-center whitespace-nowrap">
+<button class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-medium transition-colors shadow-sm" type="button">
+                            Generar OC
+                          </button>
+</td>
+</tr>
+<!-- Item 3 Tornillo hexagonal -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px] text-slate-500">hardware</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-medium text-slate-800 truncate">Tornillo hexagonal M10 x 50 zincado</span>
+<span class="text-[11px] text-slate-400">Paso 1.50 Grado 8.8 (Caja x100)</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="font-mono text-[11px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">TOR-HEX-1050</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono text-xs font-semibold text-amber-600">2 cj.</div>
+<div class="font-mono text-[10px] text-slate-400">mín: 10 cj.</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="text-slate-700 font-medium">Bulonera Quilmes</div>
+<div class="text-[10px] text-slate-400">Descuento B2B 15%</div>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono font-medium text-slate-900">$ 18.350,00</div>
+<div class="font-mono text-[10px] text-slate-400">Por caja</div>
+</td>
+<td class="py-3 px-4 text-center whitespace-nowrap">
+<button class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-medium transition-colors shadow-sm" type="button">
+                            Generar OC
+                          </button>
+</td>
+</tr>
+<!-- Item 4 Guantes moteados -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px] text-slate-500">front_hand</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-medium text-slate-800 truncate">Guantes de seguridad moteados</span>
+<span class="text-[11px] text-slate-400">Algodón/poliéster doble cara - Paquete x12</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<span class="font-mono text-[11px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">EPP-GUA-MOT</span>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono text-xs font-semibold text-rose-600">0 pq.</div>
+<div class="font-mono text-[10px] text-slate-400">mín: 30 pq.</div>
+</td>
+<td class="py-3 px-3 whitespace-nowrap">
+<div class="text-slate-700 font-medium">Seguridad Industrial Norte</div>
+<div class="text-[10px] text-rose-600">Stock inmediato</div>
+</td>
+<td class="py-3 px-3 text-right whitespace-nowrap">
+<div class="font-mono font-medium text-slate-900">$ 8.420,00</div>
+<div class="font-mono text-[10px] text-slate-400">IVA 21% inc.</div>
+</td>
+<td class="py-3 px-4 text-center whitespace-nowrap">
+<button class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-medium transition-colors shadow-sm" type="button">
+                            Generar OC
+                          </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between px-4 text-xs">
+<span class="text-slate-400">Mostrando 4 de 133 productos en reposición</span>
+<a class="text-slate-700 hover:text-slate-900 font-medium flex items-center gap-1 transition-colors" href="#">
+<span>Ver matriz completa de faltantes</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Stream: Últimos Movimientos de Stock (Minimal refined card) -->
+<div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-5 flex flex-col">
+<div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">swap_horiz</span>
+<h3 class="text-sm font-semibold text-slate-900">Últimos Movimientos de Stock en Munro</h3>
+</div>
+<span class="font-mono text-[11px] text-slate-400">Kárdex en Vivo</span>
+</div>
+<div class="flex flex-col divide-y divide-slate-100">
+<!-- Movimiento 1 -->
+<div class="py-3 first:pt-0 last:pb-0 flex items-center justify-between hover:bg-slate-50/50 rounded-lg px-2 -mx-2 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200/60">
+<span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase font-semibold text-emerald-700 bg-emerald-50 px-1 py-0.2 rounded">Entrada</span>
+<span class="text-xs font-semibold text-slate-800">+500 Tornillos M10</span>
+</div>
+<span class="text-[11px] text-slate-400 mt-0.5">Remito R0004-001289 • Bulonera Quilmes</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-xs font-medium text-slate-700">11:42 hs</span>
+<span class="text-[10px] text-slate-400 block">L. Gómez</span>
+</div>
+</div>
+<!-- Movimiento 2 -->
+<div class="py-3 first:pt-0 last:pb-0 flex items-center justify-between hover:bg-slate-50/50 rounded-lg px-2 -mx-2 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 border border-slate-200">
+<span class="material-symbols-outlined text-[15px]">arrow_upward</span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase font-semibold text-slate-600 bg-slate-100 px-1 py-0.2 rounded">Salida</span>
+<span class="text-xs font-semibold text-slate-800">-12 Amoladoras 115mm</span>
+</div>
+<span class="text-[11px] text-slate-400 mt-0.5">Transferencia interna a Mostrador Venta</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-xs font-medium text-slate-700">10:15 hs</span>
+<span class="text-[10px] text-slate-400 block">A. Valenzuela</span>
+</div>
+</div>
+<!-- Movimiento 3 -->
+<div class="py-3 first:pt-0 last:pb-0 flex items-center justify-between hover:bg-slate-50/50 rounded-lg px-2 -mx-2 transition-colors">
+<div class="flex items-center gap-3">
+<span class="w-6 h-6 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200/60">
+<span class="material-symbols-outlined text-[15px]">arrow_downward</span>
+</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase font-semibold text-emerald-700 bg-emerald-50 px-1 py-0.2 rounded">Entrada</span>
+<span class="text-xs font-semibold text-slate-800">+100 Discos Tyrolit</span>
+</div>
+<span class="text-[11px] text-slate-400 mt-0.5">Factura A-09923 • Distribuidora San Martín</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-mono text-xs font-medium text-slate-700">09:04 hs</span>
+<span class="text-[10px] text-slate-400 block">M. Rocca</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+<div class="flex items-center gap-1.5 text-slate-400">
+<span class="material-symbols-outlined text-[15px] text-emerald-600">check_circle</span>
+<span>Balance de Kárdex al día</span>
+</div>
+<button class="text-slate-600 hover:text-slate-900 font-medium flex items-center gap-1 transition-colors" type="button">
+<span>Ver historial completo</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (5/12) -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Card: Comparador Rápido de Oportunidades de Compra -->
+<div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-5 flex flex-col">
+<div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+<div>
+<h3 class="text-sm font-semibold text-slate-900">Oportunidades de Compra</h3>
+<p class="text-[11px] text-slate-400">Variación de listas mayoristas con margen favorable</p>
+</div>
+<span class="font-mono text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/60">
+                    Spread Activo
+                  </span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Opportunity 1 -->
+<div class="p-3.5 rounded-lg bg-slate-50/70 border border-slate-200/70 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-slate-800">Sellador Silicona Neutra 280ml</span>
+<span class="text-[10px] font-mono font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                        Ahorro $ 420 / u.
+                      </span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="bg-white p-2 rounded border border-slate-200/70">
+<span class="text-[10px] text-slate-400 uppercase tracking-wide block">Distribuidor Habitual</span>
+<span class="font-mono font-medium text-slate-800 block mt-0.5">$ 3.850,00</span>
+<span class="text-[10px] text-slate-400">Sinteplast Munro</span>
+</div>
+<div class="bg-white p-2 rounded border border-emerald-200/80">
+<span class="text-[10px] text-emerald-700 uppercase tracking-wide font-semibold block">Oferta Cruzada</span>
+<span class="font-mono font-bold text-slate-900 block mt-0.5">$ 3.430,00</span>
+<span class="text-[10px] text-emerald-600 font-medium">San Martín (-11%)</span>
+</div>
+</div>
+</div>
+<!-- Opportunity 2 -->
+<div class="p-3.5 rounded-lg bg-slate-50/70 border border-slate-200/70 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="text-xs font-semibold text-slate-800">Electrodo Punta Azul 2.50mm Conarco</span>
+<span class="text-[10px] font-mono font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                        Ahorro $ 3.150 / cj
+                      </span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="bg-white p-2 rounded border border-slate-200/70">
+<span class="text-[10px] text-slate-400 uppercase tracking-wide block">Lista Corriente</span>
+<span class="font-mono font-medium text-slate-800 block mt-0.5">$ 29.800,00</span>
+<span class="text-[10px] text-slate-400">Soldaduras BA</span>
+</div>
+<div class="bg-white p-2 rounded border border-emerald-200/80">
+<span class="text-[10px] text-emerald-700 uppercase tracking-wide font-semibold block">Lote Mayorista</span>
+<span class="font-mono font-bold text-slate-900 block mt-0.5">$ 26.650,00</span>
+<span class="text-[10px] text-emerald-600 font-medium">ESAB Directo (-10.5%)</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-3 py-2 rounded-md bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-medium transition-colors flex items-center justify-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[15px] text-slate-400">compare_arrows</span>
+<span>Analizar otras 9 recomendaciones</span>
+</button>
+</div>
+<!-- Card: Sincronización de Listas de Proveedores -->
+<div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-5 flex flex-col">
+<div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">sync</span>
+<h3 class="text-sm font-semibold text-slate-900">Sincronización de Listas</h3>
+</div>
+<span class="font-mono text-[10px] text-slate-400">CSV / Excel API</span>
+</div>
+<div class="flex flex-col divide-y divide-slate-100 text-xs">
+<!-- Sinteplast -->
+<div class="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<div>
+<span class="font-medium text-slate-800 block">Sinteplast S.A.</span>
+<span class="text-[11px] text-slate-400">Pinturas e impermeabilizantes</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-medium text-emerald-700">Al día</span>
+<span class="font-mono text-[10px] text-slate-400 block">Hoy, 08:30</span>
+</div>
+</div>
+<!-- Bosch -->
+<div class="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<div>
+<span class="font-medium text-slate-800 block">Robert Bosch Argentina</span>
+<span class="text-[11px] text-slate-400">Herramientas eléctricas y accesorios</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-medium text-emerald-700">Al día</span>
+<span class="font-mono text-[10px] text-slate-400 block">Ayer, 18:45</span>
+</div>
+</div>
+<!-- Bahco -->
+<div class="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<div>
+<span class="font-medium text-slate-800 block">SNA Europe (Bahco)</span>
+<span class="text-[11px] text-slate-400">Herramientas de mano industriales</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-medium text-emerald-700">Al día</span>
+<span class="font-mono text-[10px] text-slate-400 block">12 Mayo</span>
+</div>
+</div>
+<!-- Durlock -->
+<div class="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+<div>
+<span class="font-medium text-slate-800 block">Durlock Perfiles &amp; Placas</span>
+<span class="text-[11px] text-slate-400">Construcción en seco</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-medium text-amber-700">Pendiente</span>
+<span class="font-mono text-[10px] text-slate-400 block">08 Mayo</span>
+</div>
+</div>
+</div>
+<!-- Minimal Operative Shortcuts -->
+<div class="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-2">
+<span class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Atajos Operativos</span>
+<div class="grid grid-cols-3 gap-2">
+<button class="p-2 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200/60 transition-colors text-left flex flex-col gap-1" type="button">
+<span class="material-symbols-outlined text-slate-500 text-[16px]">upload_file</span>
+<span class="text-[11px] font-medium text-slate-800">Importar Excel</span>
+<span class="text-[9px] text-slate-400">Listas Masivas</span>
+</button>
+<button class="p-2 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200/60 transition-colors text-left flex flex-col gap-1" type="button">
+<span class="material-symbols-outlined text-slate-500 text-[16px]">tune</span>
+<span class="text-[11px] font-medium text-slate-800">Ajuste Físico</span>
+<span class="text-[9px] text-slate-400">Conteo Racks</span>
+</button>
+<button class="p-2 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200/60 transition-colors text-left flex flex-col gap-1" type="button">
+<span class="material-symbols-outlined text-slate-500 text-[16px]">fact_check</span>
+<span class="text-[11px] font-medium text-slate-800">Auditoría</span>
+<span class="text-[9px] text-slate-400">Trazabilidad</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Refined Minimal Category Distribution Track -->
+<div class="mt-6 bg-white rounded-xl border border-slate-200/80 shadow-sm p-5">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+<div>
+<h3 class="text-sm font-semibold text-slate-900">Distribución Operativa del Catálogo</h3>
+<p class="text-[11px] text-slate-400">Nivel de disponibilidad y rotación categorizada en Munro</p>
+</div>
+<div class="flex flex-wrap items-center gap-4 text-xs text-slate-600">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-slate-900"></span>
+<span>Fijaciones (38%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-slate-600"></span>
+<span>Corte y Abrasivos (26%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-slate-400"></span>
+<span>Herramientas (21%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-slate-300"></span>
+<span>EPP e Higiene (15%)</span>
+</div>
+</div>
+</div>
+<!-- Single Clean Segmented Bar -->
+<div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden flex">
+<div class="bg-slate-900 h-full" style="width: 38%"></div>
+<div class="bg-slate-600 h-full" style="width: 26%"></div>
+<div class="bg-slate-400 h-full" style="width: 21%"></div>
+<div class="bg-slate-300 h-full" style="width: 15%"></div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-3 border-t border-slate-100 text-xs">
+<div class="flex items-center justify-between p-2 rounded bg-slate-50/60 border border-slate-200/50">
+<span class="text-slate-500">Rotación Bulonería:</span>
+<span class="font-mono text-slate-900 font-semibold">14.2 días</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-slate-50/60 border border-slate-200/50">
+<span class="text-slate-500">Rotación Abrasivos:</span>
+<span class="font-mono text-slate-900 font-semibold">9.8 días</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-slate-50/60 border border-slate-200/50">
+<span class="text-slate-500">Rotación Máquinas:</span>
+<span class="font-mono text-slate-900 font-semibold">32.0 días</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-slate-50/60 border border-slate-200/50">
+<span class="text-slate-500">Rotación Seguridad:</span>
+<span class="font-mono text-slate-900 font-semibold">18.5 días</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
