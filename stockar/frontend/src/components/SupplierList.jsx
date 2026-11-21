@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAll, remove } from '../services/suppliers.service.js';
 
-const cell = { border: '1px solid #ddd', padding: '6px 8px', textAlign: 'left' };
-
 // onEdit(supplier): se eligió un proveedor para editar.
 // onDeleted(supplier): se eliminó un proveedor (App refresca la lista).
 export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
@@ -49,48 +47,81 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
     }
   }
 
-  if (loading) return <p>Cargando proveedores…</p>;
-  if (error) return <p style={{ color: 'crimson' }}>{error}</p>;
-  if (suppliers.length === 0) return <p>No hay proveedores cargados.</p>;
+  if (loading) return <p className="font-sans font-body-md text-body-md text-on-surface-variant">Cargando proveedores…</p>;
+  if (error) return <p className={errorClass}>{error}</p>;
+  if (suppliers.length === 0) {
+    return (
+      <p className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg text-center font-sans font-body-md text-body-md text-on-surface-variant">
+        No hay proveedores cargados.
+      </p>
+    );
+  }
 
   return (
     <>
-      {deleteError && <p style={{ color: 'crimson' }}>{deleteError}</p>}
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-        <thead>
-          <tr>
-            <th style={cell}>Razón social</th>
-            <th style={cell}>CUIT</th>
-            <th style={cell}>Rubro</th>
-            <th style={cell}>Contacto</th>
-            <th style={cell}>Email</th>
-            <th style={cell}>Teléfono</th>
-            <th style={cell}>Moneda</th>
-            <th style={cell}>Estado</th>
-            <th style={cell}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {suppliers.map((s) => (
-            <tr key={s.id}>
-              <td style={cell}>{s.razon_social}</td>
-              <td style={cell}>{s.cuit ?? '—'}</td>
-              <td style={cell}>{s.rubro ?? '—'}</td>
-              <td style={cell}>{s.contacto_nombre ?? '—'}</td>
-              <td style={cell}>{s.email ?? '—'}</td>
-              <td style={cell}>{s.telefono ?? '—'}</td>
-              <td style={cell}>{s.moneda_lista ?? '—'}</td>
-              <td style={cell}>{s.estado ?? '—'}</td>
-              <td style={{ ...cell, whiteSpace: 'nowrap' }}>
-                <button type="button" onClick={() => onEdit?.(s)}>Editar</button>{' '}
-                <button type="button" onClick={() => handleDelete(s)} disabled={deletingId === s.id}>
-                  {deletingId === s.id ? 'Eliminando…' : 'Eliminar'}
-                </button>
-              </td>
+      {deleteError && <p className={`mb-space-md ${errorClass}`}>{deleteError}</p>}
+      <div className="overflow-x-auto rounded border border-outline-variant bg-surface-container-lowest font-sans">
+        <table className="w-full border-collapse text-left">
+          <thead className="border-b border-outline-variant bg-surface-container-low">
+            <tr>
+              <th className={th}>Razón social</th>
+              <th className={th}>CUIT</th>
+              <th className={th}>Rubro</th>
+              <th className={th}>Contacto</th>
+              <th className={th}>Email</th>
+              <th className={th}>Teléfono</th>
+              <th className={th}>Moneda</th>
+              <th className={th}>Estado</th>
+              <th className={`${th} text-right`}>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {suppliers.map((s) => (
+              <tr key={s.id} className="border-b border-surface-container-high last:border-b-0 hover:bg-surface-container-low">
+                <td className={`${td} font-medium text-on-surface`}>{s.razon_social}</td>
+                <td className={`${td} font-label-code text-label-code`}>{s.cuit ?? '—'}</td>
+                <td className={td}>{s.rubro ?? '—'}</td>
+                <td className={td}>{s.contacto_nombre ?? '—'}</td>
+                <td className={td}>{s.email ?? '—'}</td>
+                <td className={`${td} font-label-code text-label-code`}>{s.telefono ?? '—'}</td>
+                <td className={`${td} font-label-code text-label-code`}>{s.moneda_lista ?? '—'}</td>
+                <td className={td}>
+                  <span className="inline-flex items-center gap-1.5 rounded border border-outline-variant bg-surface-container-low px-2 py-0.5 font-body-sm text-body-sm text-on-surface-variant">
+                    <span className={`size-1.5 rounded-full ${s.estado === 'activo' ? 'bg-secondary' : 'bg-outline'}`} />
+                    {s.estado ?? '—'}
+                  </span>
+                </td>
+                <td className={`${td} whitespace-nowrap text-right`}>
+                  <span className="inline-flex gap-space-sm">
+                    <button
+                      type="button"
+                      onClick={() => onEdit?.(s)}
+                      className="inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-surface hover:bg-surface-container-low focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">edit</span>
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(s)}
+                      disabled={deletingId === s.id}
+                      className="inline-flex items-center gap-1 rounded border border-error-container bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-error hover:bg-error-container/40 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">delete</span>
+                      {deletingId === s.id ? 'Eliminando…' : 'Eliminar'}
+                    </button>
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }
+
+const th = 'whitespace-nowrap px-4 py-3 font-label-caps text-label-caps uppercase text-on-surface-variant';
+const td = 'px-4 py-3 font-body-md text-body-md text-on-surface-variant';
+const errorClass =
+  'rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-sans font-body-md text-body-md text-error';

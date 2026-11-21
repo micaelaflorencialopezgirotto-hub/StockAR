@@ -16,8 +16,6 @@ const INITIAL = {
 // Selects sin opción vacía: si el registro no tiene valor, usan el default.
 const SELECTS_WITH_DEFAULT = ['moneda_lista', 'estado'];
 
-const field = { display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 };
-
 function toFormValues(supplier) {
   return Object.fromEntries(
     Object.keys(INITIAL).map((key) => {
@@ -75,69 +73,106 @@ export default function SupplierForm({ supplier = null, onSaved, onCancel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 420 }}>
-      <label style={field}>
-        Razón social *
-        <input name="razon_social" value={values.razon_social} onChange={handleChange} required />
-      </label>
+    <form onSubmit={handleSubmit} className="max-w-4xl space-y-space-md font-sans">
+      <section className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg">
+        <div className="grid grid-cols-1 gap-space-md md:grid-cols-3">
+          <label className={`${fieldClass} md:col-span-2`}>
+            <span className={labelClass}>Razón social <span className="text-error">*</span></span>
+            <input name="razon_social" value={values.razon_social} onChange={handleChange} required className={inputClass} />
+          </label>
 
-      <label style={field}>
-        CUIT
-        <input name="cuit" value={values.cuit} onChange={handleChange} placeholder="30-12345678-9" />
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>CUIT</span>
+            <input placeholder="30-12345678-9" name="cuit" value={values.cuit} onChange={handleChange} className={`${inputClass} font-label-code text-label-code`} />
+          </label>
 
-      <label style={field}>
-        Rubro
-        <input name="rubro" value={values.rubro} onChange={handleChange} />
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Rubro</span>
+            <input name="rubro" value={values.rubro} onChange={handleChange} className={inputClass} />
+          </label>
 
-      <label style={field}>
-        Contacto
-        <input name="contacto_nombre" value={values.contacto_nombre} onChange={handleChange} />
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Contacto</span>
+            <input name="contacto_nombre" value={values.contacto_nombre} onChange={handleChange} className={inputClass} />
+          </label>
 
-      <label style={field}>
-        Email
-        <input type="email" name="email" value={values.email} onChange={handleChange} />
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Email</span>
+            <input type="email" name="email" value={values.email} onChange={handleChange} className={inputClass} />
+          </label>
 
-      <label style={field}>
-        Teléfono
-        <input name="telefono" value={values.telefono} onChange={handleChange} />
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Teléfono</span>
+            <input name="telefono" value={values.telefono} onChange={handleChange} className={`${inputClass} font-label-code text-label-code`} />
+          </label>
 
-      <label style={field}>
-        Condición de pago
-        <input name="condicion_pago" value={values.condicion_pago} onChange={handleChange} placeholder="30 días" />
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Condición de pago</span>
+            <input placeholder="30 días" name="condicion_pago" value={values.condicion_pago} onChange={handleChange} className={inputClass} />
+          </label>
 
-      <label style={field}>
-        Moneda de la lista
-        <select name="moneda_lista" value={values.moneda_lista} onChange={handleChange}>
-          <option value="ARS">ARS</option>
-          <option value="USD">USD</option>
-        </select>
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Moneda de la lista</span>
+            <span className="relative">
+              <select name="moneda_lista" value={values.moneda_lista} onChange={handleChange} className={selectClass}>
+                <option value="ARS">ARS</option>
+                <option value="USD">USD</option>
+              </select>
+              <SelectIcon />
+            </span>
+          </label>
 
-      <label style={field}>
-        Estado
-        <select name="estado" value={values.estado} onChange={handleChange}>
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
-      </label>
+          <label className={fieldClass}>
+            <span className={labelClass}>Estado</span>
+            <span className="relative">
+              <select name="estado" value={values.estado} onChange={handleChange} className={selectClass}>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+              <SelectIcon />
+            </span>
+          </label>
+        </div>
+      </section>
 
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
+      {error && <p className={errorClass}>{error}</p>}
 
-      <button type="submit" disabled={submitting}>
-        {submitting ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Crear proveedor'}
-      </button>
-      {isEditing && (
-        <>
-          {' '}
-          <button type="button" onClick={() => onCancel?.()} disabled={submitting}>Cancelar</button>
-        </>
-      )}
+      <div className="flex justify-end gap-space-sm">
+        {isEditing && (
+          <button
+            type="button"
+            onClick={() => onCancel?.()}
+            disabled={submitting}
+            className="rounded border border-outline-variant bg-surface-container-lowest px-4 py-2 font-body-md text-body-md font-medium text-on-surface hover:bg-surface-container-low disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+          >
+            Cancelar
+          </button>
+        )}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="inline-flex items-center gap-1.5 rounded bg-primary px-4 py-2 font-body-md text-body-md font-medium text-on-primary hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+        >
+          <span className="material-symbols-outlined text-[18px]">save</span>
+          {submitting ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Crear proveedor'}
+        </button>
+      </div>
     </form>
+  );
+}
+
+const fieldClass = 'flex flex-col gap-1.5';
+const labelClass = 'font-body-sm text-body-sm font-medium text-on-surface-variant';
+const inputClass =
+  'h-9 w-full rounded border border-outline-variant bg-surface-container-lowest px-3 font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-primary focus:outline-none';
+const selectClass = `${inputClass} appearance-none pr-8`;
+const errorClass =
+  'rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error';
+
+function SelectIcon() {
+  return (
+    <span className="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[18px] text-outline">
+      expand_more
+    </span>
   );
 }
