@@ -57,7 +57,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
 
   // El filtro queda visible mientras carga, si hay error o si no hay resultados.
   const filterBar = (
-    <div className="mb-space-md flex font-sans items-center gap-space-sm rounded border border-outline-variant bg-surface-container-lowest p-space-md">
+    <div className="mb-space-md flex font-sans items-center gap-space-sm">
       <label className="flex items-center gap-space-sm">
         <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Estado</span>
         <span className="relative">

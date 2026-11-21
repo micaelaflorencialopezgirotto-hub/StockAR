@@ -69,8 +69,6 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
               <th className={th}>CUIT</th>
               <th className={th}>Rubro</th>
               <th className={th}>Contacto</th>
-              <th className={th}>Email</th>
-              <th className={th}>Teléfono</th>
               <th className={th}>Moneda</th>
               <th className={th}>Estado</th>
               <th className={`${th} text-right`}>Acciones</th>
@@ -79,34 +77,42 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
           <tbody>
             {suppliers.map((s) => (
               <tr key={s.id} className="border-b border-surface-container-high last:border-b-0 hover:bg-surface-container-low">
-                <td className={`${td} font-medium text-on-surface`}>{s.razon_social}</td>
-                <td className={`${td} font-label-code text-label-code`}>{s.cuit ?? '—'}</td>
+                <td className={`${td} min-w-44 font-medium text-on-surface`}>{s.razon_social}</td>
+                <td className={`${td} whitespace-nowrap font-label-code text-label-code`}>{s.cuit ?? '—'}</td>
                 <td className={td}>{s.rubro ?? '—'}</td>
-                <td className={td}>{s.contacto_nombre ?? '—'}</td>
-                <td className={td}>{s.email ?? '—'}</td>
-                <td className={`${td} font-label-code text-label-code`}>{s.telefono ?? '—'}</td>
+                <td className={td}>
+                  <span className="flex flex-col gap-0.5">
+                    <span className="text-on-surface">{s.contacto_nombre ?? '—'}</span>
+                    {s.email && (
+                      <a href={`mailto:${s.email}`} className="max-w-64 truncate text-info hover:underline" title={s.email}>{s.email}</a>
+                    )}
+                    {s.telefono && <span className="whitespace-nowrap font-label-code text-label-code">{s.telefono}</span>}
+                  </span>
+                </td>
                 <td className={`${td} font-label-code text-label-code`}>{s.moneda_lista ?? '—'}</td>
                 <td className={td}>
                   <StatusPill tone={activeTone(s.estado)}>{s.estado ?? '—'}</StatusPill>
                 </td>
                 <td className={`${td} whitespace-nowrap text-right`}>
-                  <span className="inline-flex gap-space-sm">
+                  <span className="inline-flex gap-space-xs">
                     <button
                       type="button"
                       onClick={() => onEdit?.(s)}
-                      className="inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-surface hover:bg-surface-container-low focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                      title="Editar"
+                      aria-label={`Editar ${s.razon_social}`}
+                      className="rounded border border-outline-variant bg-surface-container-lowest p-1.5 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
                     >
-                      <span className="material-symbols-outlined text-[16px]">edit</span>
-                      Editar
+                      <span className="material-symbols-outlined text-[18px]">edit</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(s)}
                       disabled={deletingId === s.id}
-                      className="inline-flex items-center gap-1 rounded border border-error-container bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-error hover:bg-error-container/40 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                      title={deletingId === s.id ? 'Eliminando…' : 'Eliminar'}
+                      aria-label={`Eliminar ${s.razon_social}`}
+                      className="rounded border border-error-container bg-surface-container-lowest p-1.5 text-error hover:bg-error-container/40 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
                     >
-                      <span className="material-symbols-outlined text-[16px]">delete</span>
-                      {deletingId === s.id ? 'Eliminando…' : 'Eliminar'}
+                      <span className="material-symbols-outlined text-[18px]">{deletingId === s.id ? 'hourglass_empty' : 'delete'}</span>
                     </button>
                   </span>
                 </td>

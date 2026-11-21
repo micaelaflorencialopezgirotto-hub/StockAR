@@ -118,7 +118,7 @@ export default function ProductForm({ product = null, onSaved, onCancel, supplie
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl space-y-space-md font-sans">
+    <form onSubmit={handleSubmit} className="space-y-space-md font-sans">
       <section className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg">
         <SectionHeader number="01" title="Información general" />
         <div className="grid grid-cols-1 gap-space-md md:grid-cols-3">
@@ -256,7 +256,7 @@ export default function ProductForm({ product = null, onSaved, onCancel, supplie
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 rounded bg-primary px-4 py-2 font-body-md text-body-md font-medium text-on-primary hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+          className="inline-flex items-center gap-1.5 rounded bg-primary-container px-4 py-2 font-body-md text-body-md font-medium text-on-primary hover:bg-on-primary-fixed-variant disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
         >
           <span className="material-symbols-outlined text-[18px]">save</span>
           {submitting ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Crear producto'}

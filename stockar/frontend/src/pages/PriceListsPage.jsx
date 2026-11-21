@@ -19,7 +19,7 @@ import {
   formatDateTime,
   formatMoney,
   mutedText,
-  pageTitle,
+  PageHeader,
   secondaryButton,
   sectionTitle,
   selectClass,
@@ -114,23 +114,23 @@ export default function PriceListsPage() {
 
   return (
     <div className="space-y-space-xl">
-      <section className="flex flex-wrap items-end justify-between gap-space-md">
-        <div>
-          <h2 className={pageTitle}>Listas de precios</h2>
-          <p className={mutedText}>Precios de lista y disponibilidad que informa cada proveedor.</p>
-        </div>
-        <label className="flex items-center gap-space-sm">
-          <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Proveedor</span>
-          <span className="relative">
-            <select value={supplierId} onChange={(e) => changeSupplier(e.target.value)} className={`${selectClass} w-auto min-w-64`}>
-              {suppliers.map((s) => (
-                <option key={s.id} value={s.id}>{s.razon_social}{s.estado === 'activo' ? '' : ' (inactivo)'}</option>
-              ))}
-            </select>
-            <SelectIcon />
-          </span>
-        </label>
-      </section>
+      <PageHeader
+        title="Listas de precios"
+        description="Precios de lista y disponibilidad que informa cada proveedor. Cargalos a mano o importá la lista del proveedor en CSV."
+        actions={
+          <label className="flex items-center gap-space-sm">
+            <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Proveedor</span>
+            <span className="relative">
+              <select value={supplierId} onChange={(e) => changeSupplier(e.target.value)} className={`${selectClass} w-auto min-w-64`}>
+                {suppliers.map((s) => (
+                  <option key={s.id} value={s.id}>{s.razon_social}{s.estado === 'activo' ? '' : ' (inactivo)'}</option>
+                ))}
+              </select>
+              <SelectIcon />
+            </span>
+          </label>
+        }
+      />
 
       {error && <p className={errorClass}>{error}</p>}
 

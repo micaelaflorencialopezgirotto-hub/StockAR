@@ -18,7 +18,7 @@ export const td = 'px-4 py-3 font-body-md text-body-md text-on-surface-variant';
 export const tdNumBase = 'px-4 py-3 text-right font-label-tabular text-label-tabular tabular-nums';
 export const tdNum = `${tdNumBase} text-on-surface`;
 export const primaryButton =
-  'inline-flex items-center gap-1.5 rounded bg-primary px-4 py-2 font-body-md text-body-md font-medium text-on-primary hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary';
+  'inline-flex items-center gap-1.5 rounded bg-primary-container px-4 py-2 font-body-md text-body-md font-medium text-on-primary hover:bg-on-primary-fixed-variant disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary';
 export const secondaryButton =
   'inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-surface hover:bg-surface-container-low focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary';
 export const codeBadge =
@@ -108,3 +108,54 @@ export const MOVEMENT_TYPES = {
 };
 
 export const isReservation = (tipo) => tipo === 'reserva' || tipo === 'liberacion_reserva';
+
+// Encabezado de cada pantalla: título, descripción y acciones a la derecha.
+export function PageHeader({ title, description, actions }) {
+  return (
+    <div className="mb-space-lg flex flex-col gap-space-md border-b border-outline-variant pb-space-lg md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-space-xs">
+        <h2 className={pageTitle}>{title}</h2>
+        {description && <p className={`max-w-2xl ${mutedText}`}>{description}</p>}
+      </div>
+      {actions && <div className="flex shrink-0 flex-wrap gap-space-sm">{actions}</div>}
+    </div>
+  );
+}
+
+// Panel con barra de título para formularios que se abren y se cierran.
+export function Panel({ title, icon, onClose, children }) {
+  return (
+    <section className="mb-space-xl overflow-hidden rounded-md border border-outline-variant bg-surface-container-low">
+      <div className="flex items-center justify-between gap-space-sm border-b border-outline-variant bg-surface-container-lowest px-space-lg py-space-md">
+        <h3 className={`flex items-center gap-space-sm ${sectionTitle}`}>
+          {icon && <span className="material-symbols-outlined rounded bg-primary-fixed p-1 text-[20px] text-on-primary-fixed">{icon}</span>}
+          {title}
+        </h3>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar"
+            className="rounded p-1 text-outline hover:bg-surface-container hover:text-on-surface focus-visible:outline-2 focus-visible:outline-secondary"
+          >
+            <span className="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        )}
+      </div>
+      <div className="p-space-lg">{children}</div>
+    </section>
+  );
+}
+
+// Título de sección dentro de una pantalla, con texto de ayuda y acciones opcionales.
+export function SectionHeader({ title, description, actions }) {
+  return (
+    <div className="mb-space-md flex flex-wrap items-end justify-between gap-space-sm">
+      <div>
+        <h3 className={sectionTitle}>{title}</h3>
+        {description && <p className={`mt-space-xs ${mutedText}`}>{description}</p>}
+      </div>
+      {actions}
+    </div>
+  );
+}

@@ -10,18 +10,40 @@ import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
 import SupplierForm from './components/SupplierForm.jsx';
 import SupplierList from './components/SupplierList.jsx';
+import { PageHeader, Panel, SectionHeader, primaryButton } from './components/ui.jsx';
+
+function NewButton({ onClick, children }) {
+  return (
+    <button type="button" onClick={onClick} className={primaryButton}>
+      <span className="material-symbols-outlined text-[18px]">add</span>
+      {children}
+    </button>
+  );
+}
 
 export default function App() {
   const [productsRefresh, setProductsRefresh] = useState(0);
   const [suppliersRefresh, setSuppliersRefresh] = useState(0);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingSupplier, setEditingSupplier] = useState(null);
+  // Los formularios de alta quedan plegados hasta tocar "Nuevo …"; al editar se abren solos.
+  const [creatingProduct, setCreatingProduct] = useState(false);
+  const [creatingSupplier, setCreatingSupplier] = useState(false);
 
   const refreshProducts = () => setProductsRefresh((n) => n + 1);
   const refreshSuppliers = () => setSuppliersRefresh((n) => n + 1);
 
-  // Al elegir "Editar", lleva la vista al formulario correspondiente.
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  // Al abrir un formulario, lleva la vista hasta él (después de que se renderiza).
+  const scrollTo = (id) => setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 0);
+
+  const closeProductForm = () => {
+    setEditingProduct(null);
+    setCreatingProduct(false);
+  };
+  const closeSupplierForm = () => {
+    setEditingSupplier(null);
+    setCreatingSupplier(false);
+  };
 
   return (
     <Routes>
@@ -36,20 +58,45 @@ export default function App() {
           path="/proveedores"
           element={
             <section>
-              <h2 id="supplier-form" className="mb-space-md scroll-mt-20 font-headline-xl-mobile text-headline-xl-mobile text-on-surface md:font-headline-xl md:text-headline-xl">{editingSupplier ? `Editar proveedor: ${editingSupplier.razon_social}` : 'Nuevo proveedor'}</h2>
-              <SupplierForm
-                supplier={editingSupplier}
-                onSaved={() => {
-                  setEditingSupplier(null);
-                  refreshSuppliers();
-                }}
-                onCancel={() => setEditingSupplier(null)}
+              <PageHeader
+                title="Proveedores"
+                description="Directorio de proveedores y comparación de sus precios de lista."
+                actions={
+                  <NewButton
+                    onClick={() => {
+                      setEditingSupplier(null);
+                      setCreatingSupplier(true);
+                      scrollTo('supplier-form');
+                    }}
+                  >
+                    Nuevo proveedor
+                  </NewButton>
+                }
               />
 
-              <h2 className="mb-space-md mt-space-xl font-headline-lg text-headline-lg text-on-surface">Proveedores</h2>
+              {(creatingSupplier || editingSupplier) && (
+                <div id="supplier-form" className="scroll-mt-24">
+                  <Panel
+                    title={editingSupplier ? `Editar proveedor: ${editingSupplier.razon_social}` : 'Nuevo proveedor'}
+                    icon={editingSupplier ? 'edit' : 'person_add'}
+                    onClose={closeSupplierForm}
+                  >
+                    <SupplierForm
+                      supplier={editingSupplier}
+                      onSaved={() => {
+                        closeSupplierForm();
+                        refreshSuppliers();
+                      }}
+                      onCancel={closeSupplierForm}
+                    />
+                  </Panel>
+                </div>
+              )}
+
               <SupplierList
                 refreshTrigger={suppliersRefresh}
                 onEdit={(supplier) => {
+                  setCreatingSupplier(false);
                   setEditingSupplier(supplier);
                   scrollTo('supplier-form');
                 }}
@@ -59,11 +106,13 @@ export default function App() {
                 }}
               />
 
-              <h2 className="mb-space-xs mt-space-xl font-headline-lg text-headline-lg text-on-surface">Comparador de precios</h2>
-              <p className="mb-space-md font-body-md text-body-md text-on-surface-variant">
-                Precio de lista y disponibilidad que informa cada proveedor, por producto.
-              </p>
-              <PriceComparison refreshTrigger={suppliersRefresh} />
+              <div className="mt-space-xl">
+                <SectionHeader
+                  title="Comparador de precios"
+                  description="Precio de lista y disponibilidad que informa cada proveedor, por producto."
+                />
+                <PriceComparison refreshTrigger={suppliersRefresh} />
+              </div>
             </section>
           }
         />
@@ -72,21 +121,46 @@ export default function App() {
           path="/productos"
           element={
             <section>
-              <h2 id="product-form" className="mb-space-md scroll-mt-20 font-headline-xl-mobile text-headline-xl-mobile text-on-surface md:font-headline-xl md:text-headline-xl">{editingProduct ? `Editar producto: ${editingProduct.nombre}` : 'Nuevo producto'}</h2>
-              <ProductForm
-                product={editingProduct}
-                onSaved={() => {
-                  setEditingProduct(null);
-                  refreshProducts();
-                }}
-                onCancel={() => setEditingProduct(null)}
-                suppliersRefreshTrigger={suppliersRefresh}
+              <PageHeader
+                title="Productos"
+                description="Catálogo con el stock del depósito propio, precio de venta y estado de cada artículo."
+                actions={
+                  <NewButton
+                    onClick={() => {
+                      setEditingProduct(null);
+                      setCreatingProduct(true);
+                      scrollTo('product-form');
+                    }}
+                  >
+                    Nuevo producto
+                  </NewButton>
+                }
               />
 
-              <h2 className="mb-space-md mt-space-xl font-headline-lg text-headline-lg text-on-surface">Productos</h2>
+              {(creatingProduct || editingProduct) && (
+                <div id="product-form" className="scroll-mt-24">
+                  <Panel
+                    title={editingProduct ? `Editar producto: ${editingProduct.nombre}` : 'Nuevo producto'}
+                    icon={editingProduct ? 'edit' : 'add_box'}
+                    onClose={closeProductForm}
+                  >
+                    <ProductForm
+                      product={editingProduct}
+                      onSaved={() => {
+                        closeProductForm();
+                        refreshProducts();
+                      }}
+                      onCancel={closeProductForm}
+                      suppliersRefreshTrigger={suppliersRefresh}
+                    />
+                  </Panel>
+                </div>
+              )}
+
               <ProductList
                 refreshTrigger={productsRefresh}
                 onEdit={(product) => {
+                  setCreatingProduct(false);
                   setEditingProduct(product);
                   scrollTo('product-form');
                 }}

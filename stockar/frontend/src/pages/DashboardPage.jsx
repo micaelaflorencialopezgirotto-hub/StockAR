@@ -15,7 +15,9 @@ import {
   formatMoney,
   formatQty,
   mutedText,
-  pageTitle,
+  PageHeader,
+  primaryButton,
+  secondaryButton,
   sectionTitle,
   stockStatus,
   td,
@@ -78,8 +80,24 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-space-xl">
+      <PageHeader
+        title="Dashboard"
+        description="Resumen del stock del depósito propio, reposición pendiente y últimos movimientos."
+        actions={
+          <>
+            <Link to="/movimientos" className={`${secondaryButton} px-4 py-2`}>
+              <span className="material-symbols-outlined text-[18px]">swap_horiz</span>
+              Movimientos
+            </Link>
+            <Link to="/productos" className={primaryButton}>
+              <span className="material-symbols-outlined text-[18px]">inventory_2</span>
+              Productos
+            </Link>
+          </>
+        }
+      />
+
       <section>
-        <h2 className={`mb-space-md ${pageTitle}`}>Resumen</h2>
         <div className="grid grid-cols-1 gap-space-md sm:grid-cols-2 lg:grid-cols-3">
           <MetricCard label="Productos" icon="inventory_2" iconTone="info" value={products.length.toLocaleString('es-AR')} hint="En el catálogo" />
           <MetricCard label="Stock normal" icon="check_circle" iconTone="success" value={counts.normal.toLocaleString('es-AR')} hint="Sobre el mínimo" />
