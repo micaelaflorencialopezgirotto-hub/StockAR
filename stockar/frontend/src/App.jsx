@@ -17,7 +17,7 @@ export default function App() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', padding: 16, maxWidth: 1000, margin: '0 auto' }}>
+    <main style={{ padding: 16, maxWidth: 1000, margin: '0 auto' }}>
       <h1>StockAR</h1>
 
       <section>

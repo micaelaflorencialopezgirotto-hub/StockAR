@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { getAll as getProducts, remove } from '../services/products.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
 
-const cell = { border: '1px solid #ddd', padding: '6px 8px', textAlign: 'left' };
-
 // onEdit(product): se eligió un producto para editar.
 // onDeleted(product): se eliminó un producto (App refresca la lista).
 export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
@@ -57,21 +55,34 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
 
   // El filtro queda visible mientras carga, si hay error o si no hay resultados.
   const filterBar = (
-    <label style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginBottom: 10 }}>
-      Estado
-      <select value={estadoFilter} onChange={(e) => setEstadoFilter(e.target.value)}>
-        <option value="">Todos</option>
-        <option value="activo">Activo</option>
-        <option value="inactivo">Inactivo</option>
-      </select>
-    </label>
+    <div className="mb-space-md flex font-sans items-center gap-space-sm rounded border border-outline-variant bg-surface-container-lowest p-space-md">
+      <label className="flex items-center gap-space-sm">
+        <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Estado</span>
+        <span className="relative">
+          <select
+            className="h-9 appearance-none rounded border border-outline-variant bg-surface-container-lowest pl-3 pr-8 font-body-md text-body-md text-on-surface focus:border-primary focus:outline-none"
+            value={estadoFilter}
+            onChange={(e) => setEstadoFilter(e.target.value)}
+          >
+            <option value="">Todos</option>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+          <span className="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[18px] text-outline">expand_more</span>
+        </span>
+      </label>
+    </div>
   );
 
   let content;
-  if (loading) content = <p>Cargando productos…</p>;
-  else if (error) content = <p style={{ color: 'crimson' }}>{error}</p>;
+  if (loading) content = <p className="font-body-md text-body-md text-on-surface-variant">Cargando productos…</p>;
+  else if (error) content = <p className="rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error">{error}</p>;
   else if (products.length === 0) {
-    content = <p>{estadoFilter ? `No hay productos con estado "${estadoFilter}".` : 'No hay productos cargados.'}</p>;
+    content = (
+      <p className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg text-center font-body-md text-body-md text-on-surface-variant">
+        {estadoFilter ? `No hay productos con estado "${estadoFilter}".` : 'No hay productos cargados.'}
+      </p>
+    );
   }
 
   if (content) {
@@ -86,38 +97,60 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
   return (
     <>
       {filterBar}
-      {deleteError && <p style={{ color: 'crimson' }}>{deleteError}</p>}
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-        <thead>
-          <tr>
-            <th style={cell}>Nombre</th>
-            <th style={cell}>Código</th>
-            <th style={cell}>Marca</th>
-            <th style={cell}>Modelo</th>
-            <th style={cell}>Descripción</th>
-            <th style={cell}>Estado</th>
-            <th style={cell}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p.id}>
-              <td style={cell}>{p.nombre}</td>
-              <td style={cell}>{p.sku}</td>
-              <td style={cell}>{brandNames[p.marca_id] ?? '—'}</td>
-              <td style={cell}>{p.modelo ?? '—'}</td>
-              <td style={cell}>{p.descripcion_tecnica ?? '—'}</td>
-              <td style={cell}>{p.estado_catalogo ?? '—'}</td>
-              <td style={{ ...cell, whiteSpace: 'nowrap' }}>
-                <button type="button" onClick={() => onEdit?.(p)}>Editar</button>{' '}
-                <button type="button" onClick={() => handleDelete(p)} disabled={deletingId === p.id}>
-                  {deletingId === p.id ? 'Eliminando…' : 'Eliminar'}
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {deleteError && <p className="mb-space-md rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error">{deleteError}</p>}
+      <ul className="grid font-sans grid-cols-1 gap-space-md md:grid-cols-2 xl:grid-cols-3">
+        {products.map((p) => (
+          <li key={p.id} className="flex flex-col rounded border border-outline-variant bg-surface-container-lowest p-space-lg">
+            <div className="flex items-start justify-between gap-space-sm">
+              <span className="rounded border border-outline-variant bg-surface-container-low px-1.5 py-0.5 font-label-code text-label-code text-on-surface-variant">{p.sku}</span>
+              <span className="inline-flex items-center gap-1.5 rounded border border-outline-variant bg-surface-container-low px-2 py-0.5 font-body-sm text-body-sm text-on-surface-variant">
+                <span className={`size-1.5 rounded-full ${p.estado_catalogo === 'activo' ? 'bg-secondary' : 'bg-outline'}`} />
+                {p.estado_catalogo ?? '—'}
+              </span>
+            </div>
+
+            <h3 className="mt-space-sm font-headline-md text-headline-md text-on-surface">{p.nombre}</h3>
+            {p.descripcion_tecnica && (
+              <p className="mt-space-xs line-clamp-3 font-body-md text-body-md text-on-surface-variant">{p.descripcion_tecnica}</p>
+            )}
+
+            <dl className="mt-space-md grid grid-cols-3 gap-space-sm border-t border-surface-container-high pt-space-md">
+              <div>
+                <dt className="font-label-caps text-label-caps uppercase text-outline">Marca</dt>
+                <dd className="truncate font-body-md text-body-md text-on-surface">{brandNames[p.marca_id] ?? '—'}</dd>
+              </div>
+              <div>
+                <dt className="font-label-caps text-label-caps uppercase text-outline">Modelo</dt>
+                <dd className="truncate font-body-md text-body-md text-on-surface">{p.modelo ?? '—'}</dd>
+              </div>
+              <div>
+                <dt className="font-label-caps text-label-caps uppercase text-outline">Unidad</dt>
+                <dd className="font-label-tabular text-label-tabular text-on-surface">{p.unidad_medida ?? '—'}</dd>
+              </div>
+            </dl>
+
+            <div className="mt-auto flex justify-end gap-space-sm pt-space-md">
+              <button
+                type="button"
+                onClick={() => onEdit?.(p)}
+                className="inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-surface hover:bg-surface-container-low focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+              >
+                <span className="material-symbols-outlined text-[16px]">edit</span>
+                Editar
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(p)}
+                disabled={deletingId === p.id}
+                className="inline-flex items-center gap-1 rounded border border-error-container bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-error hover:bg-error-container/40 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+              >
+                <span className="material-symbols-outlined text-[16px]">delete</span>
+                {deletingId === p.id ? 'Eliminando…' : 'Eliminar'}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
