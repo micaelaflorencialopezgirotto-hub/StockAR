@@ -33,6 +33,22 @@ function notFound(res, message) {
 }
 
 /**
+ * Impide borrar un registro que otros todavía referencian.
+ * @param id      id del registro que se quiere borrar
+ * @param usedBy  [{ model, field, label: [singular, plural] }] — entidades que guardan este id en `field`
+ */
+export async function assertNotInUse(id, usedBy = []) {
+  const usos = [];
+  for (const { model, field, label: [singular, plural] } of usedBy) {
+    const cantidad = (await model.getAll()).filter((item) => item[field] === id).length;
+    if (cantidad) usos.push(`${cantidad} ${cantidad === 1 ? singular : plural}`);
+  }
+  if (usos.length) {
+    throw new ValidationError(409, `No se puede eliminar: está en uso por ${usos.join(', ')}`);
+  }
+}
+
+/**
  * @param model  modelo creado con createModel
  * @param options.notFoundMessage  mensaje para el 404
  * @param options.required    campos obligatorios
@@ -40,6 +56,7 @@ function notFound(res, message) {
  * @param options.references  { campo: modeloReferenciado } — valida que el id exista
  * @param options.unique      [[campo], [campoA, campoB]] — combinaciones únicas
  * @param options.validate    (merged, current) => mensaje de error | null
+ * @param options.usedBy      [{ model, field, label: [singular, plural] }] — bloquea el DELETE (409) si hay registros que lo usan
  */
 export function createController(model, options) {
   const {
@@ -49,6 +66,7 @@ export function createController(model, options) {
     references = {},
     unique = [],
     validate,
+    usedBy = [],
   } = options;
 
   // current = null en el alta; el registro existente en una edición
@@ -135,6 +153,8 @@ export function createController(model, options) {
 
   async function remove(req, res) {
     try {
+      if (!(await model.getById(req.params.id))) return notFound(res, notFoundMessage);
+      await assertNotInUse(req.params.id, usedBy);
       const data = await model.remove(req.params.id);
       if (!data) return notFound(res, notFoundMessage);
       return res.status(200).json({ status: 200, data });

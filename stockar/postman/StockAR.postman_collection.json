@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "StockAR API",
-    "description": "Colección completa de endpoints REST de StockAR. Incluye CRUD por entidad, filtros por query params y casos de error 400/404.",
+    "description": "Colección completa de endpoints REST de StockAR. Incluye CRUD por entidad, filtros por query params y casos de error 400/404/409.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -627,6 +627,46 @@
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Producto no encontrado\"\n  }\n}"
             }
           ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/producto-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "producto-01"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
+            }
+          ]
         }
       ]
     },
@@ -1096,6 +1136,46 @@
               ],
               "cookie": [],
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/categoria-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "categoria-01"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
             }
           ]
         }
@@ -1569,6 +1649,46 @@
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
             }
           ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/brands/marca-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "brands",
+                "marca-01"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
+            }
+          ]
         }
       ]
     },
@@ -2038,6 +2158,46 @@
               ],
               "cookie": [],
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/warehouses/deposito-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "warehouses",
+                "deposito-01"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
             }
           ]
         }
@@ -2511,6 +2671,46 @@
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
             }
           ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/suppliers/proveedor-demo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "suppliers",
+                "proveedor-demo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
+            }
+          ]
         }
       ]
     },
@@ -2980,6 +3180,46 @@
               ],
               "cookie": [],
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/product-suppliers/producto-proveedor-demo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "product-suppliers",
+                "producto-proveedor-demo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
             }
           ]
         }
@@ -3922,6 +4162,46 @@
               ],
               "cookie": [],
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/price-lists/lista-precios-demo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "price-lists",
+                "lista-precios-demo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
             }
           ]
         }
@@ -5190,6 +5470,46 @@
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
             }
           ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/purchase-orders/orden-compra-demo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "purchase-orders",
+                "orden-compra-demo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
+            }
+          ]
         }
       ]
     },
@@ -6130,6 +6450,46 @@
               ],
               "cookie": [],
               "body": "{\n  \"status\": 404,\n  \"data\": {\n    \"message\": \"Registro no encontrado\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE - Error 409 (en uso)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/usuario-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "usuario-01"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 - En uso",
+              "originalRequest": null,
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": 409,\n  \"data\": {\n    \"message\": \"No se puede eliminar: está en uso por ...\"\n  }\n}"
             }
           ]
         }
