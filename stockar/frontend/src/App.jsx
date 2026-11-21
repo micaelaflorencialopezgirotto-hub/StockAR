@@ -4,6 +4,7 @@ import Layout from './components/Layout.jsx';
 import PriceComparison from './components/PriceComparison.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import MovementsPage from './pages/MovementsPage.jsx';
+import PriceListsPage from './pages/PriceListsPage.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
@@ -28,6 +29,7 @@ export default function App() {
         <Route index element={<Navigate to="/productos" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/movimientos" element={<MovementsPage />} />
+        <Route path="/listas-precios" element={<PriceListsPage />} />
         <Route path="/productos/:id" element={<ProductDetailPage />} />
 
         <Route

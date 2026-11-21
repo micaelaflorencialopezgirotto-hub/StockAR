@@ -5,6 +5,7 @@ const TABS = [
   { to: '/productos', label: 'Productos', icon: 'inventory_2' },
   { to: '/movimientos', label: 'Movimientos', icon: 'swap_horiz' },
   { to: '/proveedores', label: 'Proveedores', icon: 'request_quote' },
+  { to: '/listas-precios', label: 'Listas de precios', icon: 'price_change' },
 ];
 
 const tabBase = 'flex shrink-0 items-center gap-2.5 rounded px-3 py-2 font-body-md text-body-md font-medium transition-colors';
