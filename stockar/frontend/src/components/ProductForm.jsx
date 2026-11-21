@@ -23,7 +23,8 @@ function toPayload(values) {
   );
 }
 
-export default function ProductForm({ onCreated }) {
+// suppliersRefreshTrigger: cuando cambia (p. ej. se creó un proveedor), recarga las opciones de los selects.
+export default function ProductForm({ onCreated, suppliersRefreshTrigger }) {
   const [values, setValues] = useState(INITIAL);
   const [suppliers, setSuppliers] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -32,6 +33,7 @@ export default function ProductForm({ onCreated }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setOptionsError(null);
     Promise.all([getSuppliers(), getBrands()])
       .then(([suppliersData, brandsData]) => {
         setSuppliers(suppliersData);
@@ -40,7 +42,7 @@ export default function ProductForm({ onCreated }) {
       .catch((err) => {
         setOptionsError(err.response?.data?.data?.message || 'No se pudieron cargar proveedores y marcas');
       });
-  }, []);
+  }, [suppliersRefreshTrigger]);
 
   function handleChange(e) {
     setValues({ ...values, [e.target.name]: e.target.value });
