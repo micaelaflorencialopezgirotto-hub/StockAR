@@ -1,11 +1,13 @@
 import { NavLink, Outlet } from 'react-router-dom';
 
 const TABS = [
+  { to: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
   { to: '/productos', label: 'Productos', icon: 'inventory_2' },
+  { to: '/movimientos', label: 'Movimientos', icon: 'swap_horiz' },
   { to: '/proveedores', label: 'Proveedores', icon: 'request_quote' },
 ];
 
-const tabBase = 'flex items-center gap-2.5 rounded px-3 py-2 font-body-md text-body-md font-medium transition-colors';
+const tabBase = 'flex shrink-0 items-center gap-2.5 rounded px-3 py-2 font-body-md text-body-md font-medium transition-colors';
 const tabActive = 'bg-primary text-on-primary';
 const tabIdle = 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface';
 
@@ -16,7 +18,7 @@ export default function Layout() {
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-space-lg px-margin-mobile md:px-margin">
           <span className="font-headline-md text-headline-md font-semibold text-on-surface">StockAR</span>
 
-          <nav className="flex items-center gap-space-xs">
+          <nav className="flex items-center gap-space-xs overflow-x-auto">
             {TABS.map((tab) => (
               <NavLink
                 key={tab.to}

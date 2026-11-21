@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAll as getProducts, remove } from '../services/products.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
 
@@ -109,7 +110,9 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
               </span>
             </div>
 
-            <h3 className="mt-space-sm font-headline-md text-headline-md text-on-surface">{p.nombre}</h3>
+            <h3 className="mt-space-sm font-headline-md text-headline-md text-on-surface">
+              <Link to={`/productos/${p.id}`} className="hover:underline">{p.nombre}</Link>
+            </h3>
             {p.descripcion_tecnica && (
               <p className="mt-space-xs line-clamp-3 font-body-md text-body-md text-on-surface-variant">{p.descripcion_tecnica}</p>
             )}

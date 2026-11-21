@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
+import PriceComparison from './components/PriceComparison.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
+import MovementsPage from './pages/MovementsPage.jsx';
+import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
 import SupplierForm from './components/SupplierForm.jsx';
@@ -22,6 +26,9 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Navigate to="/productos" replace />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/movimientos" element={<MovementsPage />} />
+        <Route path="/productos/:id" element={<ProductDetailPage />} />
 
         <Route
           path="/proveedores"
@@ -49,6 +56,12 @@ export default function App() {
                   refreshSuppliers();
                 }}
               />
+
+              <h2 className="mb-space-xs mt-space-xl font-headline-lg text-headline-lg text-on-surface">Comparador de precios</h2>
+              <p className="mb-space-md font-body-md text-body-md text-on-surface-variant">
+                Precio de lista y disponibilidad que informa cada proveedor, por producto.
+              </p>
+              <PriceComparison refreshTrigger={suppliersRefresh} />
             </section>
           }
         />
