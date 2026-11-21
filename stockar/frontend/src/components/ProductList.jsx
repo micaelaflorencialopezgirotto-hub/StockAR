@@ -13,13 +13,16 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
   const [error, setError] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [estadoFilter, setEstadoFilter] = useState(''); // '' = todos
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setError(null);
 
-    Promise.all([getProducts(), getBrands()])
+    const filters = estadoFilter ? { estado_catalogo: estadoFilter } : undefined;
+
+    Promise.all([getProducts(filters), getBrands()])
       .then(([productsData, brandsData]) => {
         if (cancelled) return;
         setProducts(productsData);
@@ -36,7 +39,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
     return () => {
       cancelled = true;
     };
-  }, [refreshTrigger]);
+  }, [refreshTrigger, estadoFilter]);
 
   async function handleDelete(product) {
     if (!window.confirm(`¿Eliminar el producto "${product.nombre}"?`)) return;
@@ -52,12 +55,37 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
     }
   }
 
-  if (loading) return <p>Cargando productos…</p>;
-  if (error) return <p style={{ color: 'crimson' }}>{error}</p>;
-  if (products.length === 0) return <p>No hay productos cargados.</p>;
+  // El filtro queda visible mientras carga, si hay error o si no hay resultados.
+  const filterBar = (
+    <label style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginBottom: 10 }}>
+      Estado
+      <select value={estadoFilter} onChange={(e) => setEstadoFilter(e.target.value)}>
+        <option value="">Todos</option>
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </label>
+  );
+
+  let content;
+  if (loading) content = <p>Cargando productos…</p>;
+  else if (error) content = <p style={{ color: 'crimson' }}>{error}</p>;
+  else if (products.length === 0) {
+    content = <p>{estadoFilter ? `No hay productos con estado "${estadoFilter}".` : 'No hay productos cargados.'}</p>;
+  }
+
+  if (content) {
+    return (
+      <>
+        {filterBar}
+        {content}
+      </>
+    );
+  }
 
   return (
     <>
+      {filterBar}
       {deleteError && <p style={{ color: 'crimson' }}>{deleteError}</p>}
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
