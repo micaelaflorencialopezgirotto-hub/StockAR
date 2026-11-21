@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { create } from '../services/products.service.js';
+import { create, update } from '../services/products.service.js';
 import { getAll as getSuppliers } from '../services/suppliers.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
 
@@ -14,7 +14,20 @@ const INITIAL = {
   proveedor_principal_id: '',
 };
 
+// Selects sin opción vacía: si el registro no tiene valor, usan el default.
+const SELECTS_WITH_DEFAULT = ['estado_catalogo'];
+
 const field = { display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 };
+
+function toFormValues(product) {
+  return Object.fromEntries(
+    Object.keys(INITIAL).map((key) => {
+      const value = product[key];
+      if (value == null) return [key, SELECTS_WITH_DEFAULT.includes(key) ? INITIAL[key] : ''];
+      return [key, String(value)];
+    })
+  );
+}
 
 // Los campos opcionales vacíos se mandan como null, igual que en los datos del backend.
 function toPayload(values) {
@@ -23,14 +36,24 @@ function toPayload(values) {
   );
 }
 
+// product: producto a editar, o null para crear uno nuevo.
+// onSaved(product, { created }): se creó o editó un producto.
+// onCancel(): se canceló la edición.
 // suppliersRefreshTrigger: cuando cambia (p. ej. se creó un proveedor), recarga las opciones de los selects.
-export default function ProductForm({ onCreated, suppliersRefreshTrigger }) {
+export default function ProductForm({ product = null, onSaved, onCancel, suppliersRefreshTrigger }) {
   const [values, setValues] = useState(INITIAL);
   const [suppliers, setSuppliers] = useState([]);
   const [brands, setBrands] = useState([]);
   const [optionsError, setOptionsError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+
+  const isEditing = product !== null;
+
+  useEffect(() => {
+    setValues(product ? toFormValues(product) : INITIAL);
+    setError(null);
+  }, [product]);
 
   useEffect(() => {
     setOptionsError(null);
@@ -53,11 +76,16 @@ export default function ProductForm({ onCreated, suppliersRefreshTrigger }) {
     setSubmitting(true);
     setError(null);
     try {
-      await create(toPayload(values));
-      setValues(INITIAL);
-      onCreated?.();
+      const saved = isEditing
+        ? await update(product.id, toPayload(values))
+        : await create(toPayload(values));
+      if (!isEditing) setValues(INITIAL);
+      onSaved?.(saved, { created: !isEditing });
     } catch (err) {
-      setError(err.response?.data?.data?.message || 'No se pudo crear el producto');
+      setError(
+        err.response?.data?.data?.message ||
+          (isEditing ? 'No se pudo guardar el producto' : 'No se pudo crear el producto')
+      );
     } finally {
       setSubmitting(false);
     }
@@ -122,8 +150,14 @@ export default function ProductForm({ onCreated, suppliersRefreshTrigger }) {
       {error && <p style={{ color: 'crimson' }}>{error}</p>}
 
       <button type="submit" disabled={submitting}>
-        {submitting ? 'Guardando…' : 'Crear producto'}
+        {submitting ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Crear producto'}
       </button>
+      {isEditing && (
+        <>
+          {' '}
+          <button type="button" onClick={() => onCancel?.()} disabled={submitting}>Cancelar</button>
+        </>
+      )}
     </form>
   );
 }
