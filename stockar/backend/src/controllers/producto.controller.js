@@ -15,7 +15,7 @@ const USED_BY = [
 
 async function getAll(req, res) {
   try {
-    const data = await productoModel.getAll();
+    const data = await productoModel.getAll(req.query);
     return res.status(200).json({ status: 200, data });
   } catch (error) {
     return res.status(500).json({ status: 500, data: { message: 'Error interno del servidor' } });

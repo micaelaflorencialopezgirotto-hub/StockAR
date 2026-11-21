@@ -93,8 +93,15 @@ function pickAttributes(source) {
 }
 
 export const productoModel = {
-  async getAll() {
-    return productos.map((producto) => ({ ...producto }));
+  // filters: { atributo: valor } — por ejemplo los query params (?estado_catalogo=activo).
+  // Mismo criterio que crud.model.js: se ignoran las claves que no son atributos del producto.
+  async getAll(filters = {}) {
+    const entries = Object.entries(filters).filter(
+      ([key]) => key === 'id' || PRODUCT_ATTRIBUTES.includes(key),
+    );
+    return productos
+      .filter((producto) => entries.every(([key, value]) => String(producto[key]) === String(value)))
+      .map((producto) => ({ ...producto }));
   },
 
   async getById(id) {
