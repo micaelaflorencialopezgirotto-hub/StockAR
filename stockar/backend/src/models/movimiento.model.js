@@ -33,6 +33,24 @@ export const movimientoModel = createModel({
     costo_unitario: null,
     detalle: null,
   },
+  seed: [
+    {
+      id: 'movimiento-demo',
+      producto_id: 'producto-01',
+      deposito_id: 'deposito-01',
+      tipo: 'entrada_compra',
+      cantidad: 250,
+      saldo_posterior: 250,
+      fecha_hora: '2026-11-20T12:00:00.000Z',
+      usuario_id: 'usuario-01',
+      comprobante_ref: 'FC-A-0001-00001234',
+      orden_compra_id: null,
+      costo_unitario: 125,
+      detalle: 'Stock inicial',
+      creado_en: '2026-11-20T12:00:00.000Z',
+      actualizado_en: '2026-11-20T12:00:00.000Z',
+    },
+  ],
 });
 
 export default movimientoModel;

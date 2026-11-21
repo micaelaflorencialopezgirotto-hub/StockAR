@@ -212,7 +212,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/products",
+              "raw": "{{baseUrl}}/api/products?estado_catalogo=activo",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -683,7 +683,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/categories",
+              "raw": "{{baseUrl}}/api/categories?nombre=Torniller%C3%ADa%20y%20fijaciones",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -1154,7 +1154,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/brands",
+              "raw": "{{baseUrl}}/api/brands?nombre=Gen%C3%A9rica",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -1625,7 +1625,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/warehouses",
+              "raw": "{{baseUrl}}/api/warehouses?codigo=DEP-01",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -2096,7 +2096,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/suppliers",
+              "raw": "{{baseUrl}}/api/suppliers?estado=activo",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -2567,7 +2567,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/product-suppliers",
+              "raw": "{{baseUrl}}/api/product-suppliers?producto_id=producto-01",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -3038,7 +3038,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/price-history",
+              "raw": "{{baseUrl}}/api/price-history?vigente_desde=2026-11-21",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -3509,7 +3509,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/price-lists",
+              "raw": "{{baseUrl}}/api/price-lists?estado=pendiente_revision",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -3980,7 +3980,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/price-list-items",
+              "raw": "{{baseUrl}}/api/price-list-items?tipo_cambio=precio",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -4451,7 +4451,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/movements",
+              "raw": "{{baseUrl}}/api/movements?tipo=entrada_compra",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -4775,7 +4775,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/purchase-orders",
+              "raw": "{{baseUrl}}/api/purchase-orders?estado=borrador",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -5246,7 +5246,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/purchase-order-items",
+              "raw": "{{baseUrl}}/api/purchase-order-items?producto_id=producto-01",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -5717,7 +5717,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/users",
+              "raw": "{{baseUrl}}/api/users?rol=due%C3%B1a",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -5728,7 +5728,7 @@
               "query": [
                 {
                   "key": "rol",
-                  "value": "jefe_deposito",
+                  "value": "dueña",
                   "type": "text"
                 }
               ]
