@@ -1,4 +1,4 @@
-import { StatusPill, card, codeBadge, formatDate, formatMoney, td, tdNum, th } from './ui.jsx';
+import { StatusPill, activeTone, card, codeBadge, formatDate, formatMoney, td, tdNum, th } from './ui.jsx';
 
 // Menor precio de lista activo por moneda: solo se comparan precios en la misma moneda.
 function bestPrices(offers) {
@@ -54,12 +54,12 @@ export default function SupplierOffersTable({ offers, suppliersById }) {
                 </td>
                 <td className={tdNum}>
                   {isBest ? (
-                    <span className="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-secondary">
+                    <span className="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-on-success-container">
                       <span className="material-symbols-outlined text-[16px]">verified</span>
                       Mejor precio
                     </span>
                   ) : diff != null ? (
-                    <span className="text-on-surface-variant">+{diff.toLocaleString('es-AR', { maximumFractionDigits: 1 })}%</span>
+                    <span className="text-on-danger-container">+{diff.toLocaleString('es-AR', { maximumFractionDigits: 1 })}%</span>
                   ) : (
                     '—'
                   )}
@@ -67,7 +67,7 @@ export default function SupplierOffersTable({ offers, suppliersById }) {
                 <td className={tdNum}>{o.stock_proveedor != null ? Number(o.stock_proveedor).toLocaleString('es-AR') : 'Sin dato'}</td>
                 <td className={`${td} font-label-code text-label-code`}>{formatDate(o.precio_actualizado_en)}</td>
                 <td className={td}>
-                  <StatusPill dot={o.activo ? 'bg-secondary' : 'bg-outline'}>{o.activo ? 'activo' : 'inactivo'}</StatusPill>
+                  <StatusPill tone={activeTone(o.activo)}>{o.activo ? 'activo' : 'inactivo'}</StatusPill>
                 </td>
               </tr>
             );

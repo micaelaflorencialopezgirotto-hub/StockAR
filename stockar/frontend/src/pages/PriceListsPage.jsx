@@ -10,6 +10,7 @@ import PriceListReview from '../components/PriceListReview.jsx';
 import {
   SelectIcon,
   StatusPill,
+  activeTone,
   card,
   codeBadge,
   errorClass,
@@ -24,13 +25,14 @@ import {
   selectClass,
   td,
   tdNum,
+  tdNumBase,
   th,
 } from '../components/ui.jsx';
 
 const LIST_STATES = {
-  pendiente_revision: { label: 'Pendiente de revisión', dot: 'bg-on-tertiary-container' },
-  aplicada: { label: 'Aplicada', dot: 'bg-secondary' },
-  descartada: { label: 'Descartada', dot: 'bg-outline' },
+  pendiente_revision: { label: 'Pendiente de revisión', tone: 'warning' },
+  aplicada: { label: 'Aplicada', tone: 'success' },
+  descartada: { label: 'Descartada', tone: 'idle' },
 };
 
 export default function PriceListsPage() {
@@ -100,7 +102,7 @@ export default function PriceListsPage() {
   if (suppliers.length === 0) {
     return (
       <p className={`${card} p-space-lg text-center ${mutedText}`}>
-        No hay proveedores. <Link to="/proveedores" className="text-secondary hover:underline">Cargá uno</Link> para empezar.
+        No hay proveedores. <Link to="/proveedores" className="text-info hover:underline">Cargá uno</Link> para empezar.
       </p>
     );
   }
@@ -187,7 +189,7 @@ export default function PriceListsPage() {
                       <td className={tdNum}>{formatMoney(o.precio_lista, o.moneda)}</td>
                       <td className={tdNum}>{o.stock_proveedor != null ? Number(o.stock_proveedor).toLocaleString('es-AR') : 'Sin dato'}</td>
                       <td className={`${td} font-label-code text-label-code`}>{formatDate(o.precio_actualizado_en)}</td>
-                      <td className={td}><StatusPill dot={o.activo ? 'bg-secondary' : 'bg-outline'}>{o.activo ? 'activo' : 'inactivo'}</StatusPill></td>
+                      <td className={td}><StatusPill tone={activeTone(o.activo)}>{o.activo ? 'activo' : 'inactivo'}</StatusPill></td>
                       <td className={`${td} text-right`}>
                         <button
                           type="button"
@@ -247,7 +249,7 @@ export default function PriceListsPage() {
               </thead>
               <tbody>
                 {lists.map((l) => {
-                  const state = LIST_STATES[l.estado] ?? { label: l.estado, dot: 'bg-outline' };
+                  const state = LIST_STATES[l.estado] ?? { label: l.estado, tone: 'idle' };
                   return (
                     <tr key={l.id} className={`border-b border-surface-container-high last:border-b-0 hover:bg-surface-container-low ${l.id === reviewingListId ? 'bg-surface-container-low' : ''}`}>
                       <td className={td}><span className="font-label-code text-label-code text-on-surface">{l.archivo_nombre}</span></td>
@@ -256,8 +258,8 @@ export default function PriceListsPage() {
                       <td className={tdNum}>{l.total_filas}</td>
                       <td className={tdNum}>{l.filas_con_cambio}</td>
                       <td className={tdNum}>{l.filas_nuevas}</td>
-                      <td className={`${tdNum} ${l.filas_error ? 'text-error' : ''}`}>{l.filas_error}</td>
-                      <td className={td}><StatusPill dot={state.dot}>{state.label}</StatusPill></td>
+                      <td className={`${tdNumBase} ${l.filas_error ? 'text-on-danger-container' : 'text-on-surface'}`}>{l.filas_error}</td>
+                      <td className={td}><StatusPill tone={state.tone}>{state.label}</StatusPill></td>
                       <td className={`${td} text-right`}>
                         <button type="button" onClick={() => setReviewingListId(l.id)} className={secondaryButton}>
                           <span className="material-symbols-outlined text-[16px]">{l.estado === 'pendiente_revision' ? 'fact_check' : 'visibility'}</span>

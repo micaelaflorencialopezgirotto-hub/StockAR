@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { create, update } from '../services/products.service.js';
 import { getAll as getSuppliers } from '../services/suppliers.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
+import { resizeImage } from '../lib/image.js';
 
 const INITIAL = {
   nombre: '',
@@ -12,6 +13,7 @@ const INITIAL = {
   unidad_medida: 'u',
   estado_catalogo: 'activo',
   proveedor_principal_id: '',
+  imagen: '', // data URL JPEG achicado en el navegador (ver lib/image.js)
 };
 
 // Selects sin opción vacía: si el registro no tiene valor, usan el default.
@@ -45,12 +47,16 @@ export default function ProductForm({ product = null, onSaved, onCancel, supplie
   const [optionsError, setOptionsError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [imageError, setImageError] = useState(null);
+  const [imageKey, setImageKey] = useState(0); // para vaciar el <input type="file">
 
   const isEditing = product !== null;
 
   useEffect(() => {
     setValues(product ? toFormValues(product) : INITIAL);
     setError(null);
+    setImageError(null);
+    setImageKey((k) => k + 1);
   }, [product]);
 
   useEffect(() => {
@@ -69,6 +75,25 @@ export default function ProductForm({ product = null, onSaved, onCancel, supplie
     setValues({ ...values, [e.target.name]: e.target.value });
   }
 
+  async function handleImage(e) {
+    const file = e.target.files?.[0];
+    setImageError(null);
+    if (!file) return;
+    try {
+      const imagen = await resizeImage(file);
+      setValues((v) => ({ ...v, imagen }));
+    } catch (err) {
+      setImageError(err.message);
+      setImageKey((k) => k + 1);
+    }
+  }
+
+  function removeImage() {
+    setValues({ ...values, imagen: '' });
+    setImageError(null);
+    setImageKey((k) => k + 1);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
@@ -77,7 +102,10 @@ export default function ProductForm({ product = null, onSaved, onCancel, supplie
       const saved = isEditing
         ? await update(product.id, toPayload(values))
         : await create(toPayload(values));
-      if (!isEditing) setValues(INITIAL);
+      if (!isEditing) {
+        setValues(INITIAL);
+        setImageKey((k) => k + 1);
+      }
       onSaved?.(saved, { created: !isEditing });
     } catch (err) {
       setError(
@@ -171,6 +199,43 @@ export default function ProductForm({ product = null, onSaved, onCancel, supplie
               <SelectIcon />
             </span>
           </label>
+        </div>
+      </section>
+
+      <section className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg">
+        <SectionHeader number="04" title="Imagen" />
+        <div className="flex flex-col gap-space-md sm:flex-row sm:items-start">
+          <div className="flex aspect-square w-40 shrink-0 items-center justify-center overflow-hidden rounded border border-outline-variant bg-surface-container-low">
+            {values.imagen ? (
+              <img src={values.imagen} alt="Vista previa del producto" className="size-full object-contain" />
+            ) : (
+              <span className="material-symbols-outlined text-[40px] text-outline-variant">image</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-space-sm">
+            <label className={fieldClass}>
+              <span className={labelClass}>{values.imagen ? 'Reemplazar imagen' : 'Subir imagen'}</span>
+              <input
+                key={imageKey}
+                type="file"
+                accept="image/*"
+                onChange={handleImage}
+                className="font-body-md text-body-md text-on-surface-variant file:mr-space-sm file:rounded file:border file:border-outline-variant file:bg-surface-container-lowest file:px-3 file:py-1.5 file:font-body-sm file:text-body-sm file:font-medium file:text-on-surface hover:file:bg-surface-container-low"
+              />
+            </label>
+            <span className="font-body-sm text-body-sm text-outline">JPG, PNG o WebP. Se achica a 480 px antes de guardarse.</span>
+            {values.imagen && (
+              <button
+                type="button"
+                onClick={removeImage}
+                className="inline-flex w-fit items-center gap-1 rounded border border-error-container bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-error hover:bg-error-container/40"
+              >
+                <span className="material-symbols-outlined text-[16px]">delete</span>
+                Quitar imagen
+              </button>
+            )}
+            {imageError && <p className={errorClass}>{imageError}</p>}
+          </div>
         </div>
       </section>
 

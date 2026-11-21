@@ -9,11 +9,14 @@ export const selectClass = `${inputClass} appearance-none pr-8`;
 export const errorClass =
   'rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error';
 export const mutedText = 'font-body-md text-body-md text-on-surface-variant';
-export const pageTitle = 'font-headline-lg text-headline-lg text-on-surface';
+export const pageTitle =
+  'font-headline-xl-mobile text-headline-xl-mobile text-on-surface md:font-headline-xl md:text-headline-xl';
 export const sectionTitle = 'font-headline-md text-headline-md text-on-surface';
 export const th = 'whitespace-nowrap px-4 py-3 font-label-caps text-label-caps uppercase text-on-surface-variant';
 export const td = 'px-4 py-3 font-body-md text-body-md text-on-surface-variant';
-export const tdNum = 'px-4 py-3 text-right font-label-tabular text-label-tabular tabular-nums text-on-surface';
+// Celda numérica sin color: para las que lo eligen según el dato (stock, variación, etc.).
+export const tdNumBase = 'px-4 py-3 text-right font-label-tabular text-label-tabular tabular-nums';
+export const tdNum = `${tdNumBase} text-on-surface`;
 export const primaryButton =
   'inline-flex items-center gap-1.5 rounded bg-primary px-4 py-2 font-body-md text-body-md font-medium text-on-primary hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary';
 export const secondaryButton =
@@ -52,15 +55,28 @@ export function stockStatus(product) {
 }
 
 export const STOCK_STATUS = {
-  normal: { label: 'Stock normal', dot: 'bg-secondary', text: 'text-on-surface' },
-  bajo: { label: 'Stock bajo', dot: 'bg-on-tertiary-container', text: 'text-on-tertiary-fixed-variant' },
-  sin_stock: { label: 'Sin stock', dot: 'bg-error', text: 'text-error' },
+  normal: { label: 'Stock normal', tone: 'success', text: 'text-on-surface' },
+  bajo: { label: 'Stock bajo', tone: 'warning', text: 'text-on-warning-container' },
+  sin_stock: { label: 'Sin stock', tone: 'danger', text: 'text-on-danger-container' },
 };
 
-export function StatusPill({ dot, children }) {
+// Tonos de estado: punto de color + fondo y texto suaves (DESIGN.md, "Status Indicators").
+export const TONES = {
+  success: { dot: 'bg-success', pill: 'border-success/30 bg-success-container text-on-success-container', icon: 'bg-success-container text-on-success-container' },
+  warning: { dot: 'bg-warning', pill: 'border-warning/30 bg-warning-container text-on-warning-container', icon: 'bg-warning-container text-on-warning-container' },
+  danger: { dot: 'bg-danger', pill: 'border-danger/30 bg-danger-container text-on-danger-container', icon: 'bg-danger-container text-on-danger-container' },
+  info: { dot: 'bg-info', pill: 'border-info/30 bg-info-container text-on-info-container', icon: 'bg-info-container text-on-info-container' },
+  idle: { dot: 'bg-idle', pill: 'border-outline-variant bg-idle-container text-on-idle-container', icon: 'bg-idle-container text-on-idle-container' },
+};
+
+// Estado de catálogo (producto o proveedor): activo / inactivo.
+export const activeTone = (estado) => (estado === 'activo' || estado === true ? 'success' : 'idle');
+
+export function StatusPill({ tone = 'idle', children }) {
+  const t = TONES[tone] ?? TONES.idle;
   return (
-    <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded border border-outline-variant bg-surface-container-low px-2 py-0.5 font-body-sm text-body-sm text-on-surface-variant">
-      <span className={`size-1.5 rounded-full ${dot}`} />
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded border px-2 py-0.5 font-body-sm text-body-sm font-medium ${t.pill}`}>
+      <span className={`size-1.5 rounded-full ${t.dot}`} />
       {children}
     </span>
   );

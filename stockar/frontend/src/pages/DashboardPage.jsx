@@ -7,6 +7,7 @@ import MovementsTable from '../components/MovementsTable.jsx';
 import {
   STOCK_STATUS,
   StatusPill,
+  TONES,
   card,
   codeBadge,
   errorClass,
@@ -19,19 +20,20 @@ import {
   stockStatus,
   td,
   tdNum,
+  tdNumBase,
   th,
 } from '../components/ui.jsx';
 
 const RECENT_MOVEMENTS = 5;
 
-function MetricCard({ label, icon, value, hint, tone = 'text-on-surface' }) {
+function MetricCard({ label, icon, iconTone = 'idle', value, hint, tone = 'text-on-surface' }) {
   return (
     <div className={`${card} p-space-lg`}>
       <div className="flex items-start justify-between gap-space-sm">
         <p className="font-label-caps text-label-caps uppercase text-on-surface-variant">{label}</p>
-        <span className="material-symbols-outlined text-[20px] text-outline">{icon}</span>
+        <span className={`material-symbols-outlined rounded p-1.5 text-[20px] ${TONES[iconTone].icon}`}>{icon}</span>
       </div>
-      <p className={`mt-space-sm font-headline-lg text-headline-lg tabular-nums ${tone}`}>{value}</p>
+      <p className={`mt-space-sm font-label-tabular text-headline-lg font-semibold tabular-nums ${tone}`}>{value}</p>
       {hint && <p className="mt-space-xs font-body-sm text-body-sm text-outline">{hint}</p>}
     </div>
   );
@@ -78,13 +80,13 @@ export default function DashboardPage() {
     <div className="space-y-space-xl">
       <section>
         <h2 className={`mb-space-md ${pageTitle}`}>Resumen</h2>
-        <div className="grid grid-cols-1 gap-space-md sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          <MetricCard label="Productos" icon="inventory_2" value={products.length.toLocaleString('es-AR')} hint="En el catálogo" />
-          <MetricCard label="Stock normal" icon="check_circle" value={counts.normal.toLocaleString('es-AR')} hint="Sobre el mínimo" />
-          <MetricCard label="Stock bajo" icon="warning" value={counts.bajo.toLocaleString('es-AR')} hint="En o bajo el mínimo" tone={counts.bajo ? STOCK_STATUS.bajo.text : undefined} />
-          <MetricCard label="Sin stock" icon="error_outline" value={counts.sin_stock.toLocaleString('es-AR')} hint="Stock actual en 0" tone={counts.sin_stock ? STOCK_STATUS.sin_stock.text : undefined} />
-          <MetricCard label="Proveedores" icon="badge" value={activeSuppliers.toLocaleString('es-AR')} hint={`Activos de ${suppliers.length}`} />
-          <MetricCard label="Valuación" icon="account_balance_wallet" value={formatMoney(valuation)} hint="Stock × costo neto" />
+        <div className="grid grid-cols-1 gap-space-md sm:grid-cols-2 lg:grid-cols-3">
+          <MetricCard label="Productos" icon="inventory_2" iconTone="info" value={products.length.toLocaleString('es-AR')} hint="En el catálogo" />
+          <MetricCard label="Stock normal" icon="check_circle" iconTone="success" value={counts.normal.toLocaleString('es-AR')} hint="Sobre el mínimo" />
+          <MetricCard label="Stock bajo" icon="warning" iconTone="warning" value={counts.bajo.toLocaleString('es-AR')} hint="En o bajo el mínimo" tone={counts.bajo ? STOCK_STATUS.bajo.text : undefined} />
+          <MetricCard label="Sin stock" icon="error_outline" iconTone="danger" value={counts.sin_stock.toLocaleString('es-AR')} hint="Stock actual en 0" tone={counts.sin_stock ? STOCK_STATUS.sin_stock.text : undefined} />
+          <MetricCard label="Proveedores" icon="badge" iconTone="info" value={activeSuppliers.toLocaleString('es-AR')} hint={`Activos de ${suppliers.length}`} />
+          <MetricCard label="Valuación" icon="account_balance_wallet" iconTone="idle" value={formatMoney(valuation)} hint="Stock × costo neto" />
         </div>
       </section>
 
@@ -116,9 +118,9 @@ export default function DashboardPage() {
                           <span className="font-label-code text-label-code">{p.sku}</span>
                         </Link>
                       </td>
-                      <td className={`${tdNum} ${status.text}`}>{formatQty(p.stock_actual, p.unidad_medida)}</td>
-                      <td className={`${tdNum} text-on-surface-variant`}>{formatQty(p.stock_minimo, p.unidad_medida)}</td>
-                      <td className={td}><StatusPill dot={status.dot}>{status.label}</StatusPill></td>
+                      <td className={`${tdNumBase} ${status.text}`}>{formatQty(p.stock_actual, p.unidad_medida)}</td>
+                      <td className={`${tdNumBase} text-on-surface-variant`}>{formatQty(p.stock_minimo, p.unidad_medida)}</td>
+                      <td className={td}><StatusPill tone={status.tone}>{status.label}</StatusPill></td>
                       <td className={td}>{p.ubicacion ? <span className={codeBadge}>{p.ubicacion}</span> : '—'}</td>
                     </tr>
                   );
@@ -132,7 +134,7 @@ export default function DashboardPage() {
       <section>
         <div className="mb-space-md flex items-baseline justify-between gap-space-sm">
           <h3 className={sectionTitle}>Últimos movimientos</h3>
-          <Link to="/movimientos" className="font-body-md text-body-md font-medium text-secondary hover:underline">Ver todos</Link>
+          <Link to="/movimientos" className="font-body-md text-body-md font-medium text-info hover:underline">Ver todos</Link>
         </div>
         {recent.length === 0 ? (
           <p className={`${card} p-space-lg text-center ${mutedText}`}>No hay movimientos registrados.</p>

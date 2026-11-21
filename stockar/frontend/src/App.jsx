@@ -36,7 +36,7 @@ export default function App() {
           path="/proveedores"
           element={
             <section>
-              <h2 id="supplier-form" className="mb-space-md scroll-mt-20 font-headline-lg text-headline-lg text-on-surface">{editingSupplier ? `Editar proveedor: ${editingSupplier.razon_social}` : 'Nuevo proveedor'}</h2>
+              <h2 id="supplier-form" className="mb-space-md scroll-mt-20 font-headline-xl-mobile text-headline-xl-mobile text-on-surface md:font-headline-xl md:text-headline-xl">{editingSupplier ? `Editar proveedor: ${editingSupplier.razon_social}` : 'Nuevo proveedor'}</h2>
               <SupplierForm
                 supplier={editingSupplier}
                 onSaved={() => {
@@ -72,7 +72,7 @@ export default function App() {
           path="/productos"
           element={
             <section>
-              <h2 id="product-form" className="mb-space-md scroll-mt-20 font-headline-lg text-headline-lg text-on-surface">{editingProduct ? `Editar producto: ${editingProduct.nombre}` : 'Nuevo producto'}</h2>
+              <h2 id="product-form" className="mb-space-md scroll-mt-20 font-headline-xl-mobile text-headline-xl-mobile text-on-surface md:font-headline-xl md:text-headline-xl">{editingProduct ? `Editar producto: ${editingProduct.nombre}` : 'Nuevo producto'}</h2>
               <ProductForm
                 product={editingProduct}
                 onSaved={() => {

@@ -1,10 +1,10 @@
-import { SelectIcon, StatusPill, card, codeBadge, formatMoney, selectClass, td, tdNum, th } from './ui.jsx';
+import { SelectIcon, StatusPill, card, codeBadge, formatMoney, selectClass, td, tdNum, tdNumBase, th } from './ui.jsx';
 
 export const CHANGE_TYPES = {
-  precio: { label: 'Cambio de precio', dot: 'bg-secondary' },
-  sin_cambio: { label: 'Sin cambio', dot: 'bg-outline' },
-  nuevo: { label: 'Sin asociar', dot: 'bg-on-tertiary-container' },
-  error: { label: 'Error', dot: 'bg-error' },
+  precio: { label: 'Cambio de precio', tone: 'info' },
+  sin_cambio: { label: 'Sin cambio', tone: 'idle' },
+  nuevo: { label: 'Sin asociar', tone: 'warning' },
+  error: { label: 'Error', tone: 'danger' },
 };
 
 // items: filas de una lista (vista previa o ya guardadas).
@@ -29,25 +29,25 @@ export default function PriceListItemsTable({ items, currency = 'ARS', products,
         </thead>
         <tbody>
           {items.map((item) => {
-            const type = CHANGE_TYPES[item.tipo_cambio] ?? { label: item.tipo_cambio, dot: 'bg-outline' };
+            const type = CHANGE_TYPES[item.tipo_cambio] ?? { label: item.tipo_cambio, tone: 'idle' };
             const variation =
               item.precio_anterior && item.precio_nuevo ? (item.precio_nuevo / item.precio_anterior - 1) * 100 : null;
             return (
               <tr key={item.id ?? item.nro_fila} className="border-b border-surface-container-high last:border-b-0 hover:bg-surface-container-low">
-                <td className={`${tdNum} text-on-surface-variant`}>{item.nro_fila}</td>
+                <td className={`${tdNumBase} text-on-surface-variant`}>{item.nro_fila}</td>
                 <td className={td}>{item.codigo_proveedor ? <span className={codeBadge}>{item.codigo_proveedor}</span> : '—'}</td>
                 <td className={td}>
                   {item.descripcion ?? '—'}
                   {item.mensaje_error && <span className="block font-body-sm text-body-sm text-error">{item.mensaje_error}</span>}
                 </td>
-                <td className={`${tdNum} text-on-surface-variant`}>{formatMoney(item.precio_anterior, currency)}</td>
+                <td className={`${tdNumBase} text-on-surface-variant`}>{formatMoney(item.precio_anterior, currency)}</td>
                 <td className={tdNum}>{formatMoney(item.precio_nuevo, currency)}</td>
-                <td className={`${tdNum} ${variation > 0 ? 'text-error' : variation < 0 ? 'text-secondary' : 'text-on-surface-variant'}`}>
+                <td className={`${tdNumBase} ${variation > 0 ? 'text-on-danger-container' : variation < 0 ? 'text-on-success-container' : 'text-on-surface-variant'}`}>
                   {variation == null ? '—' : `${variation > 0 ? '+' : ''}${variation.toLocaleString('es-AR', { maximumFractionDigits: 1 })}%`}
                 </td>
                 <td className={td}>
                   <span className="flex flex-col items-start gap-1">
-                    <StatusPill dot={type.dot}>{type.label}</StatusPill>
+                    <StatusPill tone={type.tone}>{type.label}</StatusPill>
                     {item.resuelto && item.tipo_cambio !== 'sin_cambio' && (
                       <span className="font-body-sm text-body-sm text-outline">Aplicado</span>
                     )}

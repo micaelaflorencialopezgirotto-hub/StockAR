@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MOVEMENT_TYPES, card, codeBadge, formatDateTime, formatMoney, isReservation, td, tdNum, th } from './ui.jsx';
+import { MOVEMENT_TYPES, card, codeBadge, formatDateTime, formatMoney, isReservation, td, tdNum, tdNumBase, th } from './ui.jsx';
 
 // movements: ya ordenados. productsById: { id: producto } para mostrar SKU y nombre.
 // showProduct: false en la ficha de producto, donde la columna sobra.
@@ -39,7 +39,7 @@ export default function MovementsTable({ movements, productsById = {}, showProdu
                     )}
                   </td>
                 )}
-                <td className={`${tdNum} ${reservation ? 'text-on-surface-variant' : m.cantidad < 0 ? 'text-error' : 'text-secondary'}`}>
+                <td className={`${tdNumBase} ${reservation ? 'text-on-surface-variant' : m.cantidad < 0 ? 'text-on-danger-container' : 'text-on-success-container'}`}>
                   {m.cantidad > 0 ? '+' : ''}
                   {Number(m.cantidad).toLocaleString('es-AR')}
                   {reservation && <span className="ml-1 font-body-sm text-body-sm">reservado</span>}

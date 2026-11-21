@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAll, remove } from '../services/suppliers.service.js';
+import { StatusPill, activeTone } from './ui.jsx';
 
 // onEdit(supplier): se eligió un proveedor para editar.
 // onDeleted(supplier): se eliminó un proveedor (App refresca la lista).
@@ -86,10 +87,7 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
                 <td className={`${td} font-label-code text-label-code`}>{s.telefono ?? '—'}</td>
                 <td className={`${td} font-label-code text-label-code`}>{s.moneda_lista ?? '—'}</td>
                 <td className={td}>
-                  <span className="inline-flex items-center gap-1.5 rounded border border-outline-variant bg-surface-container-low px-2 py-0.5 font-body-sm text-body-sm text-on-surface-variant">
-                    <span className={`size-1.5 rounded-full ${s.estado === 'activo' ? 'bg-secondary' : 'bg-outline'}`} />
-                    {s.estado ?? '—'}
-                  </span>
+                  <StatusPill tone={activeTone(s.estado)}>{s.estado ?? '—'}</StatusPill>
                 </td>
                 <td className={`${td} whitespace-nowrap text-right`}>
                   <span className="inline-flex gap-space-sm">

@@ -12,6 +12,7 @@ import SupplierOffersTable from '../components/SupplierOffersTable.jsx';
 import {
   STOCK_STATUS,
   StatusPill,
+  activeTone,
   card,
   codeBadge,
   errorClass,
@@ -31,7 +32,7 @@ function Metric({ label, children, hint, tone = 'text-on-surface' }) {
   return (
     <div className={`${card} p-space-lg`}>
       <p className="font-label-caps text-label-caps uppercase text-on-surface-variant">{label}</p>
-      <p className={`mt-space-xs font-headline-lg text-headline-lg tabular-nums ${tone}`}>{children}</p>
+      <p className={`mt-space-xs font-label-tabular text-headline-lg font-semibold tabular-nums ${tone}`}>{children}</p>
       {hint && <p className="mt-space-xs font-body-sm text-body-sm text-outline">{hint}</p>}
     </div>
   );
@@ -108,14 +109,24 @@ export default function ProductDetailPage() {
     <div>
       {backLink}
 
-      <header className="mb-space-lg flex flex-col gap-space-sm">
-        <div className="flex flex-wrap items-center gap-space-sm">
-          <span className={codeBadge}>{p.sku}</span>
-          <StatusPill dot={p.estado_catalogo === 'activo' ? 'bg-secondary' : 'bg-outline'}>{p.estado_catalogo ?? '—'}</StatusPill>
-          {category && <span className="font-body-sm text-body-sm text-on-surface-variant">{category.nombre}</span>}
+      <header className="mb-space-lg flex flex-col gap-space-lg sm:flex-row sm:items-start">
+        <div className="flex aspect-square w-full max-w-56 shrink-0 items-center justify-center overflow-hidden rounded border border-outline-variant bg-surface-container-low">
+          {p.imagen ? (
+            <img src={p.imagen} alt={p.nombre} className="size-full object-contain" />
+          ) : (
+            <span className="material-symbols-outlined text-[56px] text-outline-variant">image</span>
+          )}
         </div>
-        <h2 className={pageTitle}>{p.nombre}</h2>
-        {p.descripcion_tecnica && <p className={mutedText}>{p.descripcion_tecnica}</p>}
+        <div className="flex flex-col gap-space-sm">
+          <div className="flex flex-wrap items-center gap-space-sm">
+            <span className={codeBadge}>{p.sku}</span>
+            <StatusPill tone={activeTone(p.estado_catalogo)}>{p.estado_catalogo ?? '—'}</StatusPill>
+            <StatusPill tone={status.tone}>{status.label}</StatusPill>
+            {category && <span className="font-body-sm text-body-sm text-on-surface-variant">{category.nombre}</span>}
+          </div>
+          <h2 className={pageTitle}>{p.nombre}</h2>
+          {p.descripcion_tecnica && <p className={mutedText}>{p.descripcion_tecnica}</p>}
+        </div>
       </header>
 
       <section className="mb-space-xl">

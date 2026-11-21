@@ -51,6 +51,24 @@
   --color-on-background: #1a1b22;
   --color-surface-variant: #e3e1ec;
 
+  /* Señales de estado (sección "Semantic Status Signals" de DESIGN.md).
+     El punto usa el color base; texto y fondo suaves para las píldoras, como en las maquetas. */
+  --color-success: #10b981;
+  --color-success-container: #ecfdf5;
+  --color-on-success-container: #047857;
+  --color-warning: #f59e0b;
+  --color-warning-container: #fffbeb;
+  --color-on-warning-container: #b45309;
+  --color-danger: #ef4444;
+  --color-danger-container: #fef2f2;
+  --color-on-danger-container: #b91c1c;
+  --color-idle: #71717a;
+  --color-idle-container: #f4f4f5;
+  --color-on-idle-container: #3f3f46;
+  --color-info: #2563eb;
+  --color-info-container: #eff6ff;
+  --color-on-info-container: #1d4ed8;
+
   /* typography: familia (font-*) y escala (text-*) por token */
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -141,9 +159,18 @@
   }
 }
 
+/* El CSS de Google Fonts fija font-size: 24px sin capa, y eso le gana a las utilidades de Tailwind
+   (que van en @layer). revert-layer anula ese 24px y deja que manden las clases text-[..]. */
 .material-symbols-outlined {
+  font-size: revert-layer;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
   display: inline-block;
   vertical-align: middle;
   line-height: 1;
+}
+
+@layer base {
+  .material-symbols-outlined {
+    font-size: 24px; /* tamaño por defecto si el ícono no tiene clase text-[..] */
+  }
 }
