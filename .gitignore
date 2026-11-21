@@ -3,6 +3,9 @@ node_modules/
 
 # Variables de entorno (claves de Supabase, etc.)
 .env
+# Overrides locales de Vite (los .env.development / .env.production sí se versionan)
+.env.local
+.env.*.local
 
 # macOS
 .DS_Store

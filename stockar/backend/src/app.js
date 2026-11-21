@@ -14,9 +14,11 @@ import ordenCompraRoutes from './routes/ordenCompra.routes.js';
 import ordenCompraItemRoutes from './routes/ordenCompraItem.routes.js';
 import usuarioRoutes from './routes/usuario.routes.js';
 import configuracionRoutes from './routes/configuracion.routes.js';
+import { cors } from './middlewares/cors.middleware.js';
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/api', indexRoutes);
