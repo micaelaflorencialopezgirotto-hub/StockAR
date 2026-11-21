@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAll, remove } from '../services/suppliers.service.js';
+import { useConfirm } from './ConfirmDialog.jsx';
 import { EmptyState, ErrorState, LoadingState, StatusPill, activeTone } from './ui.jsx';
 
 // onEdit(supplier): se eligió un proveedor para editar.
@@ -8,6 +9,7 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [confirmDialog, confirm] = useConfirm();
   const [reloadKey, setReloadKey] = useState(0); // "Reintentar" lo incrementa y vuelve a pedir la lista
   const [deleteError, setDeleteError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
@@ -36,7 +38,14 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
   }, [refreshTrigger, reloadKey]);
 
   async function handleDelete(supplier) {
-    if (!window.confirm(`¿Eliminar el proveedor "${supplier.razon_social}"?`)) return;
+    const ok = await confirm({
+      title: '¿Eliminar el proveedor?',
+      message: `Se va a eliminar "${supplier.razon_social}". Esta acción no se puede deshacer.`,
+      confirmLabel: 'Eliminar',
+      tone: 'danger',
+      icon: 'delete',
+    });
+    if (!ok) return;
     setDeletingId(supplier.id);
     setDeleteError(null);
     try {
@@ -57,6 +66,7 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
 
   return (
     <>
+      {confirmDialog}
       {deleteError && <p className={`mb-space-md ${errorClass}`}>{deleteError}</p>}
       <div className="overflow-x-auto rounded border border-outline-variant bg-surface-container-lowest font-sans">
         <table className="w-full border-collapse text-left">

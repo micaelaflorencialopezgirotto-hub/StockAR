@@ -4,7 +4,7 @@ import { getAll as getProductSuppliers } from '../services/productSuppliers.serv
 import { getAll as getProducts } from '../services/products.service.js';
 import { getAll as getSuppliers } from '../services/suppliers.service.js';
 import SupplierOffersTable from './SupplierOffersTable.jsx';
-import { card, codeBadge, errorClass, errorMessage, formatQty, mutedText } from './ui.jsx';
+import { EmptyState, ErrorState, LoadingState, codeBadge, formatQty } from './ui.jsx';
 
 // Para cada producto con listas de proveedores, compara precio de lista y disponibilidad informada.
 // refreshTrigger: cambia cuando se crea, edita o borra un proveedor.
@@ -12,12 +12,13 @@ export default function PriceComparison({ refreshTrigger }) {
   const [groups, setGroups] = useState([]);
   const [suppliersById, setSuppliersById] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0); // "Reintentar" lo incrementa y vuelve a pedir los datos
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    setError(null);
+    setError(false);
     Promise.all([getProductSuppliers(), getProducts(), getSuppliers()])
       .then(([offers, products, suppliers]) => {
         if (cancelled) return;
@@ -31,8 +32,8 @@ export default function PriceComparison({ refreshTrigger }) {
         );
         setSuppliersById(Object.fromEntries(suppliers.map((s) => [s.id, s])));
       })
-      .catch((err) => {
-        if (!cancelled) setError(errorMessage(err, 'No se pudo cargar el comparador de precios'));
+      .catch(() => {
+        if (!cancelled) setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -40,12 +41,19 @@ export default function PriceComparison({ refreshTrigger }) {
     return () => {
       cancelled = true;
     };
-  }, [refreshTrigger]);
+  }, [refreshTrigger, reloadKey]);
 
-  if (loading) return <p className={mutedText}>Cargando comparador…</p>;
-  if (error) return <p className={errorClass}>{error}</p>;
+  if (loading) return <LoadingState message="Cargando comparador de precios…" />;
+  if (error) {
+    return <ErrorState message="No se pudo cargar el comparador de precios. Intentá de nuevo." onRetry={() => setReloadKey((k) => k + 1)} />;
+  }
   if (groups.length === 0) {
-    return <p className={`${card} p-space-lg text-center ${mutedText}`}>Todavía no hay productos en listas de proveedores.</p>;
+    return (
+      <EmptyState
+        icon="balance"
+        message="Todavía no hay productos en listas de proveedores. Cargá precios en Listas de precios."
+      />
+    );
   }
 
   return (

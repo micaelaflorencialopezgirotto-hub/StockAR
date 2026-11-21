@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useConfirm } from './ConfirmDialog.jsx';
 import { getAll as getProducts, remove, update } from '../services/products.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
 import {
@@ -36,6 +37,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
   const [tab, setTab] = useState('todos');
   const [togglingId, setTogglingId] = useState(null);
   const [success, showSuccess] = useFlash();
+  const [confirmDialog, confirm] = useConfirm();
 
   useEffect(() => {
     let cancelled = false;
@@ -62,7 +64,14 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
   }, [refreshTrigger, reloadKey]);
 
   async function handleDelete(product) {
-    if (!window.confirm(`¿Eliminar el producto "${product.nombre}"?`)) return;
+    const ok = await confirm({
+      title: '¿Eliminar el producto?',
+      message: `Se va a eliminar "${product.nombre}". Esta acción no se puede deshacer.`,
+      confirmLabel: 'Eliminar',
+      tone: 'danger',
+      icon: 'delete',
+    });
+    if (!ok) return;
     setDeletingId(product.id);
     setDeleteError(null);
     try {
@@ -79,7 +88,16 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
   async function handleToggle(product) {
     const activating = product.estado_catalogo !== 'activo';
     const verb = activating ? 'Activar' : 'Desactivar';
-    if (!window.confirm(`¿${verb} el producto "${product.nombre}"?`)) return;
+    const ok = await confirm({
+      title: `¿${verb} el producto?`,
+      message: activating
+        ? `"${product.nombre}" vuelve a estar activo en el catálogo.`
+        : `"${product.nombre}" deja de estar activo en el catálogo. Podés volver a activarlo cuando quieras.`,
+      confirmLabel: verb,
+      tone: activating ? 'default' : 'warning',
+      icon: activating ? 'toggle_on' : 'toggle_off',
+    });
+    if (!ok) return;
     setTogglingId(product.id);
     setDeleteError(null);
     try {
@@ -152,6 +170,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
 
   return (
     <>
+      {confirmDialog}
       {filterBar}
       {deleteError && <p className="mb-space-md rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error">{deleteError}</p>}
       <ul className="grid font-sans grid-cols-1 gap-space-md md:grid-cols-2 xl:grid-cols-3">

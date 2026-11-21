@@ -208,16 +208,18 @@ export function ErrorState({ message, onRetry }) {
   return (
     <div role="alert" className="flex flex-col items-start gap-space-md rounded-md border border-error/20 bg-error-container px-space-lg py-space-lg font-sans sm:flex-row sm:items-center sm:justify-between">
       <span className="flex items-center gap-space-sm font-body-md text-body-md font-medium text-on-error-container">
-        <span className="material-symbols-outlined text-[20px]">error</span>
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-container-lowest/70">
+          <span className="material-symbols-outlined text-[20px] text-error">error</span>
+        </span>
         {message}
       </span>
       {onRetry && (
         <button
           type="button"
           onClick={onRetry}
-          className="inline-flex shrink-0 items-center gap-1 rounded border border-error/30 bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-error-container hover:bg-error-container/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+          className="group inline-flex shrink-0 items-center gap-1.5 rounded-md bg-on-error-container px-4 py-2 font-body-md text-body-md font-medium text-on-error shadow-[0_1px_2px_0_rgba(147,0,10,0.25)] transition-all hover:bg-error hover:shadow-[0_4px_12px_-2px_rgba(186,26,26,0.35)] active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-error"
         >
-          <span className="material-symbols-outlined text-[16px]">refresh</span>
+          <span className="material-symbols-outlined text-[18px] transition-transform duration-500 group-hover:-rotate-180">refresh</span>
           Reintentar
         </button>
       )}

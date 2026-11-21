@@ -174,3 +174,15 @@
     font-size: 24px; /* tamaño por defecto si el ícono no tiene clase text-[..] */
   }
 }
+
+/* Entrada del diálogo de confirmación (ConfirmDialog.jsx). */
+@keyframes confirm-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

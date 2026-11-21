@@ -3,6 +3,7 @@ import { getAll as getItems } from '../services/priceListItems.service.js';
 import { update as updateList } from '../services/priceLists.service.js';
 import { applyPriceList } from '../lib/priceList.js';
 import PriceListItemsTable from './PriceListItemsTable.jsx';
+import { useConfirm } from './ConfirmDialog.jsx';
 import { errorClass, errorMessage, mutedText, primaryButton, secondaryButton } from './ui.jsx';
 
 // Revisión de una lista importada: asociar ítems sin asociar, aplicar o descartar.
@@ -15,6 +16,7 @@ export default function PriceListReview({ list, supplier, products, onChanged, o
   const [working, setWorking] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+  const [confirmDialog, confirm] = useConfirm();
 
   useEffect(() => {
     let cancelled = false;
@@ -44,7 +46,13 @@ export default function PriceListReview({ list, supplier, products, onChanged, o
   const pending = list.estado === 'pendiente_revision';
 
   async function handleApply() {
-    if (!window.confirm('¿Aplicar la lista? Se actualizan los precios de lista del proveedor.')) return;
+    const ok = await confirm({
+      title: '¿Aplicar la lista?',
+      message: 'Se actualizan los precios de lista del proveedor y quedan registrados en el historial.',
+      confirmLabel: 'Aplicar lista',
+      icon: 'done_all',
+    });
+    if (!ok) return;
     setWorking(true);
     setError(null);
     try {
@@ -60,7 +68,14 @@ export default function PriceListReview({ list, supplier, products, onChanged, o
   }
 
   async function handleDiscard() {
-    if (!window.confirm('¿Descartar la lista? No se aplica ningún precio.')) return;
+    const ok = await confirm({
+      title: '¿Descartar la lista?',
+      message: 'No se aplica ningún precio. La lista queda marcada como descartada.',
+      confirmLabel: 'Descartar',
+      tone: 'danger',
+      icon: 'block',
+    });
+    if (!ok) return;
     setWorking(true);
     setError(null);
     try {
@@ -75,6 +90,7 @@ export default function PriceListReview({ list, supplier, products, onChanged, o
 
   return (
     <div className="space-y-space-md">
+      {confirmDialog}
       <div className="flex flex-wrap items-center justify-between gap-space-sm">
         <p className={mutedText}>
           <span className="font-label-code text-label-code text-on-surface">{list.archivo_nombre}</span>
