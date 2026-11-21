@@ -1,6 +1,8 @@
 # Acceder a StockAR en http://stockar
 
-En desarrollo, StockAR se abre en `http://stockar/` en lugar de `http://localhost:5173`. `http://localhost:5173` sigue funcionando.
+En desarrollo, StockAR se abre en `http://stockar/` en lugar de `http://localhost:5173`.
+
+> **Con la redirección activa, el puerto 5173 no responde directo**: `http://localhost:5173` y `http://stockar:5173` se quedan colgados (efecto de la regla de pf sobre su puerto destino). Usá `http://stockar/`, que incluye la recarga automática (HMR). Para volver a `localhost:5173`, corré `sh scripts/dominio-local.sh desactivar`.
 
 ## Cómo funciona
 
@@ -37,7 +39,7 @@ La línea de hosts queda guardada. La regla de pf se pierde al reiniciar la Mac:
 
 Para deshacer todo: `sh scripts/dominio-local.sh desactivar`. Para ver cómo quedó: `sh scripts/dominio-local.sh estado`.
 
-Si preferís no usar pf, con solo la línea de hosts podés entrar en `http://stockar:5173/`.
+Si preferís no usar pf (o lo desactivaste), con solo la línea de hosts podés entrar en `http://stockar:5173/`, y `http://localhost:5173` vuelve a andar.
 
 ## Arrancar StockAR
 
