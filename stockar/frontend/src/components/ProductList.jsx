@@ -114,7 +114,47 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
               <p className="mt-space-xs line-clamp-3 font-body-md text-body-md text-on-surface-variant">{p.descripcion_tecnica}</p>
             )}
 
+            {(p.codigo_barras || p.ubicacion) && (
+              <div className="mt-space-sm flex flex-wrap gap-space-xs">
+                {p.codigo_barras && (
+                  <span className="inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-low px-1.5 py-0.5 font-label-code text-label-code text-on-surface-variant">
+                    <span className="material-symbols-outlined text-[14px]">barcode</span>
+                    {p.codigo_barras}
+                  </span>
+                )}
+                {p.ubicacion && (
+                  <span className="inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-low px-1.5 py-0.5 font-label-code text-label-code text-on-surface-variant">
+                    <span className="material-symbols-outlined text-[14px]">shelves</span>
+                    {p.ubicacion}
+                  </span>
+                )}
+              </div>
+            )}
+
             <dl className="mt-space-md grid grid-cols-3 gap-space-sm border-t border-surface-container-high pt-space-md">
+              <div>
+                <dt className="font-label-caps text-label-caps uppercase text-outline">Stock actual</dt>
+                <dd className={`font-label-tabular text-label-tabular tabular-nums ${p.stock_actual != null && p.stock_minimo != null && p.stock_actual <= p.stock_minimo ? 'text-error' : 'text-on-surface'}`}>
+                  {p.stock_actual != null ? `${p.stock_actual.toLocaleString('es-AR')} ${p.unidad_medida ?? ''}` : '—'}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-label-caps text-label-caps uppercase text-outline">Stock mín.</dt>
+                <dd className="font-label-tabular text-label-tabular tabular-nums text-on-surface-variant">
+                  {p.stock_minimo != null ? `${p.stock_minimo.toLocaleString('es-AR')} ${p.unidad_medida ?? ''}` : '—'}
+                </dd>
+              </div>
+              <div className="text-right">
+                <dt className="font-label-caps text-label-caps uppercase text-outline">Precio venta</dt>
+                <dd className="font-label-tabular text-label-tabular tabular-nums text-on-surface">
+                  {p.precio_venta != null
+                    ? p.precio_venta.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })
+                    : '—'}
+                </dd>
+              </div>
+            </dl>
+
+            <dl className="mt-space-sm grid grid-cols-3 gap-space-sm">
               <div>
                 <dt className="font-label-caps text-label-caps uppercase text-outline">Marca</dt>
                 <dd className="truncate font-body-md text-body-md text-on-surface">{brandNames[p.marca_id] ?? '—'}</dd>

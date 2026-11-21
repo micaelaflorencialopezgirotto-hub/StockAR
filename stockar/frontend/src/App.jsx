@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
 import SupplierForm from './components/SupplierForm.jsx';
@@ -17,59 +19,71 @@ export default function App() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <main style={{ padding: 16, maxWidth: 1000, margin: '0 auto' }}>
-      <h1>StockAR</h1>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Navigate to="/productos" replace />} />
 
-      <section>
-        <h2 id="supplier-form">{editingSupplier ? `Editar proveedor: ${editingSupplier.razon_social}` : 'Nuevo proveedor'}</h2>
-        <SupplierForm
-          supplier={editingSupplier}
-          onSaved={() => {
-            setEditingSupplier(null);
-            refreshSuppliers();
-          }}
-          onCancel={() => setEditingSupplier(null)}
+        <Route
+          path="/proveedores"
+          element={
+            <section>
+              <h2 id="supplier-form" className="mb-space-md scroll-mt-20 font-headline-lg text-headline-lg text-on-surface">{editingSupplier ? `Editar proveedor: ${editingSupplier.razon_social}` : 'Nuevo proveedor'}</h2>
+              <SupplierForm
+                supplier={editingSupplier}
+                onSaved={() => {
+                  setEditingSupplier(null);
+                  refreshSuppliers();
+                }}
+                onCancel={() => setEditingSupplier(null)}
+              />
+
+              <h2 className="mb-space-md mt-space-xl font-headline-lg text-headline-lg text-on-surface">Proveedores</h2>
+              <SupplierList
+                refreshTrigger={suppliersRefresh}
+                onEdit={(supplier) => {
+                  setEditingSupplier(supplier);
+                  scrollTo('supplier-form');
+                }}
+                onDeleted={(supplier) => {
+                  if (editingSupplier?.id === supplier.id) setEditingSupplier(null);
+                  refreshSuppliers();
+                }}
+              />
+            </section>
+          }
         />
 
-        <h2>Proveedores</h2>
-        <SupplierList
-          refreshTrigger={suppliersRefresh}
-          onEdit={(supplier) => {
-            setEditingSupplier(supplier);
-            scrollTo('supplier-form');
-          }}
-          onDeleted={(supplier) => {
-            if (editingSupplier?.id === supplier.id) setEditingSupplier(null);
-            refreshSuppliers();
-          }}
-        />
-      </section>
+        <Route
+          path="/productos"
+          element={
+            <section>
+              <h2 id="product-form" className="mb-space-md scroll-mt-20 font-headline-lg text-headline-lg text-on-surface">{editingProduct ? `Editar producto: ${editingProduct.nombre}` : 'Nuevo producto'}</h2>
+              <ProductForm
+                product={editingProduct}
+                onSaved={() => {
+                  setEditingProduct(null);
+                  refreshProducts();
+                }}
+                onCancel={() => setEditingProduct(null)}
+                suppliersRefreshTrigger={suppliersRefresh}
+              />
 
-      <section>
-        <h2 id="product-form">{editingProduct ? `Editar producto: ${editingProduct.nombre}` : 'Nuevo producto'}</h2>
-        <ProductForm
-          product={editingProduct}
-          onSaved={() => {
-            setEditingProduct(null);
-            refreshProducts();
-          }}
-          onCancel={() => setEditingProduct(null)}
-          suppliersRefreshTrigger={suppliersRefresh}
+              <h2 className="mb-space-md mt-space-xl font-headline-lg text-headline-lg text-on-surface">Productos</h2>
+              <ProductList
+                refreshTrigger={productsRefresh}
+                onEdit={(product) => {
+                  setEditingProduct(product);
+                  scrollTo('product-form');
+                }}
+                onDeleted={(product) => {
+                  if (editingProduct?.id === product.id) setEditingProduct(null);
+                  refreshProducts();
+                }}
+              />
+            </section>
+          }
         />
-
-        <h2>Productos</h2>
-        <ProductList
-          refreshTrigger={productsRefresh}
-          onEdit={(product) => {
-            setEditingProduct(product);
-            scrollTo('product-form');
-          }}
-          onDeleted={(product) => {
-            if (editingProduct?.id === product.id) setEditingProduct(null);
-            refreshProducts();
-          }}
-        />
-      </section>
-    </main>
+      </Route>
+    </Routes>
   );
 }
