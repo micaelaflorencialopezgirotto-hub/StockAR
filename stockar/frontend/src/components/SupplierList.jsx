@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 import { getAll, remove } from '../services/suppliers.service.js';
-import { StatusPill, activeTone } from './ui.jsx';
+import { EmptyState, ErrorState, LoadingState, StatusPill, activeTone } from './ui.jsx';
 
 // onEdit(supplier): se eligió un proveedor para editar.
 // onDeleted(supplier): se eliminó un proveedor (App refresca la lista).
 export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0); // "Reintentar" lo incrementa y vuelve a pedir la lista
   const [deleteError, setDeleteError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    setError(null);
+    setError(false);
 
     getAll()
       .then((data) => {
@@ -22,7 +23,7 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(err.response?.data?.data?.message || 'No se pudo cargar la lista de proveedores');
+          setError(true);
         }
       })
       .finally(() => {
@@ -32,7 +33,7 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
     return () => {
       cancelled = true;
     };
-  }, [refreshTrigger]);
+  }, [refreshTrigger, reloadKey]);
 
   async function handleDelete(supplier) {
     if (!window.confirm(`¿Eliminar el proveedor "${supplier.razon_social}"?`)) return;
@@ -48,15 +49,11 @@ export default function SupplierList({ refreshTrigger, onEdit, onDeleted }) {
     }
   }
 
-  if (loading) return <p className="font-sans font-body-md text-body-md text-on-surface-variant">Cargando proveedores…</p>;
-  if (error) return <p className={errorClass}>{error}</p>;
-  if (suppliers.length === 0) {
-    return (
-      <p className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg text-center font-sans font-body-md text-body-md text-on-surface-variant">
-        No hay proveedores cargados.
-      </p>
-    );
+  if (loading) return <LoadingState message="Cargando proveedores…" />;
+  if (error) {
+    return <ErrorState message="No se pudieron cargar los proveedores. Intentá de nuevo." onRetry={() => setReloadKey((k) => k + 1)} />;
   }
+  if (suppliers.length === 0) return <EmptyState icon="badge" message="No hay proveedores cargados. Cargá el primero." />;
 
   return (
     <>

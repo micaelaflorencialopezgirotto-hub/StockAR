@@ -192,3 +192,44 @@ export function SuccessBadge({ message, className = '' }) {
     </div>
   );
 }
+
+// Estados de una lista: cargando, error (con reintento) y vacía. Son distintos a propósito:
+// "vacía" significa que la API respondió bien y no hay registros.
+export function LoadingState({ message }) {
+  return (
+    <div role="status" className="flex items-center gap-space-sm rounded-md border border-outline-variant bg-surface-container-low px-space-lg py-space-xl font-sans">
+      <span className="material-symbols-outlined animate-spin text-[20px] text-outline">progress_activity</span>
+      <span className="font-body-md text-body-md text-on-surface-variant">{message}</span>
+    </div>
+  );
+}
+
+export function ErrorState({ message, onRetry }) {
+  return (
+    <div role="alert" className="flex flex-col items-start gap-space-md rounded-md border border-error/20 bg-error-container px-space-lg py-space-lg font-sans sm:flex-row sm:items-center sm:justify-between">
+      <span className="flex items-center gap-space-sm font-body-md text-body-md font-medium text-on-error-container">
+        <span className="material-symbols-outlined text-[20px]">error</span>
+        {message}
+      </span>
+      {onRetry && (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="inline-flex shrink-0 items-center gap-1 rounded border border-error/30 bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-error-container hover:bg-error-container/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+        >
+          <span className="material-symbols-outlined text-[16px]">refresh</span>
+          Reintentar
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function EmptyState({ message, icon = 'inventory_2' }) {
+  return (
+    <div className="flex flex-col items-center gap-space-sm rounded-md border border-dashed border-outline-variant bg-surface-container-low px-space-lg py-space-xl text-center font-sans">
+      <span className="material-symbols-outlined rounded-full bg-surface-container-lowest p-space-sm text-[28px] text-outline">{icon}</span>
+      <p className="font-body-md text-body-md text-on-surface-variant">{message}</p>
+    </div>
+  );
+}

@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAll as getProducts, remove, update } from '../services/products.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
-import { STOCK_STATUS, StatusPill, SuccessBadge, activeTone, stockStatus, useFlash } from './ui.jsx';
+import {
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  STOCK_STATUS,
+  StatusPill,
+  SuccessBadge,
+  activeTone,
+  stockStatus,
+  useFlash,
+} from './ui.jsx';
 
 // Pestañas de estado: filtran en el front sobre la lista completa.
 const TABS = [
@@ -19,7 +29,8 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
   const [products, setProducts] = useState([]);
   const [brandNames, setBrandNames] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0); // "Reintentar" lo incrementa y vuelve a pedir la lista
   const [deleteError, setDeleteError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [tab, setTab] = useState('todos');
@@ -29,7 +40,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    setError(null);
+    setError(false);
 
     Promise.all([getProducts(), getBrands()])
       .then(([productsData, brandsData]) => {
@@ -39,7 +50,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
       })
       .catch((err) => {
         if (cancelled) return;
-        setError(err.response?.data?.data?.message || 'No se pudo cargar la lista de productos');
+        setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -48,7 +59,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
     return () => {
       cancelled = true;
     };
-  }, [refreshTrigger]);
+  }, [refreshTrigger, reloadKey]);
 
   async function handleDelete(product) {
     if (!window.confirm(`¿Eliminar el producto "${product.nombre}"?`)) return;
@@ -119,18 +130,15 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
   );
 
   let content;
-  if (loading) content = <p className="font-body-md text-body-md text-on-surface-variant">Cargando productos…</p>;
-  else if (error) content = <p className="rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error">{error}</p>;
-  else if (visible.length === 0) {
+  if (loading) content = <LoadingState message="Cargando productos…" />;
+  else if (error) {
     content = (
-      <p className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg text-center font-body-md text-body-md text-on-surface-variant">
-        {products.length === 0
-          ? 'No hay productos cargados.'
-          : tab === 'activo'
-            ? 'No hay productos activos.'
-            : 'No hay productos inactivos.'}
-      </p>
+      <ErrorState message="No se pudieron cargar los productos. Intentá de nuevo." onRetry={() => setReloadKey((k) => k + 1)} />
     );
+  } else if (products.length === 0) {
+    content = <EmptyState message="No hay productos cargados. Cargá el primero." />;
+  } else if (visible.length === 0) {
+    content = <EmptyState icon="filter_list" message={tab === 'activo' ? 'No hay productos activos.' : 'No hay productos inactivos.'} />;
   }
 
   if (content) {
