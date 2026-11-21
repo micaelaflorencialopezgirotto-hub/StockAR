@@ -37,6 +37,12 @@ export default function App() {
   // Al abrir un formulario, lleva la vista hasta él (después de que se renderiza).
   const scrollTo = (id) => setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 0);
 
+  const openNewProduct = () => {
+    setEditingProduct(null);
+    setCreatingProduct(true);
+    scrollTo('product-form');
+  };
+
   const closeProductForm = () => {
     setEditingProduct(null);
     setCreatingProduct(false);
@@ -126,15 +132,7 @@ export default function App() {
                 title="Productos"
                 description="Catálogo con el stock del depósito propio, precio de venta y estado de cada artículo."
                 actions={
-                  <NewButton
-                    onClick={() => {
-                      setEditingProduct(null);
-                      setCreatingProduct(true);
-                      scrollTo('product-form');
-                    }}
-                  >
-                    Nuevo producto
-                  </NewButton>
+                  <NewButton onClick={openNewProduct}>Nuevo producto</NewButton>
                 }
               />
 
@@ -164,6 +162,7 @@ export default function App() {
               <ProductList
                 refreshTrigger={productsRefresh}
                 editingId={editingProduct?.id ?? null}
+                onCreate={openNewProduct}
                 onEdit={(product) => {
                   setCreatingProduct(false);
                   setEditingProduct(product);

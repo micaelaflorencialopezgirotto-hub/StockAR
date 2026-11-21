@@ -24,9 +24,10 @@ const TABS = [
 
 // onEdit(product): se eligió un producto para editar.
 // onDeleted(product): se eliminó un producto (App refresca la lista).
+// onCreate(): abre el formulario de alta (botón del estado vacío).
 // editingId: producto abierto en el formulario; no se puede activar/desactivar mientras se edita,
 // porque al guardar el formulario se pisaría el estado.
-export default function ProductList({ refreshTrigger, onEdit, onDeleted, editingId = null }) {
+export default function ProductList({ refreshTrigger, onEdit, onDeleted, onCreate, editingId = null }) {
   const [products, setProducts] = useState([]);
   const [brandNames, setBrandNames] = useState({});
   const [loading, setLoading] = useState(true);
@@ -154,7 +155,12 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted, editing
       <ErrorState message="No se pudieron cargar los productos. Intentá de nuevo." onRetry={() => setReloadKey((k) => k + 1)} />
     );
   } else if (products.length === 0) {
-    content = <EmptyState message="No hay productos cargados. Cargá el primero." />;
+    content = (
+      <EmptyState
+        message="No hay productos cargados. Cargá el primero."
+        action={onCreate && { label: 'Nuevo producto', icon: 'add', onClick: onCreate }}
+      />
+    );
   } else if (visible.length === 0) {
     content = <EmptyState icon="filter_list" message={tab === 'activo' ? 'No hay productos activos.' : 'No hay productos inactivos.'} />;
   }

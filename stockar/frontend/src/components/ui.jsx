@@ -227,11 +227,18 @@ export function ErrorState({ message, onRetry }) {
   );
 }
 
-export function EmptyState({ message, icon = 'inventory_2' }) {
+// action (opcional): { label, icon, onClick } para un botón que resuelve el vacío (p. ej. "Nuevo producto").
+export function EmptyState({ message, icon = 'inventory_2', action }) {
   return (
     <div className="flex flex-col items-center gap-space-sm rounded-md border border-dashed border-outline-variant bg-surface-container-low px-space-lg py-space-xl text-center font-sans">
       <span className="material-symbols-outlined rounded-full bg-surface-container-lowest p-space-sm text-[28px] text-outline">{icon}</span>
       <p className="font-body-md text-body-md text-on-surface-variant">{message}</p>
+      {action && (
+        <button type="button" onClick={action.onClick} className={`mt-space-xs ${primaryButton}`}>
+          <span className="material-symbols-outlined text-[18px]">{action.icon ?? 'add'}</span>
+          {action.label}
+        </button>
+      )}
     </div>
   );
 }
