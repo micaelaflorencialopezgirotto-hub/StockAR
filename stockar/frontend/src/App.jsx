@@ -10,7 +10,7 @@ import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
 import SupplierForm from './components/SupplierForm.jsx';
 import SupplierList from './components/SupplierList.jsx';
-import { PageHeader, Panel, SectionHeader, primaryButton } from './components/ui.jsx';
+import { PageHeader, Panel, SectionHeader, SuccessBadge, primaryButton, useFlash } from './components/ui.jsx';
 
 function NewButton({ onClick, children }) {
   return (
@@ -29,6 +29,7 @@ export default function App() {
   // Los formularios de alta quedan plegados hasta tocar "Nuevo …"; al editar se abren solos.
   const [creatingProduct, setCreatingProduct] = useState(false);
   const [creatingSupplier, setCreatingSupplier] = useState(false);
+  const [productNotice, showProductNotice] = useFlash();
 
   const refreshProducts = () => setProductsRefresh((n) => n + 1);
   const refreshSuppliers = () => setSuppliersRefresh((n) => n + 1);
@@ -137,6 +138,8 @@ export default function App() {
                 }
               />
 
+              <SuccessBadge message={productNotice} className="mb-space-md empty:hidden" />
+
               {(creatingProduct || editingProduct) && (
                 <div id="product-form" className="scroll-mt-24">
                   <Panel
@@ -146,9 +149,10 @@ export default function App() {
                   >
                     <ProductForm
                       product={editingProduct}
-                      onSaved={() => {
+                      onSaved={(saved, { created }) => {
                         closeProductForm();
                         refreshProducts();
+                        showProductNotice(created ? `"${saved.nombre}" creado` : `"${saved.nombre}" guardado`);
                       }}
                       onCancel={closeProductForm}
                       suppliersRefreshTrigger={suppliersRefresh}
@@ -159,6 +163,7 @@ export default function App() {
 
               <ProductList
                 refreshTrigger={productsRefresh}
+                editingId={editingProduct?.id ?? null}
                 onEdit={(product) => {
                   setCreatingProduct(false);
                   setEditingProduct(product);

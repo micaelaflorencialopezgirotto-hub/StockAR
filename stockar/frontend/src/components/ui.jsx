@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 // Clases, formatos y piezas chicas compartidas por las pantallas nuevas.
 
 export const card = 'rounded border border-outline-variant bg-surface-container-lowest';
@@ -156,6 +158,37 @@ export function SectionHeader({ title, description, actions }) {
         {description && <p className={`mt-space-xs ${mutedText}`}>{description}</p>}
       </div>
       {actions}
+    </div>
+  );
+}
+
+// Mensaje de éxito que se borra solo a los `ms` milisegundos.
+// Devuelve [mensaje, mostrar(texto)].
+export function useFlash(ms = 3000) {
+  const [message, setMessage] = useState(null);
+  const timer = useRef(null);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const show = useCallback(
+    (text) => {
+      clearTimeout(timer.current);
+      setMessage(text);
+      timer.current = setTimeout(() => setMessage(null), ms);
+    },
+    [ms]
+  );
+  return [message, show];
+}
+
+// Aviso de éxito con el estilo de badge del diseño (tono success).
+export function SuccessBadge({ message, className = '' }) {
+  return (
+    <div role="status" aria-live="polite" className={className}>
+      {message && (
+        <span className={`inline-flex items-center gap-1.5 rounded border px-2.5 py-1 font-body-md text-body-md font-medium ${TONES.success.pill}`}>
+          <span className="material-symbols-outlined text-[18px]">check_circle</span>
+          {message}
+        </span>
+      )}
     </div>
   );
 }

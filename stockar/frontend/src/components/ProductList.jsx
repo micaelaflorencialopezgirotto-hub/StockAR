@@ -1,28 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAll as getProducts, remove } from '../services/products.service.js';
+import { getAll as getProducts, remove, update } from '../services/products.service.js';
 import { getAll as getBrands } from '../services/brands.service.js';
-import { STOCK_STATUS, StatusPill, activeTone, stockStatus } from './ui.jsx';
+import { STOCK_STATUS, StatusPill, SuccessBadge, activeTone, stockStatus, useFlash } from './ui.jsx';
+
+// Pestañas de estado: filtran en el front sobre la lista completa.
+const TABS = [
+  { value: 'activo', label: 'Activos' },
+  { value: 'inactivo', label: 'Inactivos' },
+  { value: 'todos', label: 'Todos' },
+];
 
 // onEdit(product): se eligió un producto para editar.
 // onDeleted(product): se eliminó un producto (App refresca la lista).
-export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
+// editingId: producto abierto en el formulario; no se puede activar/desactivar mientras se edita,
+// porque al guardar el formulario se pisaría el estado.
+export default function ProductList({ refreshTrigger, onEdit, onDeleted, editingId = null }) {
   const [products, setProducts] = useState([]);
   const [brandNames, setBrandNames] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
-  const [estadoFilter, setEstadoFilter] = useState(''); // '' = todos
+  const [tab, setTab] = useState('todos');
+  const [togglingId, setTogglingId] = useState(null);
+  const [success, showSuccess] = useFlash();
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setError(null);
 
-    const filters = estadoFilter ? { estado_catalogo: estadoFilter } : undefined;
-
-    Promise.all([getProducts(filters), getBrands()])
+    Promise.all([getProducts(), getBrands()])
       .then(([productsData, brandsData]) => {
         if (cancelled) return;
         setProducts(productsData);
@@ -39,7 +48,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
     return () => {
       cancelled = true;
     };
-  }, [refreshTrigger, estadoFilter]);
+  }, [refreshTrigger]);
 
   async function handleDelete(product) {
     if (!window.confirm(`¿Eliminar el producto "${product.nombre}"?`)) return;
@@ -55,34 +64,71 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
     }
   }
 
+  // Activa o desactiva el producto en el catálogo (campo estado_catalogo de la API).
+  async function handleToggle(product) {
+    const activating = product.estado_catalogo !== 'activo';
+    const verb = activating ? 'Activar' : 'Desactivar';
+    if (!window.confirm(`¿${verb} el producto "${product.nombre}"?`)) return;
+    setTogglingId(product.id);
+    setDeleteError(null);
+    try {
+      const saved = await update(product.id, { estado_catalogo: activating ? 'activo' : 'inactivo' });
+      setProducts((list) => list.map((p) => (p.id === saved.id ? saved : p)));
+      showSuccess(`"${saved.nombre}" ${activating ? 'activado' : 'desactivado'}`);
+    } catch (err) {
+      setDeleteError(err.response?.data?.data?.message || `No se pudo ${verb.toLowerCase()} el producto`);
+    } finally {
+      setTogglingId(null);
+    }
+  }
+
+  const counts = {
+    activo: products.filter((p) => p.estado_catalogo === 'activo').length,
+    inactivo: products.filter((p) => p.estado_catalogo !== 'activo').length,
+    todos: products.length,
+  };
+  const visible =
+    tab === 'todos'
+      ? products
+      : products.filter((p) => (tab === 'activo' ? p.estado_catalogo === 'activo' : p.estado_catalogo !== 'activo'));
+
   // El filtro queda visible mientras carga, si hay error o si no hay resultados.
   const filterBar = (
-    <div className="mb-space-md flex font-sans items-center gap-space-sm">
-      <label className="flex items-center gap-space-sm">
-        <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Estado</span>
-        <span className="relative">
-          <select
-            className="h-9 appearance-none rounded border border-outline-variant bg-surface-container-lowest pl-3 pr-8 font-body-md text-body-md text-on-surface focus:border-primary focus:outline-none"
-            value={estadoFilter}
-            onChange={(e) => setEstadoFilter(e.target.value)}
+    <div className="mb-space-md flex flex-wrap items-center justify-between gap-space-sm font-sans">
+      <div role="tablist" aria-label="Filtrar por estado" className="inline-flex rounded-md border border-outline-variant bg-surface-container-low p-0.5">
+        {TABS.map((t) => (
+          <button
+            key={t.value}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.value}
+            onClick={() => setTab(t.value)}
+            className={`inline-flex items-center gap-1.5 rounded px-3 py-1.5 font-body-md text-body-md font-medium transition-colors focus-visible:outline-2 focus-visible:outline-secondary ${
+              tab === t.value ? 'bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] ring-1 ring-outline-variant' : 'text-on-surface-variant hover:text-on-surface'
+            }`}
           >
-            <option value="">Todos</option>
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-          <span className="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[18px] text-outline">expand_more</span>
-        </span>
-      </label>
+            {t.label}
+            {!loading && !error && (
+              <span className="rounded bg-surface-container px-1.5 font-label-code text-label-code text-on-surface-variant">{counts[t.value]}</span>
+            )}
+          </button>
+        ))}
+      </div>
+      <SuccessBadge message={success} />
     </div>
   );
 
   let content;
   if (loading) content = <p className="font-body-md text-body-md text-on-surface-variant">Cargando productos…</p>;
   else if (error) content = <p className="rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error">{error}</p>;
-  else if (products.length === 0) {
+  else if (visible.length === 0) {
     content = (
       <p className="rounded border border-outline-variant bg-surface-container-lowest p-space-lg text-center font-body-md text-body-md text-on-surface-variant">
-        {estadoFilter ? `No hay productos con estado "${estadoFilter}".` : 'No hay productos cargados.'}
+        {products.length === 0
+          ? 'No hay productos cargados.'
+          : tab === 'activo'
+            ? 'No hay productos activos.'
+            : 'No hay productos inactivos.'}
       </p>
     );
   }
@@ -101,7 +147,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
       {filterBar}
       {deleteError && <p className="mb-space-md rounded border border-error-container bg-surface-container-lowest px-3 py-2 font-body-md text-body-md text-error">{deleteError}</p>}
       <ul className="grid font-sans grid-cols-1 gap-space-md md:grid-cols-2 xl:grid-cols-3">
-        {products.map((p) => (
+        {visible.map((p) => (
           <li key={p.id} className="flex flex-col overflow-hidden rounded border border-outline-variant bg-surface-container-lowest transition-colors hover:border-outline">
             <Link to={`/productos/${p.id}`} className="flex aspect-video items-center justify-center border-b border-outline-variant bg-surface-container-low">
               {p.imagen ? (
@@ -183,7 +229,7 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
                 </div>
               </dl>
 
-              <div className="mt-auto flex justify-end gap-space-sm pt-space-md">
+              <div className="mt-auto flex flex-wrap justify-end gap-space-sm pt-space-md">
                 <button
                   type="button"
                   onClick={() => onEdit?.(p)}
@@ -191,6 +237,16 @@ export default function ProductList({ refreshTrigger, onEdit, onDeleted }) {
                 >
                   <span className="material-symbols-outlined text-[16px]">edit</span>
                   Editar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleToggle(p)}
+                  disabled={togglingId === p.id || editingId === p.id}
+                  title={editingId === p.id ? 'Cerrá la edición para cambiar el estado' : undefined}
+                  className="inline-flex items-center gap-1 rounded border border-outline-variant bg-surface-container-lowest px-3 py-1.5 font-body-sm text-body-sm font-medium text-on-surface hover:bg-surface-container-low disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                >
+                  <span className="material-symbols-outlined text-[16px]">{p.estado_catalogo === 'activo' ? 'toggle_off' : 'toggle_on'}</span>
+                  {togglingId === p.id ? 'Guardando…' : p.estado_catalogo === 'activo' ? 'Desactivar' : 'Activar'}
                 </button>
                 <button
                   type="button"
